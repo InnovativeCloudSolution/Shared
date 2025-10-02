@@ -1,0 +1,129 @@
+﻿AccessLevel,licenseGroupNames,groupsNames,sharedMailboxes,distributionLists
+BRIBIE ISLAND-ADMINISTRATION,SG.License.M365BusinessPremium,Voicemail - Bribie,a.bribie@seasonsliving.com.au,
+CALOUNDRA-ADMINISTRATION,SG.License.M365BusinessPremium,Voicemail - Caloundra,a.caloundra@seasonsliving.com.au,
+EASTERN HEIGHTS-ADMINISTRATION,SG.License.M365BusinessPremium,Voicemail - Eastern Heights,a.eheights@seasonsliving.com.au,
+KALLANGUR-ADMINISTRATION,SG.License.M365BusinessPremium,Voicemail - Kallangur,a.kallangur@seasonsliving.com.au,
+MANGO HILL-ADMINISTRATION,SG.License.M365BusinessPremium,Voicemail - Mango Hill,a.mangohill@seasonsliving.com.au,
+REDBANK PLAINS-ADMINISTRATION,SG.License.M365BusinessPremium,Voicemail - Redbank,a.redbank@seasonsliving.com.au,
+SINNAMON PARK-ADMINISTRATION,SG.License.M365BusinessPremium,Voicemail - Sinnamon Park,a.sinnamon@seasonsliving.com.au,
+WATERFORD WEST-ADMINISTRATION,SG.License.M365BusinessPremium,Voicemail - Waterford,a.waterford@seasonsliving.com.au,
+BRIBIE ISLAND-BUS DRIVER,SG.License.OfficeF3,,,
+CALOUNDRA-BUS DRIVER,SG.License.OfficeF3,,,
+EASTERN HEIGHTS-BUS DRIVER,SG.License.OfficeF3,,,
+KALLANGUR-BUS DRIVER,SG.License.OfficeF3,,,
+MANGO HILL-BUS DRIVER,SG.License.OfficeF3,,,
+REDBANK PLAINS-BUS DRIVER,SG.License.OfficeF3,,,
+SINNAMON PARK-BUS DRIVER,SG.License.OfficeF3,,,
+WATERFORD WEST-BUS DRIVER,SG.License.OfficeF3,,,
+BRIBIE ISLAND-CARE COORDINATOR,SG.License.M365BusinessPremium,Seasons Care,care.bribie@seasonsliving.com.au,Care Team
+CALOUNDRA-CARE COORDINATOR,SG.License.M365BusinessPremium,Seasons Care,care.caloundra@seasonsliving.com.au,Care Team
+EASTERN HEIGHTS-CARE COORDINATOR,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+KALLANGUR-CARE COORDINATOR,SG.License.M365BusinessPremium,Seasons Care,care.kallangur@seasonsliving.com.au,Care Team
+MANGO HILL-CARE COORDINATOR,SG.License.M365BusinessPremium,Seasons Care,care.mangohill@seasonsliving.com.au,Care Team
+REDBANK PLAINS-CARE COORDINATOR,SG.License.M365BusinessPremium,Seasons Care,care.redbank@seasonsliving.com.au,Care Team
+SINNAMON PARK-CARE COORDINATOR,SG.License.M365BusinessPremium,Seasons Care,care.sinnamon@seasonsliving.com.au,Care Team
+WATERFORD WEST-CARE COORDINATOR,SG.License.M365BusinessPremium,Seasons Care,care.waterford@seasonsliving.com.au,Care Team
+BRIBIE ISLAND-CARE MANAGER,SG.License.M365BusinessPremium,Community Management;Seasons Care,care.bribie@seasonsliving.com.au;clinical.bribie@seasonsliving.com.au,Care Managers;Care Team
+CALOUNDRA-CARE MANAGER,SG.License.M365BusinessPremium,Community Management;Seasons Care,care.caloundra@seasonsliving.com.au;clinical.caloundra@seasonsliving.com.au,Care Managers;Care Team
+EASTERN HEIGHTS-CARE MANAGER,SG.License.M365BusinessPremium,Community Management;Seasons Care,,Care Managers;Care Team
+KALLANGUR-CARE MANAGER,SG.License.M365BusinessPremium,Community Management;Seasons Care,care.kallangur@seasonsliving.com.au;clinical.kallangur@seasonsliving.com.au,Care Managers;Care Team
+MANGO HILL-CARE MANAGER,SG.License.M365BusinessPremium,Community Management;Seasons Care,care.mangohill@seasonsliving.com.au;clinical.mangohill@seasonsliving.com.au;clinical.mangocaresuites@seasonsliving.com.au,Care Managers;Care Team
+REDBANK PLAINS-CARE MANAGER,SG.License.M365BusinessPremium,Community Management;Seasons Care,clinical.redbank@seasonsliving.com.au,Care Managers;Care Team
+SINNAMON PARK-CARE MANAGER,SG.License.M365BusinessPremium,Community Management;Seasons Care,care.sinnamon@seasonsliving.com.au;clinical.sinnamon@seasonsliving.com.au,Care Managers;Care Team
+WATERFORD WEST-CARE MANAGER,SG.License.M365BusinessPremium,Community Management;Seasons Care,care.waterford@seasonsliving.com.au;clinical.waterford@seasonsliving.com.au,Care Managers;Care Team
+BRIBIE ISLAND-CARE SERVICES SCHEDULER,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+CALOUNDRA-CARE SERVICES SCHEDULER,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+EASTERN HEIGHTS-CARE SERVICES SCHEDULER,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+KALLANGUR-CARE SERVICES SCHEDULER,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+MANGO HILL-CARE SERVICES SCHEDULER,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+REDBANK PLAINS-CARE SERVICES SCHEDULER,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+SINNAMON PARK-CARE SERVICES SCHEDULER,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+WATERFORD WEST-CARE SERVICES SCHEDULER,SG.License.M365BusinessPremium,Seasons Care,,Care Team
+BRIBIE ISLAND-CHEF,SG.License.OfficeF3,,h.bribie@seasonsliving.com.au,
+CALOUNDRA-CHEF,SG.License.OfficeF3,,h.caloundra@seasonsliving.com.au,
+EASTERN HEIGHTS-CHEF,SG.License.OfficeF3,,,
+KALLANGUR-CHEF,SG.License.OfficeF3,,h.kallangur@seasonsliving.com.au,
+MANGO HILL-CHEF,SG.License.OfficeF3,,h.mangohill@seasonsliving.com.au,
+REDBANK PLAINS-CHEF,SG.License.OfficeF3,,h.redbank@seasonsliving.com.au,
+SINNAMON PARK-CHEF,SG.License.OfficeF3,,h.sinnamon@seasonsliving.com.au,
+WATERFORD WEST-CHEF,SG.License.OfficeF3,,h.waterford@seasonsliving.com.au,
+BRIBIE ISLAND-CLEANER,SG.License.OfficeF3,,,
+CALOUNDRA-CLEANER,SG.License.OfficeF3,,,
+EASTERN HEIGHTS-CLEANER,SG.License.OfficeF3,,,
+KALLANGUR-CLEANER,SG.License.OfficeF3,,,
+MANGO HILL-CLEANER,SG.License.OfficeF3,,,
+REDBANK PLAINS-CLEANER,SG.License.OfficeF3,,,
+SINNAMON PARK-CLEANER,SG.License.OfficeF3,,,
+WATERFORD WEST-CLEANER,SG.License.OfficeF3,,,
+BRIBIE ISLAND-COMMUNITY MANAGEMENT,SG.License.M365BusinessPremium,Community Management;Seasons Care,a.bribie@seasonsliving.com.au,Community Managers
+CALOUNDRA-COMMUNITY MANAGEMENT,SG.License.M365BusinessPremium,Community Management;Seasons Care,a.caloundra@seasonsliving.com.au,Community Managers
+EASTERN HEIGHTS-COMMUNITY MANAGEMENT,SG.License.M365BusinessPremium,Community Management;Seasons Care,a.eheights@seasonsliving.com.au,Community Managers
+KALLANGUR-COMMUNITY MANAGEMENT,SG.License.M365BusinessPremium,Community Management;Seasons Care,a.kallangur@seasonsliving.com.au,Community Managers
+MANGO HILL-COMMUNITY MANAGEMENT,SG.License.M365BusinessPremium,Community Management;Seasons Care,a.mangohill@seasonsliving.com.au,Community Managers
+REDBANK PLAINS-COMMUNITY MANAGEMENT,SG.License.M365BusinessPremium,Community Management;Seasons Care,a.redbank@seasonsliving.com.au,Community Managers
+SINNAMON PARK-COMMUNITY MANAGEMENT,SG.License.M365BusinessPremium,Community Management;Seasons Care,a.sinnamon@seasonsliving.com.au,Community Managers
+WATERFORD WEST-COMMUNITY MANAGEMENT,SG.License.M365BusinessPremium,Community Management;Seasons Care,a.waterford@seasonsliving.com.au,Community Managers
+BRIBIE ISLAND-ENROLLED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.bribie@seasonsliving.com.au,
+CALOUNDRA-ENROLLED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.caloundra@seasonsliving.com.au,
+EASTERN HEIGHTS-ENROLLED NURSE,SG.License.M365BusinessPremium,Seasons Care,,
+KALLANGUR-ENROLLED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.kallangur@seasonsliving.com.au,
+MANGO HILL-ENROLLED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.mangohill@seasonsliving.com.au;clinical.mangocaresuites@seasonsliving.com.au,
+REDBANK PLAINS-ENROLLED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.redbank@seasonsliving.com.au,
+SINNAMON PARK-ENROLLED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.sinnamon@seasonsliving.com.au,
+WATERFORD WEST-ENROLLED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.waterford@seasonsliving.com.au,
+BRIBIE ISLAND-HOSPITALITY,SG.License.OfficeF3,,,
+CALOUNDRA-HOSPITALITY,SG.License.OfficeF3,,,
+EASTERN HEIGHTS-HOSPITALITY,SG.License.OfficeF3,,,
+KALLANGUR-HOSPITALITY,SG.License.OfficeF3,,,
+MANGO HILL-HOSPITALITY,SG.License.OfficeF3,,,
+REDBANK PLAINS-HOSPITALITY,SG.License.OfficeF3,,,
+SINNAMON PARK-HOSPITALITY,SG.License.OfficeF3,,,
+WATERFORD WEST-HOSPITALITY,SG.License.OfficeF3,,,
+BRIBIE ISLAND-LIFESTYLE,SG.License.M365BusinessPremium,,l.bribie@seasonsliving.com.au,
+CALOUNDRA-LIFESTYLE,SG.License.M365BusinessPremium,,l.caloundra@seasonsliving.com.au,
+EASTERN HEIGHTS-LIFESTYLE,SG.License.M365BusinessPremium,,,
+KALLANGUR-LIFESTYLE,SG.License.M365BusinessPremium,,l.kallangur@seasonsliving.com.au,
+MANGO HILL-LIFESTYLE,SG.License.M365BusinessPremium,,l.mangohill@seasonsliving.com.au,
+REDBANK PLAINS-LIFESTYLE,SG.License.M365BusinessPremium,,l.redbank@seasonsliving.com.au,
+SINNAMON PARK-LIFESTYLE,SG.License.M365BusinessPremium,,l.sinnamon@seasonsliving.com.au,
+WATERFORD WEST-LIFESTYLE,SG.License.M365BusinessPremium,,l.waterford@seasonsliving.com.au,
+BRIBIE ISLAND-MAINTENANCE,SG.License.OfficeF3,,m.bribie@seasonsliving.com.au,
+CALOUNDRA-MAINTENANCE,SG.License.OfficeF3,,m.caloundra@seasonsliving.com.au,
+EASTERN HEIGHTS-MAINTENANCE,SG.License.OfficeF3,,,
+KALLANGUR-MAINTENANCE,SG.License.OfficeF3,,m.kallangur@seasonsliving.com.au,
+MANGO HILL-MAINTENANCE,SG.License.OfficeF3,,m.mangohill@seasonsliving.com.au,
+REDBANK PLAINS-MAINTENANCE,SG.License.OfficeF3,,m.redbank@seasonsliving.com.au,
+SINNAMON PARK-MAINTENANCE,SG.License.OfficeF3,,m.sinnamon@seasonsliving.com.au,
+WATERFORD WEST-MAINTENANCE,SG.License.OfficeF3,,m.waterford@seasonsliving.com.au,
+BRIBIE ISLAND-PERSONAL CARE WORKER,SG.License.OfficeF3,Seasons Care,,
+CALOUNDRA-PERSONAL CARE WORKER,SG.License.OfficeF3,Seasons Care,,
+EASTERN HEIGHTS-PERSONAL CARE WORKER,SG.License.OfficeF3,Seasons Care,,
+KALLANGUR-PERSONAL CARE WORKER,SG.License.OfficeF3,Seasons Care,,
+MANGO HILL-PERSONAL CARE WORKER,SG.License.OfficeF3,Seasons Care,,
+REDBANK PLAINS-PERSONAL CARE WORKER,SG.License.OfficeF3,Seasons Care,,
+SINNAMON PARK-PERSONAL CARE WORKER,SG.License.OfficeF3,Seasons Care,,
+WATERFORD WEST-PERSONAL CARE WORKER,SG.License.OfficeF3,Seasons Care,,
+BRIBIE ISLAND-REGISTERED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.bribie@seasonsliving.com.au,
+CALOUNDRA-REGISTERED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.caloundra@seasonsliving.com.au,
+EASTERN HEIGHTS-REGISTERED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.kallangur@seasonsliving.com.au,
+KALLANGUR-REGISTERED NURSE,SG.License.M365BusinessPremium,Seasons Care,,
+MANGO HILL-REGISTERED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.mangohill@seasonsliving.com.au;clinical.mangocaresuites@seasonsliving.com.au,
+REDBANK PLAINS-REGISTERED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.redbank@seasonsliving.com.au,
+SINNAMON PARK-REGISTERED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.sinnamon@seasonsliving.com.au,
+WATERFORD WEST-REGISTERED NURSE,SG.License.M365BusinessPremium,Seasons Care,clinical.waterford@seasonsliving.com.au,
+BRIBIE ISLAND-SALES,SG.License.M365BusinessPremium,Sales and Marketing,,Sales Staff
+CALOUNDRA-SALES,SG.License.M365BusinessPremium,Sales and Marketing,,Sales Staff
+EASTERN HEIGHTS-SALES,SG.License.M365BusinessPremium,Sales and Marketing,,Sales Staff
+KALLANGUR-SALES,SG.License.M365BusinessPremium,Sales and Marketing,,Sales Staff
+MANGO HILL-SALES,SG.License.M365BusinessPremium,Sales and Marketing,,Sales Staff
+REDBANK PLAINS-SALES,SG.License.M365BusinessPremium,Sales and Marketing,,Sales Staff
+SINNAMON PARK-SALES,SG.License.M365BusinessPremium,Sales and Marketing,,Sales Staff
+WATERFORD WEST-SALES,SG.License.M365BusinessPremium,Sales and Marketing,,Sales Staff
+BRIBIE ISLAND-SUPPORT OFFICE,SG.License.M365BusinessPremium,Support Office,,Support Office
+CALOUNDRA-SUPPORT OFFICE,SG.License.M365BusinessPremium,Support Office,,Support Office
+EASTERN HEIGHTS-SUPPORT OFFICE,SG.License.M365BusinessPremium,Support Office,,Support Office
+KALLANGUR-SUPPORT OFFICE,SG.License.M365BusinessPremium,Support Office,,Support Office
+MANGO HILL-SUPPORT OFFICE,SG.License.M365BusinessPremium,Support Office,,Support Office
+REDBANK PLAINS-SUPPORT OFFICE,SG.License.M365BusinessPremium,Support Office,,Support Office
+SINNAMON PARK-SUPPORT OFFICE,SG.License.M365BusinessPremium,Support Office,,Support Office
+WATERFORD WEST-SUPPORT OFFICE,SG.License.M365BusinessPremium,Support Office,,Support Office

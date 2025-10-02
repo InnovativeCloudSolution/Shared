@@ -1,0 +1,1372 @@
+{
+  "choices": [
+    {
+      "name": "Ashlee Openshaw (FA) [ashlee@sherringroup.com.au:FullAccess]",
+      "identifier": "ozhvwn"
+    },
+    {
+      "name": "Ashlee Openshaw (RO) [ashlee@sherringroup.com.au:ReadPermission]",
+      "identifier": "njg5uf"
+    },
+    {
+      "name": "Guy Smith (FA) [guy@sherrinrentals.com.au:FullAccess]",
+      "identifier": "dqiesv"
+    },
+    {
+      "name": "Guy Smith (RO) [guy@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "7wlbqh"
+    },
+    {
+      "name": "Sherrin Rentals Tasmania (FA) [tas@sherrinrentals.com.au:FullAccess]",
+      "identifier": "1w0z43"
+    },
+    {
+      "name": "Sherrin Rentals Tasmania (RO) [tas@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "lheq4h"
+    },
+    {
+      "name": "Elizabeth Mason (FA) [elizabeth@sherrinrentals.com.au:FullAccess]",
+      "identifier": "d80vag"
+    },
+    {
+      "name": "Elizabeth Mason (RO) [elizabeth@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "vlntmc"
+    },
+    {
+      "name": "Brea Fowler (FA) [brea@isherrinrentals.com.au:FullAccess]",
+      "identifier": "np3rw3"
+    },
+    {
+      "name": "Brea Fowler (RO) [brea@isherrinrentals.com.au:ReadPermission]",
+      "identifier": "dptn0f"
+    },
+    {
+      "name": "Kevin Karlsson (FA) [KKarlsson@sherrinrentals.com.au:FullAccess]",
+      "identifier": "5nehf9"
+    },
+    {
+      "name": "Kevin Karlsson (RO) [KKarlsson@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "juyvcg"
+    },
+    {
+      "name": "Andrew Taylor (FA) [andrewt@sherrinrentals.com.au:FullAccess]",
+      "identifier": "6ljdec"
+    },
+    {
+      "name": "Andrew Taylor (RO) [andrewt@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "5rv20t"
+    },
+    {
+      "name": "Sherrin Rentals Central Queensland (FA) [cq@sherrinrentals.com.au:FullAccess]",
+      "identifier": "mud5h6"
+    },
+    {
+      "name": "Sherrin Rentals Central Queensland (RO) [cq@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "bytizv"
+    },
+    {
+      "name": "Sherrin Rentals Cairns (FA) [cns@sherrinrentals.com.au:FullAccess]",
+      "identifier": "wx0gsp"
+    },
+    {
+      "name": "Sherrin Rentals Cairns (RO) [cns@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "2q9mvy"
+    },
+    {
+      "name": "David Tranquille (FA) [davidt@sherrinrentals.com.au:FullAccess]",
+      "identifier": "ahu22o"
+    },
+    {
+      "name": "David Tranquille (RO) [davidt@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "m6o0cs"
+    },
+    {
+      "name": "Engineering (FA) [engineering@sherrinequipment.com.au:FullAccess]",
+      "identifier": "yd8e8t"
+    },
+    {
+      "name": "Engineering (RO) [engineering@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "jw3a48"
+    },
+    {
+      "name": "Sarah Middleton (FA) [smiddleton@sherringroup.com.au:FullAccess]",
+      "identifier": "3faesm"
+    },
+    {
+      "name": "Sarah Middleton (RO) [smiddleton@sherringroup.com.au:ReadPermission]",
+      "identifier": "zhb0j0"
+    },
+    {
+      "name": "SV020 (FA) [sv020@sherrinrentals.com.au:FullAccess]",
+      "identifier": "tdg87m"
+    },
+    {
+      "name": "SV020 (RO) [sv020@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "s1418j"
+    },
+    {
+      "name": "Sue Brady (FA) [seq@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "vi6rj0"
+    },
+    {
+      "name": "Sue Brady (RO) [seq@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "66au68"
+    },
+    {
+      "name": "Sam Bailey (FA) [sam@sherrinrentals.com.au:FullAccess]",
+      "identifier": "cd9wrg"
+    },
+    {
+      "name": "Sam Bailey (RO) [sam@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "8cnmci"
+    },
+    {
+      "name": "Jason Mann (FA) [jmann@sherrinrentals.com.au:FullAccess]",
+      "identifier": "ui3a51"
+    },
+    {
+      "name": "Jason Mann (RO) [jmann@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "t4fx65"
+    },
+    {
+      "name": "Mark Symes (FA) [marks@sherrinrentals.com.au:FullAccess]",
+      "identifier": "c4gmk8"
+    },
+    {
+      "name": "Mark Symes (RO) [marks@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "sxamrk"
+    },
+    {
+      "name": "Tanya White (FA) [twhite@sherrinrentals.com.au:FullAccess]",
+      "identifier": "1a81km"
+    },
+    {
+      "name": "Tanya White (RO) [twhite@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "s4yk10"
+    },
+    {
+      "name": "Perth Admin (FA) [peradmin@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "ouvn5n"
+    },
+    {
+      "name": "Perth Admin (RO) [peradmin@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "55gsil"
+    },
+    {
+      "name": "Karl Laszlo (FA) [karl@sherrinrentals.com.au:FullAccess]",
+      "identifier": "84g5hk"
+    },
+    {
+      "name": "Karl Laszlo (RO) [karl@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "qarmtr"
+    },
+    {
+      "name": "Ian Courtney (FA) [icourtney@sherrinrentals.com.au:FullAccess]",
+      "identifier": "jq883t"
+    },
+    {
+      "name": "Ian Courtney (RO) [icourtney@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "mel4rx"
+    },
+    {
+      "name": "Stewart Elmes (FA) [stewarte@sherrinrentals.com.au:FullAccess]",
+      "identifier": "4raidw"
+    },
+    {
+      "name": "Stewart Elmes (RO) [stewarte@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "3wogf6"
+    },
+    {
+      "name": "Wayne Parlett (FA) [wparlett@sherrinrentals.com.au:FullAccess]",
+      "identifier": "bg64ql"
+    },
+    {
+      "name": "Wayne Parlett (RO) [wparlett@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "dngvf6"
+    },
+    {
+      "name": "Shane Claridge (FA) [sclaridge@sherrinrentals.com.au:FullAccess]",
+      "identifier": "ukqbh8"
+    },
+    {
+      "name": "Shane Claridge (RO) [sclaridge@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "0yy2fp"
+    },
+    {
+      "name": "Edward Horwood (FA) [edward@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "d3g248"
+    },
+    {
+      "name": "Edward Horwood (RO) [edward@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "0yt03m"
+    },
+    {
+      "name": "Yvonne Richters (FA) [yrichters@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "ciwikt"
+    },
+    {
+      "name": "Yvonne Richters (RO) [yrichters@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "j54aht"
+    },
+    {
+      "name": "Coral-Lee Newton (FA) [corallee@sherrinequipment.com.au:FullAccess]",
+      "identifier": "ofbcvw"
+    },
+    {
+      "name": "Coral-Lee Newton (RO) [corallee@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "721m8o"
+    },
+    {
+      "name": "Patricia Fournier (FA) [patricia@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "p3e6cq"
+    },
+    {
+      "name": "Patricia Fournier (RO) [patricia@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "xawnu0"
+    },
+    {
+      "name": "Deanna Kotsopoulos (FA) [deanna@sherrinequipment.com.au:FullAccess]",
+      "identifier": "vd30on"
+    },
+    {
+      "name": "Deanna Kotsopoulos (RO) [deanna@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "jiqurv"
+    },
+    {
+      "name": "Stores (FA) [stores@sherrinequipment.com.au:FullAccess]",
+      "identifier": "1rpzy0"
+    },
+    {
+      "name": "Stores (RO) [stores@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "e925qv"
+    },
+    {
+      "name": "Sherrin Rentals Western Australia (FA) [wa@sherrinrentals.com.au:FullAccess]",
+      "identifier": "kbsd43"
+    },
+    {
+      "name": "Sherrin Rentals Western Australia (RO) [wa@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "s7wvik"
+    },
+    {
+      "name": "Sherrin Rentals South East Queensland (FA) [seq@sherrinrentals.com.au:FullAccess]",
+      "identifier": "qpo9rl"
+    },
+    {
+      "name": "Sherrin Rentals South East Queensland (RO) [seq@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "52n9ts"
+    },
+    {
+      "name": "Info Sherrin Rentals (FA) [info@sherrinrentals.com.au:FullAccess]",
+      "identifier": "qa0lbj"
+    },
+    {
+      "name": "Info Sherrin Rentals (RO) [info@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "wnru78"
+    },
+    {
+      "name": "Oil Sample Reporting (FA) [sample@sherrinrentals.com.au:FullAccess]",
+      "identifier": "py18rv"
+    },
+    {
+      "name": "Oil Sample Reporting (RO) [sample@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "nhmiwe"
+    },
+    {
+      "name": "Sherrin Rentals Sunshine Coast (FA) [ssc@sherrinrentals.com.au:FullAccess]",
+      "identifier": "jyf7of"
+    },
+    {
+      "name": "Sherrin Rentals Sunshine Coast (RO) [ssc@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "vsubzd"
+    },
+    {
+      "name": "Info Sherrin Group (FA) [info@sherringroup.com.au:FullAccess]",
+      "identifier": "bhww39"
+    },
+    {
+      "name": "Info Sherrin Group (RO) [info@sherringroup.com.au:ReadPermission]",
+      "identifier": "qnwqpc"
+    },
+    {
+      "name": "Marketing (FA) [marketing@sherrinrentals.com.au:FullAccess]",
+      "identifier": "rjl2fr"
+    },
+    {
+      "name": "Marketing (RO) [marketing@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "h2o6r1"
+    },
+    {
+      "name": "Info Sherrin Racing (FA) [info@sherrinracing.com.au:FullAccess]",
+      "identifier": "0xal3t"
+    },
+    {
+      "name": "Info Sherrin Racing (RO) [info@sherrinracing.com.au:ReadPermission]",
+      "identifier": "di9crn"
+    },
+    {
+      "name": "Sherrin Rentals Northern Territory (FA) [nt@sherrinrentals.com.au:FullAccess]",
+      "identifier": "rrp5az"
+    },
+    {
+      "name": "Sherrin Rentals Northern Territory (RO) [nt@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "acxwsq"
+    },
+    {
+      "name": "Sherrin Rentals Townsville (FA) [tsv@sherrinrentals.com.au:FullAccess]",
+      "identifier": "atpz5g"
+    },
+    {
+      "name": "Sherrin Rentals Townsville (RO) [tsv@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "ax364o"
+    },
+    {
+      "name": "Sherrin Equipment Administration (FA) [admin@sherrinequipment.com.au:FullAccess]",
+      "identifier": "qhimm3"
+    },
+    {
+      "name": "Sherrin Equipment Administration (RO) [admin@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "2t90sd"
+    },
+    {
+      "name": "Sherrin Equipment Parts (FA) [parts@sherrinequipment.com.au:FullAccess]",
+      "identifier": "1cejki"
+    },
+    {
+      "name": "Sherrin Equipment Parts (RO) [parts@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "7a6z8a"
+    },
+    {
+      "name": "Sherrin Rentals South Australia (FA) [sa@sherrinrentals.com.au:FullAccess]",
+      "identifier": "qh9ik9"
+    },
+    {
+      "name": "Sherrin Rentals South Australia (RO) [sa@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "tqdatg"
+    },
+    {
+      "name": "PM015 (FA) [pm015@sherrinrentals.com.au:FullAccess]",
+      "identifier": "layq29"
+    },
+    {
+      "name": "PM015 (RO) [pm015@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "7b909k"
+    },
+    {
+      "name": "SV022 (FA) [SV022@sherrinrentals.com.au:FullAccess]",
+      "identifier": "p69o5j"
+    },
+    {
+      "name": "SV022 (RO) [SV022@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "olfbkw"
+    },
+    {
+      "name": "PM014 (FA) [pm014@sherrinrentals.com.au:FullAccess]",
+      "identifier": "m6f60n"
+    },
+    {
+      "name": "PM014 (RO) [pm014@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "u79gn8"
+    },
+    {
+      "name": "PM012 (FA) [pm012@sherrinrentals.com.au:FullAccess]",
+      "identifier": "46rtpc"
+    },
+    {
+      "name": "PM012 (RO) [pm012@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "6jx742"
+    },
+    {
+      "name": "PM018 (FA) [pm018@sherrinrentals.com.au:FullAccess]",
+      "identifier": "qyqyxh"
+    },
+    {
+      "name": "PM018 (RO) [pm018@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "zxypq8"
+    },
+    {
+      "name": "SV019 (FA) [sv019@sherrinrentals.com.au:FullAccess]",
+      "identifier": "ulz4gi"
+    },
+    {
+      "name": "SV019 (RO) [sv019@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "nw4nvq"
+    },
+    {
+      "name": "SV023 (FA) [sv023@sherrinrentals.com.au:FullAccess]",
+      "identifier": "9w5jva"
+    },
+    {
+      "name": "SV023 (RO) [sv023@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "53rdr3"
+    },
+    {
+      "name": "SV030 (FA) [sv030@sherrinrentals.com.au:FullAccess]",
+      "identifier": "bohhnd"
+    },
+    {
+      "name": "SV030 (RO) [sv030@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "8vb1m9"
+    },
+    {
+      "name": "PM017 (FA) [pm017@sherrinrentals.com.au:FullAccess]",
+      "identifier": "cll5ig"
+    },
+    {
+      "name": "PM017 (RO) [pm017@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "n0umco"
+    },
+    {
+      "name": "SV018 (FA) [sv018@sherrinrentals.com.au:FullAccess]",
+      "identifier": "ujfnfb"
+    },
+    {
+      "name": "SV018 (RO) [sv018@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "9f5xcd"
+    },
+    {
+      "name": "SV016 (FA) [sv016@sherrinrentals.com.au:FullAccess]",
+      "identifier": "qp5bc5"
+    },
+    {
+      "name": "SV016 (RO) [sv016@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "bo0gv7"
+    },
+    {
+      "name": "SV026 (FA) [SV026@sherrinrentals.com.au:FullAccess]",
+      "identifier": "k9gkqg"
+    },
+    {
+      "name": "SV026 (RO) [SV026@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "n5oiv2"
+    },
+    {
+      "name": "SV025 (FA) [sv025@sherrinrentals.com.au:FullAccess]",
+      "identifier": "qkue2z"
+    },
+    {
+      "name": "SV025 (RO) [sv025@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "eq2hue"
+    },
+    {
+      "name": "SV009 (FA) [sv009@sherrinrentals.com.au:FullAccess]",
+      "identifier": "r8d52s"
+    },
+    {
+      "name": "SV009 (RO) [sv009@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "29y3nc"
+    },
+    {
+      "name": "PM020 (FA) [pm020@sherrinrentals.com.au:FullAccess]",
+      "identifier": "j34rn0"
+    },
+    {
+      "name": "PM020 (RO) [pm020@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "j3nycq"
+    },
+    {
+      "name": "SV031 (FA) [sv031@sherrinrentals.com.au:FullAccess]",
+      "identifier": "waukvo"
+    },
+    {
+      "name": "SV031 (RO) [sv031@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "7xxxba"
+    },
+    {
+      "name": "SV007 (FA) [sv007@sherrinrentals.com.au:FullAccess]",
+      "identifier": "69mhgm"
+    },
+    {
+      "name": "SV007 (RO) [sv007@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "ync7lg"
+    },
+    {
+      "name": "SV032 (FA) [sv032@sherrinrentals.com.au:FullAccess]",
+      "identifier": "81uey3"
+    },
+    {
+      "name": "SV032 (RO) [sv032@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "83oujn"
+    },
+    {
+      "name": "SV002 (FA) [sv002@sherrinrentals.com.au:FullAccess]",
+      "identifier": "i5kt24"
+    },
+    {
+      "name": "SV002 (RO) [sv002@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "9jugh0"
+    },
+    {
+      "name": "SV013 (FA) [sv013@sherrinrentals.com.au:FullAccess]",
+      "identifier": "s6jttb"
+    },
+    {
+      "name": "SV013 (RO) [sv013@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "qjbq2j"
+    },
+    {
+      "name": "SV005 (FA) [sv005@sherrinrentals.com.au:FullAccess]",
+      "identifier": "26kqe2"
+    },
+    {
+      "name": "SV005 (RO) [sv005@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "largfj"
+    },
+    {
+      "name": "SV010 (FA) [sv010@sherrinrentals.com.au:FullAccess]",
+      "identifier": "3lmtfh"
+    },
+    {
+      "name": "SV010 (RO) [sv010@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "9lilgt"
+    },
+    {
+      "name": "SV029 (FA) [sv029@sherrinrentals.com.au:FullAccess]",
+      "identifier": "lkzoai"
+    },
+    {
+      "name": "SV029 (RO) [sv029@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "au8xpe"
+    },
+    {
+      "name": "SV021 (FA) [sv021@sherrinrentals.com.au:FullAccess]",
+      "identifier": "nczt2h"
+    },
+    {
+      "name": "SV021 (RO) [sv021@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "phh7o9"
+    },
+    {
+      "name": "PM016 (FA) [pm016@sherrinrentals.com.au:FullAccess]",
+      "identifier": "dxz2uy"
+    },
+    {
+      "name": "PM016 (RO) [pm016@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "k3up6i"
+    },
+    {
+      "name": "SV033 (FA) [sv033@sherrinrentals.com.au:FullAccess]",
+      "identifier": "92l75q"
+    },
+    {
+      "name": "SV033 (RO) [sv033@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "jnv0wz"
+    },
+    {
+      "name": "PM011 (FA) [pm011@sherrinrentals.com.au:FullAccess]",
+      "identifier": "mfpqie"
+    },
+    {
+      "name": "PM011 (RO) [pm011@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "pz403e"
+    },
+    {
+      "name": "TLT007 (FA) [tlt007@sherrinrentals.com.au:FullAccess]",
+      "identifier": "7vjut9"
+    },
+    {
+      "name": "TLT007 (RO) [tlt007@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "0x0jpd"
+    },
+    {
+      "name": "TLT006 (FA) [tlt006@sherrinrentals.com.au:FullAccess]",
+      "identifier": "cbh4m9"
+    },
+    {
+      "name": "TLT006 (RO) [tlt006@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "o5mv75"
+    },
+    {
+      "name": "TLT005 (FA) [tlt005@sherrinrentals.com.au:FullAccess]",
+      "identifier": "bh17u2"
+    },
+    {
+      "name": "TLT005 (RO) [tlt005@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "ygdp3z"
+    },
+    {
+      "name": "Samsung (FA) [samsung@sherrinequipment.com.au:FullAccess]",
+      "identifier": "ofinkp"
+    },
+    {
+      "name": "Samsung (RO) [samsung@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "0zpcbv"
+    },
+    {
+      "name": "Info Sherrin Rural (FA) [info@sherrinrural.internal:FullAccess]",
+      "identifier": "rucegp"
+    },
+    {
+      "name": "Info Sherrin Rural (RO) [info@sherrinrural.internal:ReadPermission]",
+      "identifier": "0c03ps"
+    },
+    {
+      "name": "Sherrin Rentals Sydney (FA) [syd@sherrinrentals.com.au:FullAccess]",
+      "identifier": "npgaf8"
+    },
+    {
+      "name": "Sherrin Rentals Sydney (RO) [syd@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "enrhnx"
+    },
+    {
+      "name": "Sherrin Equipment Sales (FA) [sales@sherrinequipment.com.au:FullAccess]",
+      "identifier": "zvmpus"
+    },
+    {
+      "name": "Sherrin Equipment Sales (RO) [sales@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "f1wzxn"
+    },
+    {
+      "name": "Sherrin Rentals Victoria (FA) [vic@sherrinrentals.com.au:FullAccess]",
+      "identifier": "5pysay"
+    },
+    {
+      "name": "Sherrin Rentals Victoria (RO) [vic@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "7p4uzt"
+    },
+    {
+      "name": "Sherrin Rentals Darling Downs (FA) [dd@sherrinrentals.com.au:FullAccess]",
+      "identifier": "tsnkvz"
+    },
+    {
+      "name": "Sherrin Rentals Darling Downs (RO) [dd@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "mqn67h"
+    },
+    {
+      "name": "Joseph Torcasio (FA) [jtorcasio@sherrinrentals.com.au:FullAccess]",
+      "identifier": "lzdxy3"
+    },
+    {
+      "name": "Joseph Torcasio (RO) [jtorcasio@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "7wwljk"
+    },
+    {
+      "name": "Michael Whitcher (FA) [mwhitcher@sherrinrentals.com.au:FullAccess]",
+      "identifier": "ey7j0d"
+    },
+    {
+      "name": "Michael Whitcher (RO) [mwhitcher@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "b8sm4l"
+    },
+    {
+      "name": "Craig Shem (FA) [cshem@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "35bsz8"
+    },
+    {
+      "name": "Craig Shem (RO) [cshem@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "mpca5x"
+    },
+    {
+      "name": "Craig Walker (FA) [cwalker@sherrinrentals.com.au:FullAccess]",
+      "identifier": "35vr6m"
+    },
+    {
+      "name": "Craig Walker (RO) [cwalker@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "s13tul"
+    },
+    {
+      "name": "Estefania Larranaga (FA) [estefania@sherrinrentals.com.au:FullAccess]",
+      "identifier": "4fjsnz"
+    },
+    {
+      "name": "Estefania Larranaga (RO) [estefania@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "pokbo5"
+    },
+    {
+      "name": "Andrew Triffitt (FA) [atriffitt@sherrinrentals.com.au:FullAccess]",
+      "identifier": "29h1ha"
+    },
+    {
+      "name": "Andrew Triffitt (RO) [atriffitt@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "rzcjat"
+    },
+    {
+      "name": "Andrew Brown (FA) [abrown@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "ez37yd"
+    },
+    {
+      "name": "Andrew Brown (RO) [abrown@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "4w7hxo"
+    },
+    {
+      "name": "Scott MacKenzie (FA) [scottm@sherrinequipment.com.au:FullAccess]",
+      "identifier": "qni3ls"
+    },
+    {
+      "name": "Scott MacKenzie (RO) [scottm@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "bsb4m3"
+    },
+    {
+      "name": "Lindsay Hopkins (FA) [lindsay@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "32w0at"
+    },
+    {
+      "name": "Lindsay Hopkins (RO) [lindsay@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "nmvt6i"
+    },
+    {
+      "name": "Darren Coath (FA) [darren@sherrinrentals.com.au:FullAccess]",
+      "identifier": "jnylgd"
+    },
+    {
+      "name": "Darren Coath (RO) [darren@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "amji9o"
+    },
+    {
+      "name": "Jeremy Cheaib (FA) [jeremy@sherrinrentals.com.au:FullAccess]",
+      "identifier": "g7pp7l"
+    },
+    {
+      "name": "Jeremy Cheaib (RO) [jeremy@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "xf0hcm"
+    },
+    {
+      "name": "Zane Gregory (FA) [zane@sherrinequipment.com.au:FullAccess]",
+      "identifier": "kc7gdj"
+    },
+    {
+      "name": "Zane Gregory (RO) [zane@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "it76jw"
+    },
+    {
+      "name": "Clayton Schmidt (FA) [clayton@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "u81loi"
+    },
+    {
+      "name": "Clayton Schmidt (RO) [clayton@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "viipgi"
+    },
+    {
+      "name": "Ron Watts (FA) [rwatts@sherrinrentals.com.au:FullAccess]",
+      "identifier": "b1eg5u"
+    },
+    {
+      "name": "Ron Watts (RO) [rwatts@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "p3monf"
+    },
+    {
+      "name": "Kirralee Stanitzki (FA) [kirralee@sherrinrentals.com.au:FullAccess]",
+      "identifier": "kqbwsy"
+    },
+    {
+      "name": "Kirralee Stanitzki (RO) [kirralee@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "yby6s3"
+    },
+    {
+      "name": "Taylah Dubery (FA) [tdubery@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "3fjczf"
+    },
+    {
+      "name": "Taylah Dubery (RO) [tdubery@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "e4f21g"
+    },
+    {
+      "name": "Ross D'Elton (FA) [rdelton@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "vaydco"
+    },
+    {
+      "name": "Ross D'Elton (RO) [rdelton@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "bzuo2n"
+    },
+    {
+      "name": "Beka Dickson (FA) [beka@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "k5rz19"
+    },
+    {
+      "name": "Beka Dickson (RO) [beka@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "9begje"
+    },
+    {
+      "name": "David Thomas (FA) [david.thomas@sherrinrentals.com.au:FullAccess]",
+      "identifier": "qmzjus"
+    },
+    {
+      "name": "David Thomas (RO) [david.thomas@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "6cck19"
+    },
+    {
+      "name": "Brad Pocock (FA) [brad.pocock@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "diuf15"
+    },
+    {
+      "name": "Brad Pocock (RO) [brad.pocock@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "i8q0zm"
+    },
+    {
+      "name": "Anthony Hale (FA) [anthony.hale@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "yjzjo0"
+    },
+    {
+      "name": "Anthony Hale (RO) [anthony.hale@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "z2ew4g"
+    },
+    {
+      "name": "Margaret McBride (FA) [margaret@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "8vwmk6"
+    },
+    {
+      "name": "Margaret McBride (RO) [margaret@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "xgu7lo"
+    },
+    {
+      "name": "Trudy Johnsen (FA) [trudyj@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "udg6m7"
+    },
+    {
+      "name": "Trudy Johnsen (RO) [trudyj@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "rwvkem"
+    },
+    {
+      "name": "Michael Ross (FA) [mdross@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "zf40ex"
+    },
+    {
+      "name": "Michael Ross (RO) [mdross@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "c1ak3y"
+    },
+    {
+      "name": "Flemming Clausen (FA) [flemming@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "x52e2m"
+    },
+    {
+      "name": "Flemming Clausen (RO) [flemming@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "bhn0lq"
+    },
+    {
+      "name": "Emalee Campbell (FA) [emalee@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "m6w7oe"
+    },
+    {
+      "name": "Emalee Campbell (RO) [emalee@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "zumx3k"
+    },
+    {
+      "name": "Chris Carabot (FA) [ccarabot@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "wt7ccr"
+    },
+    {
+      "name": "Chris Carabot (RO) [ccarabot@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "qajw42"
+    },
+    {
+      "name": "Patrick Linnerbank (FA) [plinnenbank@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "ih0udg"
+    },
+    {
+      "name": "Patrick Linnerbank (RO) [plinnenbank@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "io4oxz"
+    },
+    {
+      "name": "Harley Byrnes (FA) [hbyrnes@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "1dz4su"
+    },
+    {
+      "name": "Harley Byrnes (RO) [hbyrnes@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "bx9bby"
+    },
+    {
+      "name": "Wade Hawley (FA) [whawley@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "54mwvw"
+    },
+    {
+      "name": "Wade Hawley (RO) [whawley@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "jtgwsu"
+    },
+    {
+      "name": "Damien Petty (FA) [dpetty@sherrinrentals.com.au:FullAccess]",
+      "identifier": "bjgjq5"
+    },
+    {
+      "name": "Damien Petty (RO) [dpetty@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "aiidkc"
+    },
+    {
+      "name": "Perry Scarfe (FA) [perry@sherrinrentals.com.au:FullAccess]",
+      "identifier": "69ua1s"
+    },
+    {
+      "name": "Perry Scarfe (RO) [perry@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "c828ip"
+    },
+    {
+      "name": "Glen Colman Archive (FA) [gcolman@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "3yz54u"
+    },
+    {
+      "name": "Glen Colman Archive (RO) [gcolman@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "i93up3"
+    },
+    {
+      "name": "Carmen Turner (FA) [carmen@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "qjq6tz"
+    },
+    {
+      "name": "Carmen Turner (RO) [carmen@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "2o1uov"
+    },
+    {
+      "name": "Dylan Luker (FA) [dluker@sherrinequipment.com.au:FullAccess]",
+      "identifier": "ltmnej"
+    },
+    {
+      "name": "Dylan Luker (RO) [dluker@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "vv7n5u"
+    },
+    {
+      "name": "Daniel Fanti (FA) [dfanti@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "chjk1s"
+    },
+    {
+      "name": "Daniel Fanti (RO) [dfanti@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "c1jo6h"
+    },
+    {
+      "name": "Matthew Cook (FA) [matthew@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "6z0ysb"
+    },
+    {
+      "name": "Matthew Cook (RO) [matthew@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "m0iwz0"
+    },
+    {
+      "name": "Darren Justin (FA) [djustin@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "rha8dx"
+    },
+    {
+      "name": "Darren Justin (RO) [djustin@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "yb6302"
+    },
+    {
+      "name": "Matthew Royle (FA) [mroyle@sherrinrentals.com.au:FullAccess]",
+      "identifier": "652dii"
+    },
+    {
+      "name": "Matthew Royle (RO) [mroyle@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "vtzdig"
+    },
+    {
+      "name": "Gavin McLean (FA) [gavin@sherrinrentals.com.au:FullAccess]",
+      "identifier": "q5tizb"
+    },
+    {
+      "name": "Gavin McLean (RO) [gavin@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "73zbef"
+    },
+    {
+      "name": "Lachlan Gemmell (FA) [lgemmell@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "muxhxj"
+    },
+    {
+      "name": "Lachlan Gemmell (RO) [lgemmell@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "wtrsfn"
+    },
+    {
+      "name": "NoReply (FA) [noreply@sherrinequipment.com.au:FullAccess]",
+      "identifier": "jpe6ji"
+    },
+    {
+      "name": "NoReply (RO) [noreply@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "v70cyc"
+    },
+    {
+      "name": "NoReply (FA) [noreply@sherringroup.com.au:FullAccess]",
+      "identifier": "sjpsfz"
+    },
+    {
+      "name": "NoReply (RO) [noreply@sherringroup.com.au:ReadPermission]",
+      "identifier": "relmu8"
+    },
+    {
+      "name": "NoReply (FA) [noreply@sherrinrentals.com.au:FullAccess]",
+      "identifier": "6drqf1"
+    },
+    {
+      "name": "NoReply (RO) [noreply@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "yxbtfe"
+    },
+    {
+      "name": "Laura Daniels (FA) [laurad@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "8yhrmx"
+    },
+    {
+      "name": "Laura Daniels (RO) [laurad@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "2rcb1b"
+    },
+    {
+      "name": "Michael Parnell (FA) [mparnell@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "l9so6m"
+    },
+    {
+      "name": "Michael Parnell (RO) [mparnell@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "p71x7q"
+    },
+    {
+      "name": "Stephen Smith (FA) [ssmith@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "j9vcxj"
+    },
+    {
+      "name": "Stephen Smith (RO) [ssmith@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "0akdnq"
+    },
+    {
+      "name": "Lawrence Boyd (FA) [lawrence@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "d0fxx2"
+    },
+    {
+      "name": "Lawrence Boyd (RO) [lawrence@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "t0p9j8"
+    },
+    {
+      "name": "Neil Stanford (FA) [nstanford@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "oy3qiv"
+    },
+    {
+      "name": "Neil Stanford (RO) [nstanford@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "vuq7uu"
+    },
+    {
+      "name": "Matthew Flood (FA) [mflood@sherrinequipment.onmicrosoft.com:FullAccess]",
+      "identifier": "hbtgec"
+    },
+    {
+      "name": "Matthew Flood (RO) [mflood@sherrinequipment.onmicrosoft.com:ReadPermission]",
+      "identifier": "vptnic"
+    },
+    {
+      "name": "Nigel Jedrzejczyk (FA) [nigelj@sherrinrentals.com.au:FullAccess]",
+      "identifier": "87d8mv"
+    },
+    {
+      "name": "Nigel Jedrzejczyk (RO) [nigelj@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "fd7ajg"
+    },
+    {
+      "name": "Kenneth Bonde (FA) [kbonde@sherrinrentals.com.au:FullAccess]",
+      "identifier": "1bvwz0"
+    },
+    {
+      "name": "Kenneth Bonde (RO) [kbonde@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "60tlyw"
+    },
+    {
+      "name": "Leigh Newstead (FA) [lnewstead@sherrinrentals.com.au:FullAccess]",
+      "identifier": "q7q1ko"
+    },
+    {
+      "name": "Leigh Newstead (RO) [lnewstead@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "13go8e"
+    },
+    {
+      "name": "Steven OSullivan (FA) [sosullivan@sherrinrentals.com.au:FullAccess]",
+      "identifier": "nei3uu"
+    },
+    {
+      "name": "Steven OSullivan (RO) [sosullivan@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "efjen9"
+    },
+    {
+      "name": "Katherine Deen (FA) [kdeen@sherrinrentals.com.au:FullAccess]",
+      "identifier": "nwx0yn"
+    },
+    {
+      "name": "Katherine Deen (RO) [kdeen@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "mcnbnc"
+    },
+    {
+      "name": "Sherrin Rentals Newcastle (FA) [ntl@sherrinrentals.com.au:FullAccess]",
+      "identifier": "e7ldb9"
+    },
+    {
+      "name": "Sherrin Rentals Newcastle (RO) [ntl@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "n12giz"
+    },
+    {
+      "name": "Andrew McAtee (FA) [amcatee@sherrinrentals.com.au:FullAccess]",
+      "identifier": "c3kpvj"
+    },
+    {
+      "name": "Andrew McAtee (RO) [amcatee@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "25cvvk"
+    },
+    {
+      "name": "Jack Cunningham (FA) [jcunningham@sherrinrentals.com.au:FullAccess]",
+      "identifier": "e496xm"
+    },
+    {
+      "name": "Jack Cunningham (RO) [jcunningham@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "rxityq"
+    },
+    {
+      "name": "Jett Eckhardt (FA) [jeckhardt@sherrinequipment.com.au:FullAccess]",
+      "identifier": "93ugyj"
+    },
+    {
+      "name": "Jett Eckhardt (RO) [jeckhardt@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "se1gvz"
+    },
+    {
+      "name": "Terry Luttrell (FA) [tluttrell@sherrinrentals.com.au:FullAccess]",
+      "identifier": "nl5h20"
+    },
+    {
+      "name": "Terry Luttrell (RO) [tluttrell@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "75zzje"
+    },
+    {
+      "name": "Jordan James (FA) [jjames@sherrinrentals.com.au:FullAccess]",
+      "identifier": "arombf"
+    },
+    {
+      "name": "Jordan James (RO) [jjames@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "jqe935"
+    },
+    {
+      "name": "Hayley Noblet (FA) [hnoblet@sherrinrentals.com.au:FullAccess]",
+      "identifier": "ogksm4"
+    },
+    {
+      "name": "Hayley Noblet (RO) [hnoblet@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "09r8q1"
+    },
+    {
+      "name": "Sherrin Equipment Kobelco (FA) [kobelco@sherrinequipment.com.au:FullAccess]",
+      "identifier": "rh6r0z"
+    },
+    {
+      "name": "Sherrin Equipment Kobelco (RO) [kobelco@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "kg8sr3"
+    },
+    {
+      "name": "Craig Lapham (FA) [clapham@sherrinrentals.com.au:FullAccess]",
+      "identifier": "t2wv6v"
+    },
+    {
+      "name": "Craig Lapham (RO) [clapham@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "8tm1q5"
+    },
+    {
+      "name": "Adam Silver (FA) [asilver@sherrinrentals.com.au:FullAccess]",
+      "identifier": "4qan0n"
+    },
+    {
+      "name": "Adam Silver (RO) [asilver@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "i1pw1x"
+    },
+    {
+      "name": "Braeden Nix (FA) [braedennix@sherrinrentals.com.au:FullAccess]",
+      "identifier": "0g0ewv"
+    },
+    {
+      "name": "Braeden Nix (RO) [braedennix@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "wkq03o"
+    },
+    {
+      "name": "Shaun Keelan-Giles (FA) [skeelangiles@sherrinrentals.com.au:FullAccess]",
+      "identifier": "jrnt0m"
+    },
+    {
+      "name": "Shaun Keelan-Giles (RO) [skeelangiles@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "2jddnm"
+    },
+    {
+      "name": "Glenn Matsen (FA) [gmatsen@sherrinrentals.com.au:FullAccess]",
+      "identifier": "gc8z1n"
+    },
+    {
+      "name": "Glenn Matsen (RO) [gmatsen@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "ctig1p"
+    },
+    {
+      "name": "Shannon Davey (FA) [sdavey@sherrinequipment.com.au:FullAccess]",
+      "identifier": "i1l2ke"
+    },
+    {
+      "name": "Shannon Davey (RO) [sdavey@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "3twulv"
+    },
+    {
+      "name": "Jose Zaldana (FA) [jzaldana@sherrinrentals.com.au:FullAccess]",
+      "identifier": "cy9jzn"
+    },
+    {
+      "name": "Jose Zaldana (RO) [jzaldana@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "0zcp64"
+    },
+    {
+      "name": "Nicholas Leete (FA) [nleete@sherrinrentals.com.au:FullAccess]",
+      "identifier": "expwwn"
+    },
+    {
+      "name": "Nicholas Leete (RO) [nleete@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "55ruar"
+    },
+    {
+      "name": "Sherrin Rentals Apple Business (FA) [sr@sherrinrentals.com.au:FullAccess]",
+      "identifier": "tcvsds"
+    },
+    {
+      "name": "Sherrin Rentals Apple Business (RO) [sr@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "rib5j9"
+    },
+    {
+      "name": "Cale Brash (FA) [zzzcale@sherrinrentals.com.au:FullAccess]",
+      "identifier": "eyri3y"
+    },
+    {
+      "name": "Cale Brash (RO) [zzzcale@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "c7k3pt"
+    },
+    {
+      "name": "Craig Bahnisch (FA) [craig.b@sherrinrentals.com.au:FullAccess]",
+      "identifier": "64qljp"
+    },
+    {
+      "name": "Craig Bahnisch (RO) [craig.b@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "82lp8l"
+    },
+    {
+      "name": "Christy Harrison (FA) [christyh@sherrinrentals.com.au:FullAccess]",
+      "identifier": "mtdi08"
+    },
+    {
+      "name": "Christy Harrison (RO) [christyh@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "h9leb3"
+    },
+    {
+      "name": "Alex Eyers (FA) [aeyers@sherrinrentals.com.au:FullAccess]",
+      "identifier": "iciiah"
+    },
+    {
+      "name": "Alex Eyers (RO) [aeyers@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "nh6bcb"
+    },
+    {
+      "name": "Petro Flokis (FA) [petro@sherrinrentals.com.au:FullAccess]",
+      "identifier": "s7s6n2"
+    },
+    {
+      "name": "Petro Flokis (RO) [petro@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "1xlfiv"
+    },
+    {
+      "name": "Jeremy Paynter (FA) [jpaynter@sherrinrentals.com.au:FullAccess]",
+      "identifier": "93igqr"
+    },
+    {
+      "name": "Jeremy Paynter (RO) [jpaynter@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "wlk7sm"
+    },
+    {
+      "name": "Grant - Wello (FA) [grant@wello.com.au:FullAccess]",
+      "identifier": "9dcfgz"
+    },
+    {
+      "name": "Grant - Wello (RO) [grant@wello.com.au:ReadPermission]",
+      "identifier": "4lmwvg"
+    },
+    {
+      "name": "Matthew Stirling (FA) [matthew.s@sherrinrentals.com.au:FullAccess]",
+      "identifier": "rgwd7f"
+    },
+    {
+      "name": "Matthew Stirling (RO) [matthew.s@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "ssnoaf"
+    },
+    {
+      "name": "Bronte Beetson (FA) [bbeetson@sherrinrentals.com.au:FullAccess]",
+      "identifier": "osybhw"
+    },
+    {
+      "name": "Bronte Beetson (RO) [bbeetson@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "co3oil"
+    },
+    {
+      "name": "Chris Woods (FA) [chriswoods@sherrinrentals.com.au:FullAccess]",
+      "identifier": "an38oz"
+    },
+    {
+      "name": "Chris Woods (RO) [chriswoods@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "3yt5we"
+    },
+    {
+      "name": "Yaz Aksu (FA) [yaz@sherrinrentals.com.au:FullAccess]",
+      "identifier": "9590rv"
+    },
+    {
+      "name": "Yaz Aksu (RO) [yaz@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "0fph5b"
+    },
+    {
+      "name": "Aaron Busuttil (FA) [abusuttil@sherrinrentals.com.au:FullAccess]",
+      "identifier": "34ppbq"
+    },
+    {
+      "name": "Aaron Busuttil (RO) [abusuttil@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "ctso3w"
+    },
+    {
+      "name": "Michael Jones (FA) [mjones@sherrinrentals.com.au:FullAccess]",
+      "identifier": "hvymzw"
+    },
+    {
+      "name": "Michael Jones (RO) [mjones@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "6szo9x"
+    },
+    {
+      "name": "Scott - Apple ID Takeover (FA) [scott@sherrinrentals.com.au:FullAccess]",
+      "identifier": "br0iz2"
+    },
+    {
+      "name": "Scott - Apple ID Takeover (RO) [scott@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "30s757"
+    },
+    {
+      "name": "Nicholas East (FA) [nicholaseast@sherrinrentals.com.au:FullAccess]",
+      "identifier": "7eyh4v"
+    },
+    {
+      "name": "Nicholas East (RO) [nicholaseast@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "6q32cn"
+    },
+    {
+      "name": "Emma Tupper (FA) [emmatupper@sherrinrentals.com.au:FullAccess]",
+      "identifier": "29trhk"
+    },
+    {
+      "name": "Emma Tupper (RO) [emmatupper@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "jqoigg"
+    },
+    {
+      "name": "Jordan Luck (FA) [jordanl@sherrinrentals.com.au:FullAccess]",
+      "identifier": "733c9u"
+    },
+    {
+      "name": "Jordan Luck (RO) [jordanl@sherrinrentals.com.au:ReadPermission]",
+      "identifier": "tokpz9"
+    },
+    {
+      "name": "Sherrin Equipment Fabrication (FA) [fabrication@sherrinequipment.com.au:FullAccess]",
+      "identifier": "1dmpla"
+    },
+    {
+      "name": "Sherrin Equipment Fabrication (RO) [fabrication@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "igfzve"
+    },
+    {
+      "name": "Maddison Skinner (FA) [mskinner@sherrinequipment.com.au:FullAccess]",
+      "identifier": "6awqea"
+    },
+    {
+      "name": "Maddison Skinner (RO) [mskinner@sherrinequipment.com.au:ReadPermission]",
+      "identifier": "vi85j7"
+    },
+    {
+      "name": "Kirsten Howe (FA) [kirsten@sherringroup.com.au:FullAccess]",
+      "identifier": "eur5mg"
+    },
+    {
+      "name": "Kirsten Howe (RO) [kirsten@sherringroup.com.au:ReadPermission]",
+      "identifier": "k8tmjt"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "name": "CodeTwoLicense [SG.License.CodeTwoLicense]",
+      "identifier": "yve3ys"
+    },
+    {
+      "name": "EXOPlan2 Full [SG.License.EXOPlan2.Full]",
+      "identifier": "m9h10h"
+    },
+    {
+      "name": "M365BusinessPremium Full [SG.License.M365BusinessPremium.Full]",
+      "identifier": "iqkrfx"
+    },
+    {
+      "name": "M365BusinessPremium Full.NoToDo [SG.License.M365BusinessPremium.Full.NoToDo]",
+      "identifier": "ci3kp9"
+    },
+    {
+      "name": "M365BusinessPremium NoMailbox [SG.License.M365BusinessPremium.NoMailbox]",
+      "identifier": "kqh51k"
+    },
+    {
+      "name": "M365BusinessPremium NoTeams [SG.License.M365BusinessPremium.NoTeams]",
+      "identifier": "0xs91x"
+    },
+    {
+      "name": "M365F1 Full [SG.License.M365F1.Full]",
+      "identifier": "yn2yrz"
+    },
+    {
+      "name": "M365F1 NoMailbox [SG.License.M365F1.NoMailbox]",
+      "identifier": "23yupb"
+    }
+  ]
+}

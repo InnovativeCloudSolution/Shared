@@ -1,0 +1,14 @@
+##Don't edit/delete below lines.
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.11.9
+  - pip=23.2
+
+  - pip:
+    - requests==2.31.0
+    - cw-rpa
+##Don't edit/delete above lines.
+    - pandas
+    - numpy

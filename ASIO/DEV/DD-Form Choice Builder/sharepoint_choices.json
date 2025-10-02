@@ -1,0 +1,236 @@
+{
+  "choices": [
+    {
+      "name": "Site BranchAuditActionItems ALL Edit [SG.SharePoint.Site.BranchAuditActionItems.ALL.Edit]",
+      "identifier": "5fj4pw"
+    },
+    {
+      "name": "Site BranchAuditActionItems List CNS Edit [SG.SharePoint.Site.BranchAuditActionItems.List.CNS.Edit]",
+      "identifier": "avt6rk"
+    },
+    {
+      "name": "Site BranchAuditActionItems List CQ Edit [SG.SharePoint.Site.BranchAuditActionItems.List.CQ.Edit]",
+      "identifier": "7al6xc"
+    },
+    {
+      "name": "Site BranchAuditActionItems List DD Edit [SG.SharePoint.Site.BranchAuditActionItems.List.DD.Edit]",
+      "identifier": "n9ipls"
+    },
+    {
+      "name": "Site BranchAuditActionItems List NQ Edit [SG.SharePoint.Site.BranchAuditActionItems.List.NQ.Edit]",
+      "identifier": "aijkll"
+    },
+    {
+      "name": "Site BranchAuditActionItems List NSW Edit [SG.SharePoint.Site.BranchAuditActionItems.List.NSW.Edit]",
+      "identifier": "qo4wrb"
+    },
+    {
+      "name": "Site BranchAuditActionItems List NT Edit [SG.SharePoint.Site.BranchAuditActionItems.List.NT.Edit]",
+      "identifier": "fovtsh"
+    },
+    {
+      "name": "Site BranchAuditActionItems List NTL Edit [SG.SharePoint.Site.BranchAuditActionItems.List.NTL.Edit]",
+      "identifier": "68wbsr"
+    },
+    {
+      "name": "Site BranchAuditActionItems List SA Edit [SG.SharePoint.Site.BranchAuditActionItems.List.SA.Edit]",
+      "identifier": "5x7uqw"
+    },
+    {
+      "name": "Site BranchAuditActionItems List SEQ Edit [SG.SharePoint.Site.BranchAuditActionItems.List.SEQ.Edit]",
+      "identifier": "sqi1v1"
+    },
+    {
+      "name": "Site BranchAuditActionItems List SSC Edit [SG.SharePoint.Site.BranchAuditActionItems.List.SSC.Edit]",
+      "identifier": "igv0tv"
+    },
+    {
+      "name": "Site BranchAuditActionItems List TAS Edit [SG.SharePoint.Site.BranchAuditActionItems.List.TAS.Edit]",
+      "identifier": "28d80u"
+    },
+    {
+      "name": "Site BranchAuditActionItems List VIC Edit [SG.SharePoint.Site.BranchAuditActionItems.List.VIC.Edit]",
+      "identifier": "9de6zt"
+    },
+    {
+      "name": "Site BranchAuditActionItems List WA Edit [SG.SharePoint.Site.BranchAuditActionItems.List.WA.Edit]",
+      "identifier": "ag1vnu"
+    },
+    {
+      "name": "Site BranchSuppliers ALL Edit [SG.SharePoint.Site.BranchSuppliers.ALL.Edit]",
+      "identifier": "fhknya"
+    },
+    {
+      "name": "Site BranchSuppliers List CNS Edit [SG.SharePoint.Site.BranchSuppliers.List.CNS.Edit]",
+      "identifier": "mo9d58"
+    },
+    {
+      "name": "Site BranchSuppliers List CQ Edit [SG.SharePoint.Site.BranchSuppliers.List.CQ.Edit]",
+      "identifier": "0o5fsh"
+    },
+    {
+      "name": "Site BranchSuppliers List DD Edit [SG.SharePoint.Site.BranchSuppliers.List.DD.Edit]",
+      "identifier": "jkao5s"
+    },
+    {
+      "name": "Site BranchSuppliers List NQ Edit [SG.SharePoint.Site.BranchSuppliers.List.NQ.Edit]",
+      "identifier": "tejcwn"
+    },
+    {
+      "name": "Site BranchSuppliers List NSW Edit [SG.SharePoint.Site.BranchSuppliers.List.NSW.Edit]",
+      "identifier": "umw9ox"
+    },
+    {
+      "name": "Site BranchSuppliers List NT Edit [SG.SharePoint.Site.BranchSuppliers.List.NT.Edit]",
+      "identifier": "kyozgd"
+    },
+    {
+      "name": "Site BranchSuppliers List SA Edit [SG.SharePoint.Site.BranchSuppliers.List.SA.Edit]",
+      "identifier": "8dbirv"
+    },
+    {
+      "name": "Site BranchSuppliers List SEQ Edit [SG.SharePoint.Site.BranchSuppliers.List.SEQ.Edit]",
+      "identifier": "8c4zph"
+    },
+    {
+      "name": "Site BranchSuppliers List SSC Edit [SG.SharePoint.Site.BranchSuppliers.List.SSC.Edit]",
+      "identifier": "zdmp17"
+    },
+    {
+      "name": "Site BranchSuppliers List TAS Edit [SG.SharePoint.Site.BranchSuppliers.List.TAS.Edit]",
+      "identifier": "5s06gp"
+    },
+    {
+      "name": "Site BranchSuppliers List VIC Edit [SG.SharePoint.Site.BranchSuppliers.List.VIC.Edit]",
+      "identifier": "2q507s"
+    },
+    {
+      "name": "Site BranchSuppliers List WA Edit [SG.SharePoint.Site.BranchSuppliers.List.WA.Edit]",
+      "identifier": "0t95ib"
+    },
+    {
+      "name": "Site Marketing Edit [SG.SharePoint.Site.Marketing.Edit]",
+      "identifier": "nzgvzt"
+    },
+    {
+      "name": "Site Marketing Read [SG.SharePoint.Site.Marketing.Read]",
+      "identifier": "pmkxs2"
+    },
+    {
+      "name": "Site Reports_Stats DL ALLSITESReportsStat [SG.SharePoint.Site.Reports_Stats.DL.ALLSITESReportsStat]",
+      "identifier": "bdtavk"
+    },
+    {
+      "name": "Site Reports_Stats DL BranchAuditActionItems Edit [SG.SharePoint.Site.Reports_Stats.DL.BranchAuditActionItems.Edit]",
+      "identifier": "tvxj5d"
+    },
+    {
+      "name": "Site Reports_Stats DL BranchAuditActionItems Read [SG.SharePoint.Site.Reports_Stats.DL.BranchAuditActionItems.Read]",
+      "identifier": "fl6mjo"
+    },
+    {
+      "name": "Site Reports_Stats DL CNSReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.CNSReportsStats.Edit]",
+      "identifier": "eb91n0"
+    },
+    {
+      "name": "Site Reports_Stats DL CNSReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.CNSReportsStats.Read]",
+      "identifier": "ya52ui"
+    },
+    {
+      "name": "Site Reports_Stats DL CQReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.CQReportsStats.Edit]",
+      "identifier": "0vpg0n"
+    },
+    {
+      "name": "Site Reports_Stats DL CQReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.CQReportsStats.Read]",
+      "identifier": "wpql4e"
+    },
+    {
+      "name": "Site Reports_Stats DL DDReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.DDReportsStats.Edit]",
+      "identifier": "4ctsso"
+    },
+    {
+      "name": "Site Reports_Stats DL DDReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.DDReportsStats.Read]",
+      "identifier": "k47q2x"
+    },
+    {
+      "name": "Site Reports_Stats DL NQReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.NQReportsStats.Edit]",
+      "identifier": "3clwvm"
+    },
+    {
+      "name": "Site Reports_Stats DL NQReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.NQReportsStats.Read]",
+      "identifier": "upiadb"
+    },
+    {
+      "name": "Site Reports_Stats DL NSWReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.NSWReportsStats.Edit]",
+      "identifier": "7b4x4l"
+    },
+    {
+      "name": "Site Reports_Stats DL NSWReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.NSWReportsStats.Read]",
+      "identifier": "1rybt1"
+    },
+    {
+      "name": "Site Reports_Stats DL NTLReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.NTLReportsStats.Edit]",
+      "identifier": "3d1odj"
+    },
+    {
+      "name": "Site Reports_Stats DL NTLReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.NTLReportsStats.Read]",
+      "identifier": "2wsqcq"
+    },
+    {
+      "name": "Site Reports_Stats DL NTReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.NTReportsStats.Edit]",
+      "identifier": "3h89li"
+    },
+    {
+      "name": "Site Reports_Stats DL NTReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.NTReportsStats.Read]",
+      "identifier": "h4thn5"
+    },
+    {
+      "name": "Site Reports_Stats DL SAReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.SAReportsStats.Edit]",
+      "identifier": "g9gwc4"
+    },
+    {
+      "name": "Site Reports_Stats DL SAReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.SAReportsStats.Read]",
+      "identifier": "rx918y"
+    },
+    {
+      "name": "Site Reports_Stats DL SEQReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.SEQReportsStats.Edit]",
+      "identifier": "jbehs1"
+    },
+    {
+      "name": "Site Reports_Stats DL SEQReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.SEQReportsStats.Read]",
+      "identifier": "48nq4w"
+    },
+    {
+      "name": "Site Reports_Stats DL SSCReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.SSCReportsStats.Edit]",
+      "identifier": "6ryh7g"
+    },
+    {
+      "name": "Site Reports_Stats DL SSCReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.SSCReportsStats.Read]",
+      "identifier": "ij3608"
+    },
+    {
+      "name": "Site Reports_Stats DL TASReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.TASReportsStats.Edit]",
+      "identifier": "e4yh4t"
+    },
+    {
+      "name": "Site Reports_Stats DL TASReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.TASReportsStats.Read]",
+      "identifier": "jenqo8"
+    },
+    {
+      "name": "Site Reports_Stats DL VICReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.VICReportsStats.Edit]",
+      "identifier": "3n30ng"
+    },
+    {
+      "name": "Site Reports_Stats DL VICReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.VICReportsStats.Read]",
+      "identifier": "2pt0pe"
+    },
+    {
+      "name": "Site Reports_Stats DL WAReportsStats Edit [SG.SharePoint.Site.Reports_Stats.DL.WAReportsStats.Edit]",
+      "identifier": "553d23"
+    },
+    {
+      "name": "Site Reports_Stats DL WAReportsStats Read [SG.SharePoint.Site.Reports_Stats.DL.WAReportsStats.Read]",
+      "identifier": "vj6wi5"
+    }
+  ]
+}

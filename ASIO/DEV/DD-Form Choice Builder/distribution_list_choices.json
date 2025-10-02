@@ -1,0 +1,204 @@
+{
+  "choices": [
+    {
+      "name": "All Staff - Sherrin Equipment (Member) [AllStaffSherrinEquipment@sherrinrentals.com.au:Member]",
+      "identifier": "gf9pia"
+    },
+    {
+      "name": "All Staff - Sherrin Equipment (Owner) [AllStaffSherrinEquipment@sherrinrentals.com.au:Owner]",
+      "identifier": "0nysxq"
+    },
+    {
+      "name": "All Staff - Sherrin Rentals (Member) [AllStaffSherrinRentals@sherrinrentals.com.au:Member]",
+      "identifier": "4btw2n"
+    },
+    {
+      "name": "All Staff - Sherrin Rentals (Owner) [AllStaffSherrinRentals@sherrinrentals.com.au:Owner]",
+      "identifier": "116su2"
+    },
+    {
+      "name": "BDM - Branch & State Managers (Member) [BDM@sherrinrentals.com.au:Member]",
+      "identifier": "ca0lul"
+    },
+    {
+      "name": "BDM - Branch & State Managers (Owner) [BDM@sherrinrentals.com.au:Owner]",
+      "identifier": "9jljlj"
+    },
+    {
+      "name": "Branch & State Managers (Member) [BranchManagers@sherrinrentals.com.au:Member]",
+      "identifier": "ccm5k0"
+    },
+    {
+      "name": "Branch & State Managers (Owner) [BranchManagers@sherrinrentals.com.au:Owner]",
+      "identifier": "9wcib0"
+    },
+    {
+      "name": "Deny Outgoing External Email (Member) [ExternalEmails@sherrinequipment.com.au:Member]",
+      "identifier": "km77fc"
+    },
+    {
+      "name": "Deny Outgoing External Email (Owner) [ExternalEmails@sherrinequipment.com.au:Owner]",
+      "identifier": "z9c2mh"
+    },
+    {
+      "name": "Grp_All_Info_Email_Access (Member) [Grp_All_Info_Email_Access@sherrinequipment.com.au:Member]",
+      "identifier": "yqqsse"
+    },
+    {
+      "name": "Grp_All_Info_Email_Access (Owner) [Grp_All_Info_Email_Access@sherrinequipment.com.au:Owner]",
+      "identifier": "ep8r99"
+    },
+    {
+      "name": "Grp_Sherrin_Equipment (Member) [Grp_Sherrin_Equipment@sherrinequipment.com.au:Member]",
+      "identifier": "456yqu"
+    },
+    {
+      "name": "Grp_Sherrin_Equipment (Owner) [Grp_Sherrin_Equipment@sherrinequipment.com.au:Owner]",
+      "identifier": "3uq4vn"
+    },
+    {
+      "name": "Grp_Sherrin_Equipment_Brisbane (Member) [Grp_Sherrin_Equipment_Brisbane@sherrinequipment.com.au:Member]",
+      "identifier": "sftl6c"
+    },
+    {
+      "name": "Grp_Sherrin_Equipment_Brisbane (Owner) [Grp_Sherrin_Equipment_Brisbane@sherrinequipment.com.au:Owner]",
+      "identifier": "763qof"
+    },
+    {
+      "name": "Grp_Sherrin_Equipment_Brisbane_Managers (Member) [Grp_Sherrin_Equipment_Brisbane_Managers@sherrinequipment.com.au:Member]",
+      "identifier": "3bo8y1"
+    },
+    {
+      "name": "Grp_Sherrin_Equipment_Brisbane_Managers (Owner) [Grp_Sherrin_Equipment_Brisbane_Managers@sherrinequipment.com.au:Owner]",
+      "identifier": "pmsqg2"
+    },
+    {
+      "name": "Grp_Sherrin_Executive (Member) [Grp_Sherrin_Executive@sherrinequipment.com.au:Member]",
+      "identifier": "vgnc13"
+    },
+    {
+      "name": "Grp_Sherrin_Executive (Owner) [Grp_Sherrin_Executive@sherrinequipment.com.au:Owner]",
+      "identifier": "1qimtp"
+    },
+    {
+      "name": "Grp_Sherrin_Group (Member) [Grp_Sherrin_Group@sherringroup.com.au:Member]",
+      "identifier": "i3ugd8"
+    },
+    {
+      "name": "Grp_Sherrin_Group (Owner) [Grp_Sherrin_Group@sherringroup.com.au:Owner]",
+      "identifier": "u31f2n"
+    },
+    {
+      "name": "Grp_Sherrin_Group_Recipient_Policy (Member) [Grp_Sherrin_Group_Recipient_Policy@sherringroup.com.au:Member]",
+      "identifier": "jwfbu5"
+    },
+    {
+      "name": "Grp_Sherrin_Group_Recipient_Policy (Owner) [Grp_Sherrin_Group_Recipient_Policy@sherringroup.com.au:Owner]",
+      "identifier": "37r11i"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals (Member) [Grp_Sherrin_Rentals@sherrinequipment.com.au:Member]",
+      "identifier": "0ocfa1"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals (Owner) [Grp_Sherrin_Rentals@sherrinequipment.com.au:Owner]",
+      "identifier": "m9yrri"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_NT (Member) [Grp_Sherrin_Rentals_Darwin@sherrinequipment.com.au:Member]",
+      "identifier": "dg2ccz"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_NT (Owner) [Grp_Sherrin_Rentals_Darwin@sherrinequipment.com.au:Owner]",
+      "identifier": "oe5ya6"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_NT_Managers (Member) [Grp_Sherrin_Rentals_Darwin_Managers@sherrinequipment.com.au:Member]",
+      "identifier": "c33njp"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_NT_Managers (Owner) [Grp_Sherrin_Rentals_Darwin_Managers@sherrinequipment.com.au:Owner]",
+      "identifier": "yfi0vh"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_SEQ (Member) [Grp_Sherrin_Rentals_Brisbane@sherrinequipment.com.au:Member]",
+      "identifier": "z0yee6"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_SEQ (Owner) [Grp_Sherrin_Rentals_Brisbane@sherrinequipment.com.au:Owner]",
+      "identifier": "85u3xl"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_SEQ_Managers (Member) [Grp_Sherrin_Rentals_Brisbane_Managers@sherrinequipment.com.au:Member]",
+      "identifier": "ttrrq6"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_SEQ_Managers (Owner) [Grp_Sherrin_Rentals_Brisbane_Managers@sherrinequipment.com.au:Owner]",
+      "identifier": "3r4tk5"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_SYD (Member) [Grp_Sherrin_Rentals_NSW@sherrinequipment.com.au:Member]",
+      "identifier": "lpbhk0"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_SYD (Owner) [Grp_Sherrin_Rentals_NSW@sherrinequipment.com.au:Owner]",
+      "identifier": "197d35"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_SYD_Managers (Member) [Grp_Sherrin_Rentals_NSW_Managers@sherrinequipment.com.au:Member]",
+      "identifier": "iafxai"
+    },
+    {
+      "name": "Grp_Sherrin_Rentals_SYD_Managers (Owner) [Grp_Sherrin_Rentals_NSW_Managers@sherrinequipment.com.au:Owner]",
+      "identifier": "cknf3o"
+    },
+    {
+      "name": "Grp_Sherrin_SG_Admin (Member) [Grp_Sherrin_SG_Admin@sherrinequipment.com.au:Member]",
+      "identifier": "86fqk7"
+    },
+    {
+      "name": "Grp_Sherrin_SG_Admin (Owner) [Grp_Sherrin_SG_Admin@sherrinequipment.com.au:Owner]",
+      "identifier": "gq0jz4"
+    },
+    {
+      "name": "ICT Incidents (Member) [ICTIncidents@sherrinrentals.com.au:Member]",
+      "identifier": "fulcrh"
+    },
+    {
+      "name": "ICT Incidents (Owner) [ICTIncidents@sherrinrentals.com.au:Owner]",
+      "identifier": "cy555n"
+    },
+    {
+      "name": "Licensing (Member) [Licensing@sherrinrentals.com.au:Member]",
+      "identifier": "tggxi4"
+    },
+    {
+      "name": "Licensing (Owner) [Licensing@sherrinrentals.com.au:Owner]",
+      "identifier": "ikzt0t"
+    },
+    {
+      "name": "MIT Support Forward (Member) [grp_mits_support_forward@sherrinrentals.com.au:Member]",
+      "identifier": "6snmn8"
+    },
+    {
+      "name": "MIT Support Forward (Owner) [grp_mits_support_forward@sherrinrentals.com.au:Owner]",
+      "identifier": "l18ump"
+    },
+    {
+      "name": "SG.App.CodeTwo.Pilot (Member) [codetwopilot@sherrinrentals.com.au:Member]",
+      "identifier": "ulfp9u"
+    },
+    {
+      "name": "SG.App.CodeTwo.Pilot (Owner) [codetwopilot@sherrinrentals.com.au:Owner]",
+      "identifier": "4cxq42"
+    },
+    {
+      "name": "Sherrin - Rentals (Member) [rentals@sherrinequipment.com.au:Member]",
+      "identifier": "gc41e8"
+    },
+    {
+      "name": "Sherrin - Rentals (Owner) [rentals@sherrinequipment.com.au:Owner]",
+      "identifier": "ve2hvv"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+---
+globs: **MIT-PowerShell Scripts/**
+alwaysApply: false
+---
+
+## Global Integration Points
+- Azure Key Vault: `mit-azu1-prod1-akv1`
+- ConnectWise PSA: `https://au.myconnectwise.net/v4_6_release/apis/3.0`
+- Microsoft Graph: `https://graph.microsoft.com/v1.0` and `/beta`
+
+## Commit Message Guidelines
+- First line < 50 chars; imperative mood
+- Sections: Type (Update|Fix|New|Refactor|Remove), Script, Scope, Details, Lines Modified
+- Prefixes: `[AZ] [AAD] [EXO] [SPO] [TEAMS] [INTUNE] [M365] [CWPSA] [UTIL] [CONFIG] [DOCS]`
+
+Template:
+```
+[Script Type] Brief description of changes
+
+Type: (Update | Fix | New | Refactor | Remove)
+
+Script: Script Name (without prefix and extension)
+
+Scope: Specific function/method/section changed
+
+Details: What was changed and why
+
+Lines Modified: Which sections/line numbers affected
+```
+
+# MIT-PowerShell Scripts (Client Scripts)
+
+### Structure
+- Per-client folders (e.g., `MIT`, `SEA`, `CQL`).
+- Maintain tenant URLs, Key Vault secret names, and service board CSVs per client.
+
+### Multi-Tenant Support
+- Dynamic secret retrieval by company identifiers.
+- Client-specific configuration functions and conditional logic.
+
+### Practices
+- Centralize reusable logic; keep scripts idempotent.
+- Structured logging and robust error handling.
+- Validate Graph/Intune/EXO/CW interactions via helper functions.
+
+### Security & Auth
+- Key Vault `mit-azu1-prod1-akv1`; common secret names as above.
+- OAuth 2.0 for M365, bearer tokens for Graph (auto-refresh), API keys for CW PSA.
+- Never commit credentials.

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{user_name} - User Offboarding</title>
+    </head>
+    <body style="margin:0; padding:20px; background-color:#d3d3d3; font-family:'Montserrat','Segoe UI','Roboto','Helvetica Neue','Calibri',sans-serif; color:#343a40; width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+    <div style="display:none; max-height:0; overflow:hidden;">
+        {user_name} - User Offboarding
+    </div>
+    <center>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0"
+        style="width:100%; max-width:960px; margin:0 auto; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 0 10px #000000; box-sizing:border-box; padding:32px;">
+        <tbody>
+            <tr>
+            <td style="text-align:center; padding-bottom:20px;">
+                <img
+                src="https://mitazu1pubfilestore.blob.core.windows.net/connectwiseemailimages/MIT-OffboardingBanner.jpg"
+                alt="Mangano IT - Service Update Banner"
+                style="width:100%; height:auto; border-radius:12px; display:block;" />
+            </td>
+            </tr>
+            <tr>
+            <td style="text-align:center; padding:20px 0; font-size:28px; font-weight:700; color:#212529;">
+                {user_name} - User Offboarding Asset Collection - Ticket #{ticket_number}
+            </td>
+            </tr>
+            <tr>
+            <td style="text-align:center; padding:0 20px 20px; font-size:16px; font-weight:600; color:#343a40;">
+                You have been assigned the task of collecting hardware from a user who has been recently offboarded.
+            </td>
+            </tr>
+            <tr>
+            <td>
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0"
+                style="width:100%; padding:0 20px 20px;">
+                {row("User Name:", user_name)}
+                {row("End date and time:", user_enddate)}
+                {row("Devices:", device_html)}
+                </table>
+            </td>
+            </tr>
+            <tr>
+            <td style="padding:0 20px 20px; font-size:16px; line-height:1.5; color:#343a40;">
+                Please retrieve all hardware from the user and notify us so this can be prepared for a future user.<br><br>
+                If you need any assistance with the above please call us urgently.
+            </td>
+            </tr>
+            <tr>
+            <td style="padding:20px; font-size:16px; line-height:1.5; color:#343a40;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                <tr>
+                    <td style="width:30%; font-weight:600; font-size:16px; color:#212529;">Any issues</td>
+                    <td style="width:70%; font-size:16px;">
+                    Service Portal:
+                    <a href="https://portal.manganoit.com.au"
+                        style="color:#0066cc; text-decoration:none;">https://portal.manganoit.com.au</a><br />
+                    Email:
+                    <a href="mailto:support@manganoit.com.au"
+                        style="color:#0066cc; text-decoration:none;">support@manganoit.com.au</a><br />
+                    Phone:
+                    <a href="tel:+61731519000" style="color:#0066cc; text-decoration:none;">(07) 3151 9000</a>
+                    </td>
+                </tr>
+                </table>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+    </center>
+    </body>
+    </html>

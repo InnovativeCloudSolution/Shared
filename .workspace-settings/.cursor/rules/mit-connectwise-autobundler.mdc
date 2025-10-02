@@ -1,0 +1,53 @@
+---
+globs: **MIT-ConnectWise Autobundler 2.0/**
+alwaysApply: false
+---
+
+## Global Integration Points
+- Azure Key Vault: `mit-azu1-prod1-akv1`
+- ConnectWise PSA: `https://au.myconnectwise.net/v4_6_release/apis/3.0`
+
+## Commit Message Guidelines
+- First line < 50 chars; imperative mood
+- Sections: Type (Update|Fix|New|Refactor|Remove), Script/Module, Scope, Details, Lines Modified
+- Prefixes: `[CWPSA] [AZ] [UTIL] [CONFIG] [DOCS]`
+
+Template:
+```
+[Script Type] Brief description of changes
+
+Type: (Update | Fix | New | Refactor | Remove)
+
+Script: Script/Module Name
+
+Scope: Specific function/method/section changed
+
+Details: What was changed and why
+
+Lines Modified: Which sections/line numbers affected
+```
+
+# MIT-ConnectWise Autobundler 2.0 (Azure Functions PowerShell)
+
+### Function App Configuration
+- PowerShell runtime with `managedDependency: true`
+- Application Insights enabled
+- Extension bundle v3.x
+
+### Project Structure
+```
+Callback/          # HTTP trigger functions
+Modules/           # PowerShell modules
+requirements.psd1  # Dependencies
+host.json          # Function app configuration
+```
+
+### Development & Quality
+- Keep functions small, composable, and testable
+- Externalize configuration via environment/Key Vault
+- Robust logging for Azure Functions/App Insights
+
+### Integration & Security
+- ConnectWise PSA via API keys (Key Vault secrets: `MIT-CWMApi-ClientId`, `MIT-CWMApi-PubKey`, `MIT-CWMApi-PrivateKey`).
+- Graph/M365 OAuth 2.0 only when required.
+- Never commit secrets.

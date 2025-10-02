@@ -1,0 +1,56 @@
+{
+  "choices": [
+    {
+      "name": "7zip [SG.App.7zip]",
+      "identifier": "nze5yu"
+    },
+    {
+      "name": "AirWallex [SG.App.AirWallex]",
+      "identifier": "x5tsys"
+    },
+    {
+      "name": "AutodeskDWGTrueView [SG.App.AutodeskDWGTrueView]",
+      "identifier": "pwlroj"
+    },
+    {
+      "name": "BullPhish [SG.App.BullPhish]",
+      "identifier": "ossjqe"
+    },
+    {
+      "name": "CodeTwo Branch_Operations [SG.App.CodeTwo.Branch_Operations]",
+      "identifier": "nsle7o"
+    },
+    {
+      "name": "CodeTwo Head_Office [SG.App.CodeTwo.Head_Office]",
+      "identifier": "z1ujn0"
+    },
+    {
+      "name": "CodeTwo Pilot [SG.App.CodeTwo.Pilot]",
+      "identifier": "u6mcc2"
+    },
+    {
+      "name": "CodeTwo State_ManagerBranch_ManagerSales [SG.App.CodeTwo.State_ManagerBranch_ManagerSales]",
+      "identifier": "eqdtgm"
+    },
+    {
+      "name": "DymoConnect [SG.App.DymoConnect]",
+      "identifier": "iihhkq"
+    },
+    {
+      "name": "eDrawings [SG.App.eDrawings]",
+      "identifier": "iihx33"
+    },
+    {
+      "name": "LastPass [SG.App.LastPass]",
+      "identifier": "c359e8"
+    },
+    {
+      "name": "PrinterLogic [SG.App.PrinterLogic]",
+      "identifier": "5c9utj"
+    },
+    {
+      "name": "ThreatLocker Pilot [SG.App.ThreatLocker.Pilot]",
+      "identifier": "3ifned"
+    }
+  ]
+}

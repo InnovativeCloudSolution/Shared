@@ -1,0 +1,20 @@
+{
+  "data": {
+    "id": "41cc64db-a3da-4d25-af13-142b3149786b",
+    "gender": null,
+    "country": "AU",
+    "known_as": null,
+    "job_title": "Administration Assistant",
+    "last_name": "man",
+    "avatar_url": "https://d3s8rmqehj5691.cloudfront.net/avatar.svg",
+    "first_name": "cat",
+    "start_date": "2024-06-14",
+    "external_id": "",
+    "middle_name": null,
+    "nationality": null,
+    "account_email": "test@cat.co",
+    "date_of_birth": null,
+    "personal_mobile_number": null
+  },
+  "event": "employee_created"
+}

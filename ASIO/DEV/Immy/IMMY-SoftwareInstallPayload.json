@@ -1,0 +1,24 @@
+{
+  "intent_name": "GLOBAL - Software - Installation Request",
+  "intent_fields": {
+    "request_for": "Myself",
+    "full_name": "Juan Moredo",
+    "email_address": "juan.moredo@manganoit.com.au",
+    "software_name": "Google Chrome",
+    "purpose_of_installation": "Required"
+  },
+  "meta_data": {
+    "ticket_id": 1038632,
+    "ticket_board_name": "HelpDesk (MS)",
+    "ticket_board_id": 60,
+    "contact_id": 18090,
+    "contact_name": "Juan Moredo",
+    "contact_email": "juan.moredo@manganoit.com.au",
+    "company_id": "2",
+    "company_name": "Mangano IT",
+    "company_types": [
+      "Owner",
+      "CloudOnly"
+    ]
+  }
+}
