@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{BOT_NAME} - ConnectWise ASIO Bot Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+            margin-top: 30px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 25px;
+        }
+        h4 {
+            color: #34495e;
+            margin-top: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            background-color: white;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: #e74c3c;
+        }
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        pre code {
+            background-color: transparent;
+            color: #ecf0f1;
+            padding: 0;
+        }
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #ecf0f1;
+            margin: 30px 0;
+        }
+        .warning {
+            color: #f39c12;
+        }
+        .error {
+            color: #e74c3c;
+        }
+        .success {
+            color: #27ae60;
+        }
+        .info {
+            color: #3498db;
+        }
+        .placeholder {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Overview</h1>
+        <h2>Purpose</h2>
+        <p><strong>What does this bot do?</strong><br>
+        <span class="placeholder">{Brief 2-3 sentence description of the bot's primary function in simple terms}</span></p>
+        <ul>
+            <li><strong>Environment:</strong> <span class="placeholder">{Cloud/Device}</span></li>
+            <li><strong>Service Type:</strong> <span class="placeholder">{AAD/EXO/AD/CWPSA/UTIL/etc.}</span></li>
+            <li><strong>Automation Level:</strong> <span class="placeholder">{Fully Automated/Semi-Automated/Manual Trigger}</span></li>
+        </ul>
+        
+        <h2>When to Use</h2>
+        <p><strong>Scenarios where this bot should be used:</strong></p>
+        <ul>
+            <li><span class="placeholder">{Scenario 1}</span></li>
+            <li><span class="placeholder">{Scenario 2}</span></li>
+            <li><span class="placeholder">{Scenario 3}</span></li>
+        </ul>
+        
+        <h2>When NOT to Use</h2>
+        <p><strong>Scenarios where this bot should NOT be used:</strong></p>
+        <ul>
+            <li><span class="placeholder">{Exclusion 1}</span></li>
+            <li><span class="placeholder">{Exclusion 2}</span></li>
+        </ul>
+        
+        <h1>Required Inputs</h1>
+        <h2>Mandatory Inputs</h2>
+        <p>Inputs that are required for all operations.</p>
+        <table>
+            <tr>
+                <th>Input Field</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>Validation Rules</th>
+            </tr>
+            <tr>
+                <td><strong><span class="placeholder">{Input Name}</span></strong></td>
+                <td><span class="placeholder">{Description}</span></td>
+                <td><code><span class="placeholder">{Example}</span></code></td>
+                <td><span class="placeholder">{Validation}</span></td>
+            </tr>
+        </table>
+        
+        <h2>Operation-Specific Inputs</h2>
+        <p>Inputs that are required for specific operations.</p>
+        <table>
+            <tr>
+                <th>Input Field</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>Mandatory For</th>
+            </tr>
+            <tr>
+                <td><strong><span class="placeholder">{Input Name}</span></strong></td>
+                <td><span class="placeholder">{Description}</span></td>
+                <td><code><span class="placeholder">{Provide an example of the input value}</span></code></td>
+                <td><span class="placeholder">{Operations}</span></td>
+            </tr>
+        </table>
+        
+        <h2>Company-Specific Inputs</h2>
+        <p>Inputs that are required for specific companies.</p>
+        <table>
+            <tr>
+                <th>Input Field</th>
+                <th>Required For</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><strong>Authentication Code</strong></td>
+                <td>MIT company only</td>
+                <td>Extra security requirement for MIT operations</td>
+            </tr>
+            <tr>
+                <td><strong><span class="placeholder">{Other}</span></strong></td>
+                <td><span class="placeholder">{Enter the required company names here if any}</span></td>
+                <td><span class="placeholder">{Description}</span></td>
+            </tr>
+        </table>
+
+        <h2>Optional Inputs</h2>
+        <p>Inputs that are optional for specific operations.</p>
+        <table>
+            <tr>
+                <th>Input Field</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>Optional For</th>
+                <th>Default Value</th>
+            </tr>
+            <tr>
+                <td><strong><span class="placeholder">{Input Name}</span></strong></td>
+                <td><span class="placeholder">{Description}</span></td>
+                <td><code><span class="placeholder">{Provide an example of the input value}</span></code></td>
+                <td><span class="placeholder">{Enter the operations that this input is optional for}</span></td>
+                <td><span class="placeholder">{if there is a default value, enter it here}</span></td>
+            </tr>
+        </table>
+        
+        <h1>Operations</h1>
+        <h2>Available Operations</h2>
+        <p>Operations that are available for all companies.</p>
+        <table>
+            <tr>
+                <th>Operation Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><span class="placeholder">{Operation Name}</span></td>
+                <td><span class="placeholder">{Description}</span></td>
+            </tr>
+        </table>
+        </table>
+        <h2>Operation 1: <span class="placeholder">{Operation Name}</span></h2>
+        <p><strong>Purpose:</strong> <span class="placeholder">{What this operation does}</span></p>
+        
+        <p><strong>Required Inputs:</strong></p> 
+        <ul>
+            <li><span class="placeholder">{Input 1}</span></li>
+            <li><span class="placeholder">{Input 2}</span></li>
+        </ul>
+        
+        <p><strong>Process Flow:</strong></p>
+        <ol>
+            <li><span class="placeholder">{Step 1}</span></li>
+            <li><span class="placeholder">{Step 2}</span></li>
+            <li><span class="placeholder">{Step 3}</span></li>
+        </ol>
+        
+        <p><strong>Expected Outcome:</strong></p>
+        <ul>
+            <li><span class="placeholder">{Outcome 1}</span></li>
+            <li><span class="placeholder">{Outcome 2}</span></li>
+        </ul>
+        
+        <p><strong>Example Log Output to Ticket Notes:</strong></p>
+        <pre><code><span class="placeholder">{Example log output}</span></code></pre>
+        
+        <p><strong>Error Handling:</strong></p>
+        <ul>
+            <li><span class="placeholder">{Error scenario 1}</span></li>
+            <li><span class="placeholder">{Error scenario 2}</span></li>
+        </ul>
+
+        <h2>Operation 2: <span class="placeholder">{Operation Name}</span></h2>
+        <p><strong>Purpose:</strong> <span class="placeholder">{What this operation does}</span></p>
+        
+        <p><strong>Required Inputs:</strong></p> 
+        <ul>
+            <li><span class="placeholder">{Input 1}</span></li>
+            <li><span class="placeholder">{Input 2}</span></li>
+        </ul>
+        
+        <p><strong>Process Flow:</strong></p>
+        <ol>
+            <li><span class="placeholder">{Step 1}</span></li>
+            <li><span class="placeholder">{Step 2}</span></li>
+            <li><span class="placeholder">{Step 3}</span></li>
+        </ol>
+        
+        <p><strong>Expected Outcome:</strong></p>
+        <ul>
+            <li><span class="placeholder">{Outcome 1}</span></li>
+            <li><span class="placeholder">{Outcome 2}</span></li>
+        </ul>
+        
+        <p><strong>Example Log Output to Ticket Notes:</strong></p>
+        <pre><code><span class="placeholder">{Example log output}</span></code></pre>
+        
+        <p><strong>Error Handling:</strong></p>
+        <ul>
+            <li><span class="placeholder">{Error scenario 1}</span></li>
+            <li><span class="placeholder">{Error scenario 2}</span></li>
+        </ul>
+        
+        <h1>Step-by-Step Execution Guide</h1>
+        <h2>General Execution Steps</h2>
+        <ol>
+            <li><strong>Open ConnectWise PSA Ticket</strong>
+                <ul>
+                    <li>Navigate to the client ticket via ConnectWise PSA (Manage)</li>
+                    <li>Note the ticket number</li>
+                </ul>
+            </li>
+            <li><strong>Launch ASIO Bot</strong>
+                <ul>
+                    <li>Access Automations Tab</li>
+                    <li>Search for: <code><span class="placeholder">{Bot Name}</span></code></li>
+                    <li>Click to open bot execution form</li>
+                </ul>
+            </li>
+            <li><strong>Fill Required Inputs</strong>
+                <ul>
+                    <li><strong>Ticket Number:</strong> Enter ticket number</li>
+                    <li><strong>Operation:</strong> Select from dropdown</li>
+                    <li><strong><span class="placeholder">{Other Inputs}</span>:</strong> Fill as required</li>
+                </ul>
+            </li>
+            <li><strong>Validate Inputs</strong>
+                <ul>
+                    <li>Ensure all required fields are filled</li>
+                    <li>Ensure any optional fields are filled</li>
+                    <li>Verify data accuracy</li>
+                </ul>
+            </li>
+            <li><strong>Execute Bot</strong>
+                <ul>
+                    <li>Click <strong>Run</strong> (or <strong>CTRL+SHIFT</strong>)</li>
+                    <li>Wait for completion. (Cloud bots 30sec-1min. Local bots 1-2min.)</li>
+                </ul>
+            </li>
+            <li><strong>Review Results</strong>
+                <ul>
+                    <li>Check execution logs for SUCCESS/WARNING/FAILED messages</li>
+                    <li>Verify expected outcomes</li>
+                </ul>
+            </li>
+        </ol>
+        
+        <h1>Troubleshooting</h1>
+        <h2>Issue: <span class="placeholder">{Common Issue 1}</span></h2>
+        <p><strong>Symptoms:</strong></p>
+        <pre><code><span class="placeholder">{Error message or behavior}</span></code></pre>
+        
+        <p><strong>Cause:</strong> <span class="placeholder">{Why this happens}</span></p>
+        
+        <p><strong>Solution:</strong></p>
+        <ol>
+            <li><span class="placeholder">{Step 1}</span></li>
+            <li><span class="placeholder">{Step 2}</span></li>
+            <li><span class="placeholder">{Step 3}</span></li>
+        </ol>
+        
+        <h1>Error Messages & Solutions</h1>
+        <table>
+            <tr>
+                <th>Error Message</th>
+                <th>Severity</th>
+                <th>Cause</th>
+                <th>Solution</th>
+            </tr>
+            <tr>
+                <td><code><span class="placeholder">{Error text}</span></code></td>
+                <td><span class="warning">⚠️</span> Warning</td>
+                <td><span class="placeholder">{Cause}</span></td>
+                <td><span class="placeholder">{Solution}</span></td>
+            </tr>
+            <tr>
+                <td><code><span class="placeholder">{Error text}</span></code></td>
+                <td><span class="error">❌</span> Failed</td>
+                <td><span class="placeholder">{Cause}</span></td>
+                <td><span class="placeholder">{Solution}</span></td>
+            </tr>
+            <tr>
+                <td><code><span class="placeholder">{Error text}</span></code></td>
+                <td><span class="info">ℹ️</span> Info</td>
+                <td><span class="placeholder">{Cause}</span></td>
+                <td><span class="placeholder">{Solution}</span></td>
+            </tr>
+        </table>
+        
+        <hr>
+        
+        <h1>Security & Permissions</h1>
+        <h2>Required Permissions</h2>
+        
+        <p><strong>Service Desk Permissions:</strong></p>
+        <ul>
+            <li>ConnectWise ASIO: ConnectWise Home Application Permissions</li>
+        </ul>
+        
+        <p><strong>System Permissions (Automated):</strong></p>
+        <ul>
+            <li>Azure Key Vault: <code><span class="placeholder">{vault_name}</span></code></li>
+            <li><span class="placeholder">{Service}</span> API: <span class="placeholder">{Permissions list}</span></li>
+        </ul>
+        
+        <h2>MIT Company Authentication Gate</h2>
+        <p><strong>Special Requirement:</strong> All operations for MIT company require authentication code. Contact a Centralised Services team member before attempting changes to MIT resources.</p>
+        
+        <h1>Dependencies</h1>
+        <h2>External Services</h2>
+        <table>
+            <tr>
+                <th>Service</th>
+                <th>Purpose</th>
+                <th>Endpoint</th>
+                <th>Required For</th>
+            </tr>
+            <tr>
+                <td><strong>ConnectWise PSA API</strong></td>
+                <td>Retrieve ticket/company details</td>
+                <td><code><span class="placeholder">{url}</span></code></td>
+                <td>All operations</td>
+            </tr>
+            <tr>
+                <td><strong><span class="placeholder">{Service Name}</span></strong></td>
+                <td><span class="placeholder">{Purpose}</span></td>
+                <td><code><span class="placeholder">{url}</span></code></td>
+                <td><span class="placeholder">{Operations}</span></td>
+            </tr>
+        </table>
+        
+        <h2>Required Secrets (Azure Key Vault)</h2>
+        <p>The bot automatically retrieves these from <code><span class="placeholder">{vault_name}</span></code>:</p>
+        <ul>
+            <li><code><span class="placeholder">{Company}</span>-PrimaryDomain</code></li>
+            <li><code><span class="placeholder">{Secret-Name}</span></code></li>
+            <li><code>MIT-AuthenticationCode</code> (for MIT operations only)</li>
+        </ul>
+        
+        <h1>Examples</h1>
+        <h2>Example 1: <span class="placeholder">{Example Name}</span></h2>
+        <p><strong>Scenario:</strong> <span class="placeholder">{Description}</span></p>
+        <p><strong>Input Values:</strong></p>
+        <pre><code>Ticket Number: 12345678
+Operation: <span class="placeholder">{Operation}</span>
+<span class="placeholder">{Input}</span>: <span class="placeholder">{Value}</span>
+AuthCode: [leave blank unless MIT]</code></pre>
+        
+        <p><strong>Expected Result:</strong></p>
+        <pre><code><span class="success">✅</span> <span class="placeholder">{Success message}</span>
+<span class="success">✅</span> <span class="placeholder">{Success message}</span></code></pre>
+        
+        <p><strong>Ticket Note:</strong></p>
+        <pre><code><span class="placeholder">{Example ticket note content}</span></code></pre>
+        
+        <h1>FAQs</h1>
+        <h2>Q1: <span class="placeholder">{Common Question}</span></h2>
+        <p><strong>A:</strong> <span class="placeholder">{Answer with explanation}</span></p>
+        
+        <h2>Q2: <span class="placeholder">{Common Question}</span></h2>
+        <p><strong>A:</strong> <span class="placeholder">{Answer}</span></p>
+        <ul>
+            <li><span class="placeholder">{Point 1}</span></li>
+            <li><span class="placeholder">{Point 2}</span></li>
+        </ul>
+        
+        <h2>Q3: <span class="placeholder">{Common Question}</span></h2>
+        <p><strong>A:</strong> <span class="placeholder">{Answer}</span></p>
+        <p><strong>Best Practice:</strong> <span class="placeholder">{Recommendation}</span></p>
+        
+        <h1>Support Escalation</h1>
+        <h2>When to Escalate</h2>
+        <p><strong>Escalation to Centralised Services</strong></p>
+        <ul>
+            <li><span class="error">❌</span> "Failed to obtain MS Graph access token"</li>
+            <li><span class="error">❌</span> "Unhandled exception occurred during execution"</li>
+            <li><span class="error">❌</span> Consistent failures across multiple tickets</li>
+            <li><span class="error">❌</span> Bot not available in ConnectWise Workflow</li>
+            <li><span class="error">❌</span> Suspected service outage</li>
+        </ul>
+        <p><strong>Escalation to Level 2/Level 3</strong></p>
+        <ul>
+            <li><span class="warning">⚠️</span> <span class="placeholder">{Issue type 1}</span></li>
+            <li><span class="warning">⚠️</span> <span class="placeholder">{Issue type 2}</span></li>
+        </ul>
+        
+        <p><strong>Before Escalating:</strong></p>
+        <ol>
+            <li>Verify inputs are correct</li>
+            <li>Check FAQs and Troubleshooting sections</li>
+            <li>Retry operation once (if appropriate)</li>
+            <li>Document all error messages and steps taken</li>
+        </ol>
+        
+        <h2>Escalation Information to Provide</h2>
+        <p><strong>Always Include:</strong></p>
+        <ul>
+            <li>Ticket number</li>
+            <li>Company name and identifier</li>
+            <li>Bot name: "<span class="placeholder">{Bot Name}</span>"</li>
+            <li>Operation attempted</li>
+            <li>Exact error message from bot logs</li>
+            <li>Timestamp of execution</li>
+            <li>Steps already taken to resolve</li>
+        </ul>
+    </div>
+</body>
+</html>
+
