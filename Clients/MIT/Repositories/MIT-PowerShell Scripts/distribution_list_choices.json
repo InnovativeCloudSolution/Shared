@@ -1,0 +1,252 @@
+{
+    "choices": [
+        {
+            "name": ".All Staff (Member) [allstaff@butlerpartners.com.au:Member]",
+            "identifier": "w9j4hc"
+        },
+        {
+            "name": ".All Staff (Owner) [allstaff@butlerpartners.com.au:Owner]",
+            "identifier": "zncxt7"
+        },
+        {
+            "name": "All - Brisbane Staff (Member) [allbrisbanestaff@butlerpartners.com.au:Member]",
+            "identifier": "62jhbm"
+        },
+        {
+            "name": "All - Brisbane Staff (Owner) [allbrisbanestaff@butlerpartners.com.au:Owner]",
+            "identifier": "obdnot"
+        },
+        {
+            "name": "All - Geoenvironmental Staff (Member) [allgeoenvironstaff@butlerpartners.com.au:Member]",
+            "identifier": "b4g8kz"
+        },
+        {
+            "name": "All - Geoenvironmental Staff (Owner) [allgeoenvironstaff@butlerpartners.com.au:Owner]",
+            "identifier": "k6jq6m"
+        },
+        {
+            "name": "All - Geotechnical Staff (Member) [allgeotechstaff@butlerpartners.com.au:Member]",
+            "identifier": "gj3nnc"
+        },
+        {
+            "name": "All - Geotechnical Staff (Owner) [allgeotechstaff@butlerpartners.com.au:Owner]",
+            "identifier": "9pu4s7"
+        },
+        {
+            "name": "All - Gold Coast Staff (Member) [allgcstaff@butlerpartners.onmicrosoft.com:Member]",
+            "identifier": "500yy7"
+        },
+        {
+            "name": "All - Gold Coast Staff (Owner) [allgcstaff@butlerpartners.onmicrosoft.com:Owner]",
+            "identifier": "p3xzxu"
+        },
+        {
+            "name": "All - Governance and Commercial Team (Member) [alladminstaff@butlerpartners.com.au:Member]",
+            "identifier": "3ogtt6"
+        },
+        {
+            "name": "All - Governance and Commercial Team (Owner) [alladminstaff@butlerpartners.com.au:Owner]",
+            "identifier": "ov2k4t"
+        },
+        {
+            "name": "All - Laboratory Staff (Member) [alllabstaff@butlerpartners.com.au:Member]",
+            "identifier": "kpmpyb"
+        },
+        {
+            "name": "All - Laboratory Staff (Owner) [alllabstaff@butlerpartners.com.au:Owner]",
+            "identifier": "kfs3yy"
+        },
+        {
+            "name": "All - Regional Staff (Member) [allregionalstaff@butlerpartners.com.au:Member]",
+            "identifier": "z96m0d"
+        },
+        {
+            "name": "All - Regional Staff (Owner) [allregionalstaff@butlerpartners.com.au:Owner]",
+            "identifier": "n4jrk7"
+        },
+        {
+            "name": "All - Rockhampton Staff (Member) [allrockhamptonstaff@butlerpartners.com.au:Member]",
+            "identifier": "8ys9q4"
+        },
+        {
+            "name": "All - Rockhampton Staff (Owner) [allrockhamptonstaff@butlerpartners.com.au:Owner]",
+            "identifier": "tzfvds"
+        },
+        {
+            "name": "BPandGTS (Member) [BPandGTS@butlerpartners.com.au:Member]",
+            "identifier": "wwm1qc"
+        },
+        {
+            "name": "BPandGTS (Owner) [BPandGTS@butlerpartners.com.au:Owner]",
+            "identifier": "41vsmz"
+        },
+        {
+            "name": "Brisbane - Environmental Staff (Member) [brisbaneenvirostaff@butlerpartners.com.au:Member]",
+            "identifier": "bu4cj4"
+        },
+        {
+            "name": "Brisbane - Environmental Staff (Owner) [brisbaneenvirostaff@butlerpartners.com.au:Owner]",
+            "identifier": "ukcfgl"
+        },
+        {
+            "name": "Brisbane - Geotechnical Staff (Member) [brisbanegeotechstaff@butlerpartners.com.au:Member]",
+            "identifier": "5x1ie9"
+        },
+        {
+            "name": "Brisbane - Geotechnical Staff (Owner) [brisbanegeotechstaff@butlerpartners.com.au:Owner]",
+            "identifier": "4ct18h"
+        },
+        {
+            "name": "Brisbane - Governance and Commercial Team (Member) [brisbaneadminstaff@butlerpartners.com.au:Member]",
+            "identifier": "sco18m"
+        },
+        {
+            "name": "Brisbane - Governance and Commercial Team (Owner) [brisbaneadminstaff@butlerpartners.com.au:Owner]",
+            "identifier": "rcz8j9"
+        },
+        {
+            "name": "Brisbane - Laboratory/Newport Staff (Member) [brisbanelabstaff@butlerpartners.com.au:Member]",
+            "identifier": "aud2tj"
+        },
+        {
+            "name": "Brisbane - Laboratory/Newport Staff (Owner) [brisbanelabstaff@butlerpartners.com.au:Owner]",
+            "identifier": "yv1vk9"
+        },
+        {
+            "name": "Butler Partners - ICT Approvers (Member) [ictapprovals@butlerpartners.com.au:Member]",
+            "identifier": "jwfpj5"
+        },
+        {
+            "name": "Butler Partners - ICT Approvers (Owner) [ictapprovals@butlerpartners.com.au:Owner]",
+            "identifier": "b9cgk2"
+        },
+        {
+            "name": "Exclaimer (Member) [Exclaimer@butlerpartners.onmicrosoft.com:Member]",
+            "identifier": "d9i275"
+        },
+        {
+            "name": "Exclaimer (Owner) [Exclaimer@butlerpartners.onmicrosoft.com:Owner]",
+            "identifier": "6vv5ih"
+        },
+        {
+            "name": "Gold Coast - Environmental Staff (Member) [goldcoastenvirostaff@butlerpartners.com.au:Member]",
+            "identifier": "3n9mne"
+        },
+        {
+            "name": "Gold Coast - Environmental Staff (Owner) [goldcoastenvirostaff@butlerpartners.com.au:Owner]",
+            "identifier": "315qx2"
+        },
+        {
+            "name": "Gold Coast - Geotechnical Staff (Member) [goldcoastgeostaff@butlerpartners.com.au:Member]",
+            "identifier": "xz2cm4"
+        },
+        {
+            "name": "Gold Coast - Geotechnical Staff (Owner) [goldcoastgeostaff@butlerpartners.com.au:Owner]",
+            "identifier": "jhbb3g"
+        },
+        {
+            "name": "Gold Coast - Governance and Commercial Team (Member) [goldcoastadminstaff@butlerpartners.com.au:Member]",
+            "identifier": "ryjmjp"
+        },
+        {
+            "name": "Gold Coast - Governance and Commercial Team (Owner) [goldcoastadminstaff@butlerpartners.com.au:Owner]",
+            "identifier": "rk1o3u"
+        },
+        {
+            "name": "Gold Coast - Laboratory Staff (Member) [goldcoastlabstaff@butlerpartners.com.au:Member]",
+            "identifier": "yqbcpp"
+        },
+        {
+            "name": "Gold Coast - Laboratory Staff (Owner) [goldcoastlabstaff@butlerpartners.com.au:Owner]",
+            "identifier": "4h1yc9"
+        },
+        {
+            "name": "ICT Maintenance (Member) [ictmaintenance@butlerpartners.com.au:Member]",
+            "identifier": "uaxrnp"
+        },
+        {
+            "name": "ICT Maintenance (Owner) [ictmaintenance@butlerpartners.com.au:Owner]",
+            "identifier": "8qe10y"
+        },
+        {
+            "name": "ICTIncidents (Member) [ICTIncidents@butlerpartners.com.au:Member]",
+            "identifier": "6owm4i"
+        },
+        {
+            "name": "ICTIncidents (Owner) [ICTIncidents@butlerpartners.com.au:Owner]",
+            "identifier": "1n0ber"
+        },
+        {
+            "name": "MaddyLynleyForward (Member) [maddylynleyforward@butlerpartners.com.au:Member]",
+            "identifier": "letqr2"
+        },
+        {
+            "name": "MaddyLynleyForward (Owner) [maddylynleyforward@butlerpartners.com.au:Owner]",
+            "identifier": "add6mv"
+        },
+        {
+            "name": "Marcoola - Sunshine Coast Staff (Member) [marcoolasunshinecoaststaff@butlerpartners.com.au:Member]",
+            "identifier": "rquh42"
+        },
+        {
+            "name": "Marcoola - Sunshine Coast Staff (Owner) [marcoolasunshinecoaststaff@butlerpartners.com.au:Owner]",
+            "identifier": "y5bx9m"
+        },
+        {
+            "name": "MYOB-ButlerGTS (Member) [myob-butlergts@butlerpartners.com.au:Member]",
+            "identifier": "fxhgrr"
+        },
+        {
+            "name": "MYOB-ButlerGTS (Owner) [myob-butlergts@butlerpartners.com.au:Owner]",
+            "identifier": "jnuonj"
+        },
+        {
+            "name": "MYOB-Regional (Member) [myob-regional@butlerpartners.com.au:Member]",
+            "identifier": "fznghc"
+        },
+        {
+            "name": "MYOB-Regional (Owner) [myob-regional@butlerpartners.com.au:Owner]",
+            "identifier": "dq7nww"
+        },
+        {
+            "name": "Regional - Environmental Staff (Member) [regenvirostaff@butlerpartners.com.au:Member]",
+            "identifier": "nar0d3"
+        },
+        {
+            "name": "Regional - Environmental Staff (Owner) [regenvirostaff@butlerpartners.com.au:Owner]",
+            "identifier": "qqjdbu"
+        },
+        {
+            "name": "Regional - Geotechnical Staff (Member) [reggeotechstaff@butlerpartners.com.au:Member]",
+            "identifier": "bryns1"
+        },
+        {
+            "name": "Regional - Geotechnical Staff (Owner) [reggeotechstaff@butlerpartners.com.au:Owner]",
+            "identifier": "quxzq4"
+        },
+        {
+            "name": "Regional - Governance and Commercial Team (Member) [regadminstaff@butlerpartners.com.au:Member]",
+            "identifier": "tp8muv"
+        },
+        {
+            "name": "Regional - Governance and Commercial Team (Owner) [regadminstaff@butlerpartners.com.au:Owner]",
+            "identifier": "ae261j"
+        },
+        {
+            "name": "Regional - Laboratory Staff (Member) [reglabstaff@butlerpartners.com.au:Member]",
+            "identifier": "pplc39"
+        },
+        {
+            "name": "Regional - Laboratory Staff (Owner) [reglabstaff@butlerpartners.com.au:Owner]",
+            "identifier": "z0a25h"
+        },
+        {
+            "name": "Rockhampton Field Group (Member) [RockhamptonFieldGroup@butlerpartners.com.au:Member]",
+            "identifier": "lrpx4w"
+        },
+        {
+            "name": "Rockhampton Field Group (Owner) [RockhamptonFieldGroup@butlerpartners.com.au:Owner]",
+            "identifier": "aldq0q"
+        }
+    ]
+}
