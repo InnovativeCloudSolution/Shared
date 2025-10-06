@@ -228,6 +228,63 @@ def get_contact(log, http_client, cwpsa_base_url, email_address, company_identif
         log.warning(f"No contact found with email address: {email_address} in company: {company_identifier}")
         return None
 
+def get_contact_by_contact_details(log, http_client, cwpsa_base_url, contact_details, company_identifier):
+    log.info(f"Searching for contact by provided contact details: {contact_details} in company: {company_identifier}")
+    contact_id = contact_details.get("contact_id")
+    email = contact_details.get("email")
+    first_name = contact_details.get("first_name")
+    last_name = contact_details.get("last_name")
+    site_name = contact_details.get("site_name")
+    direct_phone = contact_details.get("direct_phone")
+    mobile_phone = contact_details.get("mobile_phone")
+    types = contact_details.get("types")
+    if contact_details.get("vip") == "Yes":
+        vip = "true"
+    else:
+        vip = "false"
+    # Build conditions string with all contact details
+    # Check for conditions
+    if contact_id:
+        conditions = f"conditions=id={contact_id}"
+    # Check for childConditions
+    else:
+        conditions = "childConditions="
+        if email:
+            conditions += f"communicationItems/value='{email}' AND communicationItems/communicationType = 'Email' AND "
+        if first_name:
+            conditions += f"firstName='{first_name}' AND "
+        if last_name:
+            conditions += f"lastName='{last_name}' AND "
+        if site_name:
+            conditions += f"site/name='{site_name}' AND "
+        if direct_phone:
+            conditions += f"communicationItems/value='{direct_phone}' AND communicationItems/communicationType = 'Direct' AND "
+        if mobile_phone:
+            conditions += f"communicationItems/value='{mobile_phone}' AND communicationItems/communicationType = 'Mobile' AND "
+        if types:
+            conditions += f"types/name='{types}' AND "
+        if conditions.endswith(' AND '):
+            conditions = conditions[:-5]
+        # Check for customFieldsConditions
+        if vip:
+            conditions += f"&customFieldConditions=caption='VIP?' AND value='{vip}'"
+        # Add company identifier suffix
+        conditions += f"&conditions=company/identifier='{company_identifier}'"
+    log.info(f"Conditions: {conditions}")
+    encoded_conditions = urllib.parse.quote(conditions)
+    log.info(f"Encoded conditions: {encoded_conditions}")
+    endpoint = f"{cwpsa_base_url}/company/contacts?{encoded_conditions}"
+    response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
+    if not response:
+        return None
+    contacts = response.json()
+    if contacts:
+        log.info(f"Found contacts with contact details: {contact_details} in company: {company_identifier}")
+        return contacts
+    else:
+        log.warning(f"No contact found with contact details: {contact_details} in company: {company_identifier}")
+        return None
+
 def create_contact(log, http_client, cwpsa_base_url, first_name, last_name, email, direct_phone, mobile_phone, types, vip, company_id, site_id):
     log.info(f"Creating contact for company ID: {company_id}")
     endpoint = f"{cwpsa_base_url}/company/contacts"
@@ -379,6 +436,18 @@ def main():
         types = types.strip() if types else ""
         vip = vip.strip() if vip else ""
 
+        contact_details = {
+            "contact_id": contact_id,
+            "email": email,
+            "first_name": first_name,
+            "last_name": last_name,
+            "site_name": site_name,
+            "direct_phone": direct_phone,
+            "mobile_phone": mobile_phone,
+            "types": types,
+            "vip": vip
+        }
+
         if not first_name and not last_name and email:
             email_name = email.split("@")[0]
             if "." in email_name:
@@ -417,6 +486,46 @@ def main():
         if not company_identifier:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve company identifier from ticket [{ticket_number}]")
             return
+
+        if operation == "Get contact":
+            contacts = get_contact_by_contact_details(log, http_client, cwpsa_base_url, contact_details, company_identifier)
+            if contacts:
+                log.info(contacts)
+                if len(contacts) > 1:
+                    record_result(log, ResultLevel.SUCCESS, f"Multiple contacts found with provided details in company: {company_identifier}")
+                    for contact in contacts:
+                        email = next((item['value'] for item in contact['communicationItems'] if item.get('type', {}).get('name') == 'Email'), None)
+                        direct_phone = next((item['value'] for item in contact['communicationItems'] if item.get('type', {}).get('name') == 'Direct'), None)
+                        mobile_phone = next((item['value'] for item in contact['communicationItems'] if item.get('type', {}).get('name') == 'Mobile'), None)
+                        types = [type["name"] for type in contact["types"]]
+                        vip_status = next((item['value'] for item in contact['customFields'] if item.get('caption') == "VIP"), None)
+                        if vip_status == "false":
+                            vip = "No"
+                        else:
+                            vip = "Yes"
+                        record_result(log, ResultLevel.SUCCESS,f"Contact ID: [{contact.get('id')}], First Name: [{contact.get('firstName')}], Last Name: [{contact.get('lastName')}], Email: [{email}],Direct Phone: [{direct_phone}], Mobile Phone: [{mobile_phone}], Types: [{types}], VIP: [{vip}]")
+                        data_to_log["contact_id"] = contacts[0].get("id")
+                    return
+
+                elif len(contacts) == 0:
+                    record_result(log, ResultLevel.WARNING, f"No contact found with provided contact details: {contact_details} in company: {company_identifier}")
+                    return
+
+                contact = contacts[0]
+                record_result(log, ResultLevel.SUCCESS, f"Contact found with provided details in company: {company_identifier}")
+                email = next((item['value'] for item in contact['communicationItems'] if item.get('type', {}).get('name') == 'Email'), None)
+                direct_phone = next((item['value'] for item in contact['communicationItems'] if item.get('type', {}).get('name') == 'Direct'), None)
+                mobile_phone = next((item['value'] for item in contact['communicationItems'] if item.get('type', {}).get('name') == 'Mobile'), None)
+                types = [type["name"] for type in contact["types"]]
+                vip_status = next((item['value'] for item in contact['customFields'] if item.get('caption') == "VIP"), None)
+                if vip_status == "false":
+                    vip = "No"
+                else:
+                    vip = "Yes"
+                record_result(log, ResultLevel.SUCCESS,f"Contact ID: [{contact.get('id')}], First Name: [{contact.get('firstName')}], Last Name: [{contact.get('lastName')}], Email: [{email}],Direct Phone: [{direct_phone}], Mobile Phone: [{mobile_phone}], Types: [{types}], VIP: [{vip}]")
+                data_to_log["contact_id"] = contact[0].get("id")
+            else:
+                record_result(log, ResultLevel.WARNING, f"No contact found with contact details: {contact_details} in company: {company_identifier}")
 
         if operation == "Create new contact":
             if not site_name or not site_name.strip():

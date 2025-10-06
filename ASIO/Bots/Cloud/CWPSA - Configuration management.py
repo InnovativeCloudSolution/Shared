@@ -1,4 +1,5 @@
-﻿import sys
+﻿from sqlite3 import SQLITE_LIMIT_VARIABLE_NUMBER
+import sys
 import random
 import os
 import time
@@ -156,6 +157,59 @@ def get_contact(log, http_client, cwpsa_base_url, user_identifier, company_ident
         log.warning(f"No contact found with user identifier: {user_identifier} in company: {company_identifier}")
         return None
 
+def build_query_string(configuration_data, company_identifier):
+    """Builds URL-encoded conditions and childConditions query parameters."""
+    conditions_matrix = [
+        {"id": "condition_id", "condition": "id", "operator": "=", "type": "condition"},
+        {"id": "configuration_name", "condition": "name", "operator": "like", "type": "condition"},
+        {"id": "type", "condition": "type/name", "operator": "like", "type": "condition"},
+        {"id": "contact_id", "condition": "contact/id", "operator": "=", "type": "condition"},
+        {"id": "site_id", "condition": "site/name", "operator": "like", "type": "condition"},
+        {"id": "serial_number", "condition": "serialNumber", "operator": "like", "type": "condition"},
+        {"id": "tag_number", "condition": "tagNumber", "operator": "like", "type": "condition"},
+        {"id": "model_number", "condition": "modelNumber", "operator": "like", "type": "condition"},
+        {"id": "last_login_name", "condition": "lastLoginName", "operator": "like", "type": "condition"},
+        {"id": "os_type", "condition": "osType", "operator": "=", "type": "condition"},
+        {"id": "active", "condition": "status/name", "operator": "=", "type": "condition"},
+    ]
+    conditions = []
+    child_conditions = []
+    for item in conditions_matrix:
+        value = configuration_data.get(item["id"])
+        if value is None:
+            continue
+        operator = " LIKE " if item["operator"] == "like" else item["operator"]
+        condition_str = f"{item['condition']}{operator}'{value}'"
+        if item["type"] == "condition" and configuration_data.get(item["id"]) not in [None, ""]:
+            conditions.append(condition_str)
+        elif item["type"] == "childCondition" and configuration_data.get(item["id"]) not in [None, ""]:
+            child_conditions.append(condition_str)
+    conditions.append(f"company/identifier='{company_identifier}'")
+    query_parts = []
+    if conditions:
+        conditions_str = " AND ".join(conditions)
+        query_parts.append(f"conditions={urllib.parse.quote(conditions_str)}")
+    if child_conditions:
+        child_conditions_str = " AND ".join(child_conditions)
+        query_parts.append(f"childConditions={urllib.parse.quote(child_conditions_str)}")
+    return "&".join(query_parts)
+
+def get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_identifier, configuration_data):
+    log.info(f"Searching for configurations by provided details: {configuration_data} in company: {company_identifier}")
+    query_string = build_query_string(configuration_data, company_identifier)
+    log.info(f"Query string: {query_string}")
+    endpoint = f"{cwpsa_base_url}/company/configurations?{query_string}"
+    response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
+    if not response:
+        return None
+    configs = response.json()
+    if configs:
+        log.info(f"Found configurations with details: {configuration_data} in company: {company_identifier}")
+        return configs
+    else:
+        log.warning(f"No configurations found with details: {configuration_data} in company: {company_identifier}")
+        return None
+
 def get_configuration_data(log, http_client, cwpsa_base_url, company_id, flag_caption):
     conditions = f"company/id={company_id}"
     custom_conditions = f'caption="{flag_caption}" AND value=true'
@@ -287,6 +341,16 @@ def main():
             user_identifier = input.get_value("User_1755168921921")
             question = input.get_value("Question_1755202849136")
             answer = input.get_value("Answer_1755202853492")
+            contact_id = input.get_value("ContactID_1759383051920")
+            active = input.get_value("Active_1759383209338")
+            last_login_name = input.get_value("LastLoginName_1759383169373")
+            os_type = input.get_value("OSType_1759383189081")
+            type = input.get_value("Type_1759383071008")
+            configuration_name = input.get_value("Name_1759383061920")
+            serial_number = input.get_value("SerialNumber_1759383111403")
+            tag_number = input.get_value("TagNumber_1759383129787")
+            model_number = input.get_value("ModelNumber_1759383146134")
+            site = input.get_value("Site_1759383091327")
 
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch input values")
@@ -309,6 +373,54 @@ def main():
         if not company_id:
             record_result(log, ResultLevel.WARNING, f"Unable to retrieve company details from ticket [{ticket_number}]")
             return
+
+        if operation == "Get Configurations":
+            configuration_data = {
+                "contact_id": contact_id,
+                "configuration_name": configuration_name,
+                "type": type,
+                "site": site,
+                "serial_number": serial_number,
+                "tag_number": tag_number,
+                "model_number": model_number,
+                "last_login_name": last_login_name,
+                "os_type": os_type,
+                "active": active
+            }
+            configurations = get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_identifier, configuration_data)
+            if configurations:
+                if len(configurations) > 1:
+                    record_result(log, ResultLevel.WARNING, f"Multiple configurations found:")
+                    config_ids = []
+                    for configuration in configurations:
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {configuration.get('id', '')}")
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {configuration.get('type', {}).get('name', '')}")
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {configuration.get('site', {}).get('name', '')}")
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {configuration.get('serialNumber', '')}")
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {configuration.get('tagNumber', '')}")
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {configuration.get('modelNumber', '')}")
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {configuration.get('lastLoginName', '')}")
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {configuration.get('osType', '')}")
+                        record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {configuration.get('status', {}).get('name', '')}")
+                        config_ids.append(configuration.get('id'))
+                    data_to_log["configuration_ids"] = config_ids
+                    return
+                elif len(configurations) == 1:
+                    config = configurations[0]
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration found:")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration: {config.get('name', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {config.get('id', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {config.get('type', {}).get('name', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {config.get('site', {}).get('name', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {config.get('serialNumber', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {config.get('tagNumber', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {config.get('modelNumber', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {config.get('lastLoginName', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {config.get('osType', '')}")
+                    record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {config.get('status', {}).get('name', '')}")
+                    data_to_log["configuration_id"] = config.get('id')
+            else:
+                record_result(log, ResultLevel.INFO, f"No configurations found with details: {configuration_data}")
 
         if operation == "Get PDC and ADS":
             pdc = get_configuration_data(log, http_client, cwpsa_base_url, company_id, "PDC")
