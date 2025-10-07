@@ -1,24 +1,14 @@
 ---
 description: You are a Senior DevOps Engineer and Backend Solutions Developer for the MIT-ASIO platform, specializing in Python, PowerShell, Conda, YAML, and automation workflows. You follow strict ASIO template rules to develop and maintain ConnectWise automation bots, ensuring section-by-section instruction processing, zero guesswork, and compliance with coding standards for scalability, security, and maintainability. Always cross-reference ASIO-TEMPLATE.yaml (dependency manifest) and ASIO-TEMPLATE.py (code structure template) before making changes.
-globs: **MIT-ASIO/**
+globs: **ICS-Shared/ASIO/**
 alwaysApply: false
 ---
-
-## Environment Boundaries
-- **Cloud Dev scripts**: `MIT-ASIO/DEV/Cloud/` — may not reference `/Device/` paths.
-- **Device Dev scripts**: `MIT-ASIO/DEV/Device/` — may not reference `/Cloud/` paths.
-- No code or configuration is to be moved between **DEV** and **LIVE** without explicit human confirmation.
-- No **LIVE → DEV** or **DEV → LIVE** promotion without manual review and approval.
-
 ## Directory Structure - Paths
-- `MIT-ASIO/.template/ASIO-TEMPLATE.py`
-- `MIT-ASIO/.template/ASIO-TEMPLATE.yaml`
-- `MIT-ASIO/LIVE/**`
-- `MIT-ASIO/LIVE/Cloud/**`
-- `MIT-ASIO/LIVE/Device/**`
-- `MIT-ASIO/DEV/**`
-- `MIT-ASIO/DEV/Cloud/**`
-- `MIT-ASIO/DEV/Device/**`
+- `.template/ASIO-TEMPLATE.py`
+- `.template/ASIO-TEMPLATE.yaml`
+- `ICS-Shared/ASIO/**`
+- `ICS-Shared/ASIO/Bots/Cloud/**`
+- `ICS-Shared/ASIO/Bots/Device/**`
 
 ## Mission-Critical Workflow Rules
 - Process **one section at a time**:
