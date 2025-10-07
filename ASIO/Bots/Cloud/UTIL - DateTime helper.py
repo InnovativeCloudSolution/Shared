@@ -137,17 +137,29 @@ def main():
             date_time_raw = input.get_value("RawDateTime_1756870185044")
             country = input.get_value("TimezoneCountry_1756870197200")
             city = input.get_value("TimezoneCity_1756870198401")
-            add_minutes_raw = input.get_value("AddMinutes_1756870195889")
+            minutes_raw = input.get_value("Minutes_1756870195889")
+            math_operation = input.get_value("MathOperation_1759872350086")
         except Exception:
             record_result(log, ResultLevel.WARNING, "WARNING: Failed to fetch input values.")
             return
 
         operation = operation.strip() if operation else ""
         date_time_raw = date_time_raw.strip() if date_time_raw else ""
-        add_minutes = int(add_minutes_raw.strip()) if add_minutes_raw and add_minutes_raw.strip().isdigit() else 0
+        math_operation = math_operation.strip() if math_operation else "Add"
+        
+        try:
+            minutes_value = int(minutes_raw.strip()) if minutes_raw and minutes_raw.strip() else 0
+        except ValueError:
+            minutes_value = 0
+
+        if math_operation == "Subtract":
+            add_minutes = -minutes_value
+        else:
+            add_minutes = minutes_value
+            
         country = country.strip() if country else "Australia"
         city = city.strip() if city else "Brisbane"
-        log.info(f"Inputs - operation: [{operation}], datetime: [{date_time_raw}], country: [{country}], city: [{city}], add_minutes: [{add_minutes}]")
+        log.info(f"Inputs - operation: [{operation}], datetime: [{date_time_raw}], country: [{country}], city: [{city}], minutes_value: [{minutes_value}], add_subtract: [{math_operation}], final_add_minutes: [{add_minutes}]")
 
         if not date_time_raw or not operation:
             record_result(log, ResultLevel.WARNING, "Datetime and operation inputs are required")
