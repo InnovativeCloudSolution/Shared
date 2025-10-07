@@ -1,5 +1,5 @@
 ---
-globs: **MIT-PowerShell Scripts/**
+globs: **ICS-Shared/Clients/MIT/Repositories/MIT-PowerShell Scripts/**
 alwaysApply: false
 ---
 

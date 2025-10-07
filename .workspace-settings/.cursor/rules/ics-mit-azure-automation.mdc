@@ -1,8 +1,7 @@
 ---
-globs: **MIT-Azure Automation/**
+globs: **ICS-Shared/Clients/MIT/Repositories/MIT-Azure Automation/**
 alwaysApply: false
 ---
-
 ## Global Integration Points
 - Azure Key Vault: `mit-azu1-prod1-akv1`
 - ConnectWise PSA: `https://au.myconnectwise.net/v4_6_release/apis/3.0`

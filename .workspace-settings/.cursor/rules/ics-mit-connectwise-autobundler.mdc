@@ -1,5 +1,5 @@
 ---
-globs: **MIT-ConnectWise Autobundler 2.0/**
+globs: **ICS-Shared/Clients/MIT/Repositories/MIT-ConnectWise Autobundler 2.0/**
 alwaysApply: false
 ---
 
