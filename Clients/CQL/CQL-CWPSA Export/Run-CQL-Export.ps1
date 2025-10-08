@@ -189,19 +189,13 @@ CREATE TABLE SR_Event (
     SR_Service_RecID int PRIMARY KEY,
     Summary nvarchar(100),
     Date_Entered datetime,
-    Entered_By nvarchar(100),
     Last_Update datetime,
-    Updated_By nvarchar(100),
-    Closed_By nvarchar(100),
     Company_RecID int,
     Company_Name nvarchar(250),
     Contact_RecID int,
     Contact_Name nvarchar(100),
-    SR_Type_RecID int,
     SR_Type_Description nvarchar(50),
-    SR_SubType_RecID int,
     SR_SubType_Description nvarchar(50),
-    SR_Status_RecID int,
     SR_Status_Description nvarchar(50)
 );
 
@@ -214,19 +208,13 @@ SELECT
     s.SR_Service_RecID,
     s.Summary,
     s.Date_Entered,
-    s.Entered_By,
     s.Last_Update,
-    s.Updated_By,
-    s.Closed_By,
     s.Company_RecID,
     c.Company_Name,
     s.Contact_RecID,
     CONCAT(cont.First_Name, ' ', cont.Last_Name) AS Contact_Name,
-    s.SR_Type_RecID,
     st.Description AS SR_Type_Description,
-    s.SR_SubType_RecID,
     sst.Description AS SR_SubType_Description,
-    s.SR_Status_RecID,
     ss.Description AS SR_Status_Description
 FROM CW_Report_DB.cwwebapp_mit.dbo.SR_Service s
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.Company c ON s.Company_RecID = c.Company_RecID
@@ -253,10 +241,7 @@ CREATE TABLE SR_Incident (
     SR_Service_RecID int PRIMARY KEY,
     Summary nvarchar(100),
     Date_Entered datetime,
-    Entered_By nvarchar(100),
     Last_Update datetime,
-    Updated_By nvarchar(100),
-    Closed_By nvarchar(100),
     Company_RecID int,
     Company_Name nvarchar(250),
     Contact_RecID int,
@@ -275,10 +260,7 @@ SELECT
     s.SR_Service_RecID,
     s.Summary,
     s.Date_Entered,
-    s.Entered_By,
     s.Last_Update,
-    s.Updated_By,
-    s.Closed_By,
     s.Company_RecID,
     c.Company_Name,
     s.Contact_RecID,
@@ -311,10 +293,7 @@ CREATE TABLE SR_Problem (
     SR_Service_RecID int PRIMARY KEY,
     Summary nvarchar(100),
     Date_Entered datetime,
-    Entered_By nvarchar(100),
     Last_Update datetime,
-    Updated_By nvarchar(100),
-    Closed_By nvarchar(100),
     Company_RecID int,
     Company_Name nvarchar(250),
     Contact_RecID int,
@@ -333,10 +312,7 @@ SELECT
     s.SR_Service_RecID,
     s.Summary,
     s.Date_Entered,
-    s.Entered_By,
     s.Last_Update,
-    s.Updated_By,
-    s.Closed_By,
     s.Company_RecID,
     c.Company_Name,
     s.Contact_RecID,
@@ -369,10 +345,7 @@ CREATE TABLE SR_Request (
     SR_Service_RecID int PRIMARY KEY,
     Summary nvarchar(100),
     Date_Entered datetime,
-    Entered_By nvarchar(100),
     Last_Update datetime,
-    Updated_By nvarchar(100),
-    Closed_By nvarchar(100),
     Company_RecID int,
     Company_Name nvarchar(250),
     Contact_RecID int,
@@ -391,10 +364,7 @@ SELECT
     s.SR_Service_RecID,
     s.Summary,
     s.Date_Entered,
-    s.Entered_By,
     s.Last_Update,
-    s.Updated_By,
-    s.Closed_By,
     s.Company_RecID,
     c.Company_Name,
     s.Contact_RecID,
@@ -434,12 +404,7 @@ CREATE TABLE SR_Notes (
     Ticket_Summary nvarchar(100),
     Note_Content nvarchar(max),
     Date_Created datetime,
-    Created_By nvarchar(100),
     Last_Update datetime,
-    Updated_By nvarchar(100),
-    Internal_Member_Flag bit,
-    InternalAnalysis_Flag bit,
-    Member_Name nvarchar(100),
     Contact_Name nvarchar(100),
     Company_Name nvarchar(250)
 );
@@ -501,20 +466,16 @@ WHERE s.Company_RecID = $CompanyRecID
         
         $ChunkQuery = @"
 INSERT INTO SR_Notes (SR_Detail_RecID, SR_Service_RecID, Ticket_Summary, Note_Content, 
-    Date_Created, Created_By, Last_Update, Updated_By, Internal_Member_Flag, InternalAnalysis_Flag,
-    Member_Name, Contact_Name, Company_Name)
+    Date_Created, Last_Update, Contact_Name, Company_Name)
 SELECT
     sd.SR_Detail_RecID, sd.SR_Service_RecID, s.Summary, sd.SR_Detail_Notes,
-    sd.Date_Created, sd.Created_By, sd.Last_Update, sd.Updated_By, 
-    sd.Internal_Member_Flag, sd.InternalAnalysis_Flag,
-    CONCAT(m.First_Name, ' ', m.Last_Name) AS Member_Name,
+    sd.Date_Created, sd.Last_Update,
     CONCAT(cont.First_Name, ' ', cont.Last_Name) AS Contact_Name,
     c.Company_Name
 FROM notes_pagination r
 JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Detail sd ON sd.SR_Detail_RecID = r.SR_Detail_RecID
 JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Service s ON sd.SR_Service_RecID = s.SR_Service_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Type st ON s.SR_Type_RecID = st.SR_Type_RecID
-LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.Member m ON sd.Member_RecID = m.Member_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.Company c ON s.Company_RecID = c.Company_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.Contact cont ON sd.Contact_RecID = cont.Contact_RecID
 WHERE r.rn BETWEEN $Start AND $End;
@@ -564,14 +525,8 @@ CREATE TABLE SR_Time_Entries (
     SR_Service_RecID int,
     Ticket_Summary nvarchar(100),
     Date_Start datetime,
-    Hours_Actual decimal(6,2),
-    Hours_Bill decimal(6,2),
     Notes nvarchar(max),
-    Entered_By nvarchar(100),
     Last_Update datetime,
-    Updated_By nvarchar(100),
-    Member_RecID int,
-    Member_Name nvarchar(100),
     Company_RecID int,
     Company_Name nvarchar(250),
     Activity_Class_RecID int,
@@ -633,20 +588,17 @@ WHERE te.Company_RecID = $CompanyRecID;
         
         $ChunkQuery = @"
 INSERT INTO SR_Time_Entries (Time_RecID, SR_Service_RecID, Ticket_Summary, Date_Start,
-    Hours_Actual, Hours_Bill, Notes, Entered_By, Last_Update, Updated_By, 
-    Member_RecID, Member_Name, Company_RecID, Company_Name, 
+    Notes, Last_Update, Company_RecID, Company_Name, 
     Activity_Class_RecID, Activity_Class_Description, Activity_Type_RecID, Activity_Type_Description)
 SELECT 
     te.Time_RecID, te.SR_Service_RecID, s.Summary, te.Date_Start,
-    te.Hours_Actual, te.Hours_Bill, te.Notes, te.Entered_By, te.Last_Update, te.Updated_By,
-    te.Member_RecID, CONCAT(m.First_Name, ' ', m.Last_Name) AS Member_Name,
+    te.Notes, te.Last_Update,
     te.Company_RecID, c.Company_Name,
     te.Activity_Class_RecID, ac.Description AS Activity_Class_Description,
     te.Activity_Type_RecID, at.Description AS Activity_Type_Description
 FROM time_entries_pagination r
 JOIN CW_Report_DB.cwwebapp_mit.dbo.Time_Entry te ON te.Time_RecID = r.Time_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Service s ON te.SR_Service_RecID = s.SR_Service_RecID
-LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.Member m ON te.Member_RecID = m.Member_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.Activity_Class ac ON te.Activity_Class_RecID = ac.Activity_Class_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.Activity_Type at ON te.Activity_Type_RecID = at.Activity_Type_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.Company c ON te.Company_RecID = c.Company_RecID
