@@ -188,21 +188,47 @@ def format_transmitsms_datetime(raw_date: str, raw_time: str, log) -> str | None
             return None
 
         dt = None
-        date_formats = ["%d/%m/%Y", "%d-%m-%Y", "%Y-%m-%d"]
         
-        for date_format in date_formats:
+        if raw_date.isdigit():
             try:
-                dt = datetime.strptime(raw_date, date_format)
-                log.info(f"Successfully parsed date [{raw_date}] using format [{date_format}]")
-                break
-            except ValueError:
-                continue
+                epoch_value = int(raw_date)
+                if epoch_value > 10000000000:
+                    dt = datetime.fromtimestamp(epoch_value / 1000)
+                    log.info(f"Successfully parsed epoch milliseconds [{raw_date}]")
+                else:
+                    dt = datetime.fromtimestamp(epoch_value)
+                    log.info(f"Successfully parsed epoch seconds [{raw_date}]")
+            except (ValueError, OSError) as e:
+                log.warning(f"Invalid epoch timestamp: [{raw_date}] - {str(e)}")
+                dt = None
         
         if dt is None:
-            log.warning(f"Invalid date format: [{raw_date}]. Expected formats: DD/MM/YYYY, DD-MM-YYYY, or YYYY-MM-DD")
+            datetime_formats = [
+                "%Y-%m-%dT%H:%M:%S",
+                "%d/%m/%Y %I:%M %p",
+                "%d/%m/%Y %H:%M",
+                "%d-%m-%Y %I:%M %p",
+                "%d-%m-%Y %H:%M",
+                "%d/%m/%YT%H:%M:%S",
+                "%d-%m-%YT%H:%M:%S",
+                "%d/%m/%Y",
+                "%d-%m-%Y", 
+                "%Y-%m-%d"
+            ]
+            
+            for datetime_format in datetime_formats:
+                try:
+                    dt = datetime.strptime(raw_date, datetime_format)
+                    log.info(f"Successfully parsed datetime [{raw_date}] using format [{datetime_format}]")
+                    break
+                except ValueError:
+                    continue
+        
+        if dt is None:
+            log.warning(f"Invalid datetime format: [{raw_date}]. Expected formats: YYYY-MM-DDTHH:MM:SS, DD/MM/YYYY H:MM AM/PM, DD/MM/YYYY HH:MM, or epoch timestamp")
             return None
 
-        if raw_time and raw_time.strip():
+        if raw_time and raw_time.strip() and "T" not in raw_date:
             raw_time = raw_time.strip()
             
             if re.match(r"^\d{1,2}:\d{2}$", raw_time):
@@ -335,8 +361,7 @@ def main():
             ticket_number = input.get_value("TicketNumber_1746500954779")
             mobile_number = input.get_value("MobileNumber_1743126613581")
             country_name = input.get_value("Country_1758574417139")
-            raw_schedule_date = input.get_value("ScheduleDate_1743129088388")
-            raw_schedule_time = input.get_value("ScheduleTime_1743129095293")
+            schedule_datetime = input.get_value("ScheduleDateandTime_1743129095293")
             message_input = input.get_value("Message_1743126607975")
             first_name = input.get_value("FirstName_1746497930643")
             password = input.get_value("Password_1746500047781")
@@ -349,8 +374,7 @@ def main():
         ticket_number = ticket_number.strip() if ticket_number else ""
         mobile_number = mobile_number.strip() if mobile_number else ""
         country_name = country_name.strip() if country_name else ""
-        raw_schedule_date = raw_schedule_date.strip() if raw_schedule_date else ""
-        raw_schedule_time = raw_schedule_time.strip() if raw_schedule_time else ""
+        schedule_datetime = schedule_datetime.strip() if schedule_datetime else ""
         message_input = message_input.strip() if message_input else ""
         first_name = first_name.strip() if first_name else ""
         password = password.strip() if password else ""
@@ -393,8 +417,9 @@ def main():
             return
 
         scheduled_time = None
-        if raw_schedule_date:
-            scheduled_time = format_transmitsms_datetime(raw_schedule_date, raw_schedule_time, log)
+        if schedule_datetime:
+            log.info(f"Using merged schedule datetime: [{schedule_datetime}]")
+            scheduled_time = format_transmitsms_datetime(schedule_datetime, "", log)
 
         if operation == "Send Plain SMS":
             message = codecs.decode(message_input, "unicode_escape")
