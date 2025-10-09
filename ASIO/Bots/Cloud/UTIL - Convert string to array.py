@@ -48,11 +48,11 @@ def normalize_entry(entry, d1, d2, d3, d4):
     parts.append(string5)
 
     return {
-        "String1": parts[0],
-        "String2": parts[1],
-        "String3": parts[2],
-        "String4": parts[3],
-        "String5": parts[4]
+        "string_1": parts[0],
+        "string_2": parts[1],
+        "string_3": parts[2],
+        "string_4": parts[3],
+        "string_5": parts[4]
     }
 
 def convert_string_to_list(log, input_string, d1, d2, d3, d4):
@@ -89,7 +89,7 @@ def main():
         structured_list = convert_string_to_list(
             log, raw_string, delimiter1, delimiter2, delimiter3, delimiter4
         )
-        data_to_log["Parsed"] = structured_list
+        data_to_log["parsed_string"] = structured_list
 
         log_lines = [f"Processed {len(structured_list)} entries from Parsed input"]
         for row in structured_list:
