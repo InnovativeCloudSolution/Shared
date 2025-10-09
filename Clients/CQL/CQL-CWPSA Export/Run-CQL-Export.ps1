@@ -223,7 +223,7 @@ LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Type st ON s.SR_Type_RecID = st.SR_Ty
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_SubType sst ON s.SR_SubType_RecID = sst.SR_SubType_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Status ss ON s.SR_Status_RecID = ss.SR_Status_RecID
 WHERE s.Company_RecID = $CompanyRecID
-    AND s.SR_Type_RecID = 287;
+    AND st.Description = 'Event';
 "@
 
     return Invoke-SafeSqlQuery -Query $Query -Operation "Export Events"
@@ -275,7 +275,7 @@ LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Type st ON s.SR_Type_RecID = st.SR_Ty
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_SubType sst ON s.SR_SubType_RecID = sst.SR_SubType_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Status ss ON s.SR_Status_RecID = ss.SR_Status_RecID
 WHERE s.Company_RecID = $CompanyRecID
-    AND s.SR_Type_RecID = 346;
+    AND st.Description = 'Incident';
 "@
 
     return Invoke-SafeSqlQuery -Query $Query -Operation "Export Incidents"
@@ -327,7 +327,7 @@ LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Type st ON s.SR_Type_RecID = st.SR_Ty
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_SubType sst ON s.SR_SubType_RecID = sst.SR_SubType_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Status ss ON s.SR_Status_RecID = ss.SR_Status_RecID
 WHERE s.Company_RecID = $CompanyRecID
-    AND s.SR_Type_RecID = 281;
+    AND st.Description = 'Problem';
 "@
 
     return Invoke-SafeSqlQuery -Query $Query -Operation "Export Problems"
@@ -379,7 +379,7 @@ LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Type st ON s.SR_Type_RecID = st.SR_Ty
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_SubType sst ON s.SR_SubType_RecID = sst.SR_SubType_RecID
 LEFT JOIN CW_Report_DB.cwwebapp_mit.dbo.SR_Status ss ON s.SR_Status_RecID = ss.SR_Status_RecID
 WHERE s.Company_RecID = $CompanyRecID
-    AND s.SR_Type_RecID NOT IN (287, 346, 281);
+    AND st.Description IN ('Request', 'Service Request', 'Request for Change', 'Non-Standard Service Request');
 "@
 
     return Invoke-SafeSqlQuery -Query $Query -Operation "Export Requests"
