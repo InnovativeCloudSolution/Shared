@@ -139,8 +139,7 @@ def main():
             city = input.get_value("TimezoneCity_1756870198401")
             minutes_raw = input.get_value("Minutes_1756870195889")
             math_operation = input.get_value("MathOperation_1759872350086")
-        except Exception as e:
-            log.error(f"Failed to fetch input values: {str(e)}")
+        except Exception:
             record_result(log, ResultLevel.WARNING, "WARNING: Failed to fetch input values.")
             return
 
@@ -150,8 +149,7 @@ def main():
         
         try:
             minutes_value = int(minutes_raw.strip()) if minutes_raw and minutes_raw.strip() else 0
-        except (ValueError, AttributeError) as e:
-            log.warning(f"Invalid minutes value '{minutes_raw}': {str(e)}")
+        except ValueError:
             minutes_value = 0
 
         if math_operation == "Subtract":
@@ -167,12 +165,7 @@ def main():
             record_result(log, ResultLevel.WARNING, "Datetime and operation inputs are required")
             return
 
-        try:
-            datetime_data = convert_to_epoch_and_formats(log, date_time_raw, country, city, add_minutes)
-        except Exception as e:
-            log.error(f"Error in datetime conversion: {str(e)}")
-            record_result(log, ResultLevel.WARNING, f"Datetime conversion failed: {str(e)}")
-            return
+        datetime_data = convert_to_epoch_and_formats(log, date_time_raw, country, city, add_minutes)
 
         if not datetime_data or not all(datetime_data.get(k) for k in ["original_local", "original_utc"]):
             record_result(log, ResultLevel.WARNING, "Datetime conversion failed. Invalid or unrecognized input format.")
@@ -182,42 +175,30 @@ def main():
         data_to_log.update(datetime_data)
 
         if operation == "Check if input date is today or in the past":
-            try:
-                tz = ZoneInfo(f"{country}/{city}" if city else country)
-                
-                if check_input_date_in_past(log, datetime_data["original_local"], country, city):
-                    dt_adjusted_local = datetime.now(tz)
-                else:
-                    dt_adjusted_local = datetime.strptime(datetime_data["original_local"], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=tz)
-                
-                dt_final_local = dt_adjusted_local + timedelta(minutes=add_minutes)
-                dt_final_utc = dt_final_local.astimezone(ZoneInfo("UTC"))
-
-                is_today = check_input_date_is_today(log, dt_final_local.strftime("%Y-%m-%dT%H:%M:%S"), country, city)
-                data_to_log["datetime_today"] = "Yes" if is_today else "No"
-                epoch = int(dt_final_utc.timestamp() * 1000)
-                data_to_log["epoch"] = epoch
-                
-                if (add_minutes != 0):
-                    record_result(log, ResultLevel.SUCCESS, f"Processed datetime with {add_minutes} minutes adjustment. Final datetime: {dt_final_local.strftime('%d/%m/%Y %I:%M %p')}")
-                else:
-                    record_result(log, ResultLevel.SUCCESS, f"Processed datetime. Final datetime: {dt_final_local.strftime('%d/%m/%Y %I:%M %p')}")
-                log.info(data_to_log)
-            except Exception as e:
-                log.error(f"Error in date processing: {str(e)}")
-                record_result(log, ResultLevel.WARNING, f"Date processing failed: {str(e)}")
-                return
-
-        elif operation == "Convert datetime to epoch and formats":
-            try:
+            if check_input_date_in_past(log, datetime_data["original_local"], country, city) or check_input_date_is_today(log, datetime_data["original_local"], country, city):
+                data_to_log["datetime_today"] = "Yes"
                 epoch = int(datetime.strptime(datetime_data["original_utc"], "%Y-%m-%dT%H:%M:%S").timestamp() * 1000)
                 data_to_log["epoch"] = epoch
+                if (add_minutes > 0):
+                    record_result(log, ResultLevel.SUCCESS, f"Input datetime is today or in the past. Added {add_minutes} minutes to the input time.")
+                else:
+                    record_result(log, ResultLevel.SUCCESS, f"Input datetime is today or in the past. No minutes added to the input time.")
                 log.info(data_to_log)
-                record_result(log, ResultLevel.SUCCESS, "Datetime converted successfully")
-            except Exception as e:
-                log.error(f"Error in epoch conversion: {str(e)}")
-                record_result(log, ResultLevel.WARNING, f"Epoch conversion failed: {str(e)}")
-                return
+            else:
+                data_to_log["datetime_today"] = "No"
+                epoch = int(datetime.strptime(datetime_data["original_utc"], "%Y-%m-%dT%H:%M:%S").timestamp() * 1000)
+                data_to_log["epoch"] = epoch
+                if (add_minutes > 0):
+                    record_result(log, ResultLevel.INFO, f"Input date is not today. Added {add_minutes} minutes to the input time.")
+                else:
+                    record_result(log, ResultLevel.INFO, f"Input date is not today. No minutes added to the input time.")
+                log.info(data_to_log)
+
+        elif operation == "Convert datetime to epoch and formats":
+            epoch = int(datetime.strptime(datetime_data["original_utc"], "%Y-%m-%dT%H:%M:%S").timestamp() * 1000)
+            data_to_log["epoch"] = epoch
+            log.info(data_to_log)
+            record_result(log, ResultLevel.SUCCESS, "Datetime converted successfully")
 
         else:
             record_result(log, ResultLevel.WARNING, f"Unknown operation: {operation}")
