@@ -272,66 +272,94 @@ def get_user_configuration_items(log, http_client, cwpsa_base_url, company_id, c
     log.warning(f"No configuration items found for contact ID [{contact_id}] in company [{company_id}]")
     return "", ""
 
-def get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier):
-    log.info(f"Searching for configuration with name [{ticket_number}] and type 'Automation - Submission' in company [{company_identifier}]")
+def handle_user_configurations(log, http_client, cwpsa_base_url, user_identifier, company_identifier, company_id, data_to_log):
+    contact = get_contact(log, http_client, cwpsa_base_url, user_identifier, company_identifier)
+    if not contact:
+        record_result(log, ResultLevel.WARNING, f"No contact found with user identifier [{user_identifier}] in company [{company_identifier}]")
+        return
     
-    conditions = f'name="{ticket_number}" AND type/name="Automation - Submission" AND company/identifier="{company_identifier}"'
-    query_string = f"conditions={urllib.parse.quote(conditions)}"
-    url = f"{cwpsa_base_url}/company/configurations?{query_string}"
+    resolved_contact_id = contact.get("id")
+    log.info(f"Found contact ID [{resolved_contact_id}] for user identifier [{user_identifier}]")
     
-    response = execute_api_call(log, http_client, "get", url, integration_name="cw_psa")
-    if not response:
-        return {}
-    
-    configs = response.json()
-    if not configs:
-        log.warning(f"No configuration found with name [{ticket_number}] and type 'Automation - Submission'")
-        return {}
-    
-    config = configs[0]
-    config_id = config.get("id")
-    log.info(f"Found configuration: {config.get('name', '')} (ID: {config_id})")
-    
-    questions = config.get("questions", [])
-    if not questions:
-        log.info("No questions found in configuration")
-        return {"id": config_id, "questions": {}}
-    
-    submission_data = {}
-    for question in questions:
-        question_text = question.get("question", "")
-        answer_value = question.get("answer")
-        question_id = question.get("questionId")
-        
-        if answer_value is not None and str(answer_value).strip():
-            submission_data[question_text] = {"answer": answer_value, "questionId": question_id}
-            log.info(f"Question: [{question_text}] = Answer: [{answer_value}] (ID: {question_id})")
-    
-    return {"id": config_id, "questions": submission_data}
+    device_line, device_note = get_user_configuration_items(log, http_client, cwpsa_base_url, company_id, resolved_contact_id)
+    if device_line:
+        data_to_log["Device"] = device_line
+        record_result(log, ResultLevel.SUCCESS, "Configuration found assigned to user:")
+        for line in device_note.split("\n"):
+            record_result(log, ResultLevel.SUCCESS, line)
+    else:
+        record_result(log, ResultLevel.SUCCESS, f"No configuration items found for contact ID [{resolved_contact_id}]")
 
-def update_configuration_question(log, http_client, cwpsa_base_url, config_id, question_id, answer):
-    log.info(f"Updating configuration [{config_id}] question ID [{question_id}] with answer [{answer}]")
-    
-    update_data = [
-        {
-            "op": "replace",
-            "path": "/questions",
-            "value": [
-                {
-                    "questionId": question_id,
-                    "answer": answer
-                }
-            ]
-        }
-    ]
-    
-    update_url = f"{cwpsa_base_url}/company/configurations/{config_id}"
-    update_response = execute_api_call(log, http_client, "patch", update_url, data=update_data, integration_name="cw_psa")
-    
-    if update_response and update_response.status_code == 200:
-        log.info(f"Successfully updated configuration [{config_id}] question [{question_id}] with new answer")
-        return True
-    return False
+def handle_criteria_configurations(log, http_client, cwpsa_base_url, company_identifier, contact_id, configuration_name, type, site, serial_number, tag_number, model_number, last_login_name, os_type, active, data_to_log):
+    configuration_data = {
+        "contact_id": contact_id,
+        "configuration_name": configuration_name,
+        "type": type,
+        "site": site,
+        "serial_number": serial_number,
+        "tag_number": tag_number,
+        "model_number": model_number,
+        "last_login_name": last_login_name,
+        "os_type": os_type,
+        "active": active
+    }
+    configurations = get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_identifier, configuration_data)
+    if configurations:
+        if len(configurations) > 1:
+            record_result(log, ResultLevel.WARNING, f"Multiple configurations found:")
+            config_ids = []
+            for configuration in configurations:
+                record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {configuration.get('id', '')}")
+                record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {configuration.get('type', {}).get('name', '')}")
+                record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {configuration.get('site', {}).get('name', '')}")
+                record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {configuration.get('serialNumber', '')}")
+                record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {configuration.get('tagNumber', '')}")
+                record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {configuration.get('modelNumber', '')}")
+                record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {configuration.get('lastLoginName', '')}")
+                record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {configuration.get('osType', '')}")
+                record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {configuration.get('status', {}).get('name', '')}")
+                config_ids.append(configuration.get('id'))
+            data_to_log["configuration_ids"] = config_ids
+            return
+        elif len(configurations) == 1:
+            config = configurations[0]
+            record_result(log, ResultLevel.SUCCESS, f"Configuration found:")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration: {config.get('name', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {config.get('id', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {config.get('type', {}).get('name', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {config.get('site', {}).get('name', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {config.get('serialNumber', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {config.get('tagNumber', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {config.get('modelNumber', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {config.get('lastLoginName', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {config.get('osType', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {config.get('status', {}).get('name', '')}")
+            data_to_log["configuration_id"] = config.get('id')
+    else:
+        record_result(log, ResultLevel.INFO, f"No configurations found with details: {configuration_data}")
+
+def handle_pdc_ads_configurations(log, http_client, cwpsa_base_url, company_id, data_to_log):
+    pdc = get_configuration_data(log, http_client, cwpsa_base_url, company_id, "PDC")
+    if pdc != None:
+        data_to_log["pdc_name"] = pdc.get("name", "")
+        data_to_log["pdc_id"] = pdc.get("id", "")
+        data_to_log["pdc_endpoint_id"] = pdc.get("endpoint_id", "")
+        record_result(log, ResultLevel.SUCCESS, f"PDC Name: {pdc.get('name', '')}")
+        record_result(log, ResultLevel.SUCCESS, f"PDC ID: {pdc.get('id', '')}")
+        record_result(log, ResultLevel.SUCCESS, f"PDC Endpoint ID: {pdc.get('endpoint_id', '')}")
+    else:
+        record_result(log, ResultLevel.INFO, "No configuration with PDC=True found")
+
+    ads = get_configuration_data(log, http_client, cwpsa_base_url, company_id, "ADS")
+    if ads != None:
+        data_to_log["ads_name"] = ads.get("name", "")
+        data_to_log["ads_id"] = ads.get("id", "")
+        data_to_log["ads_endpoint_id"] = ads.get("endpoint_id", "")
+        record_result(log, ResultLevel.SUCCESS, f"ADS Name: {ads.get('name', '')}")
+        record_result(log, ResultLevel.SUCCESS, f"ADS ID: {ads.get('id', '')}")
+        record_result(log, ResultLevel.SUCCESS, f"ADS Endpoint ID: {ads.get('endpoint_id', '')}")
+    else:
+        record_result(log, ResultLevel.INFO, "No configuration with ADS=True found")
 
 def main():
     try:
@@ -339,8 +367,6 @@ def main():
             ticket_number = input.get_value("TicketNumber_1755168905267")
             operation = input.get_value("Operation_1755168907892")
             user_identifier = input.get_value("User_1755168921921")
-            question = input.get_value("Question_1755202849136")
-            answer = input.get_value("Answer_1755202853492")
             contact_id = input.get_value("ContactID_1759383051920")
             active = input.get_value("Active_1759383209338")
             last_login_name = input.get_value("LastLoginName_1759383169373")
@@ -359,8 +385,6 @@ def main():
         ticket_number = ticket_number.strip() if ticket_number else ""
         operation = operation.strip() if operation else ""
         user_identifier = user_identifier.strip() if user_identifier else ""
-        question = question.strip() if question else ""
-        answer = answer.strip() if answer else ""
 
         if not ticket_number:
             record_result(log, ResultLevel.WARNING, "Ticket number input is required")
@@ -375,142 +399,13 @@ def main():
             return
 
         if operation == "Get Configurations":
-            configuration_data = {
-                "contact_id": contact_id,
-                "configuration_name": configuration_name,
-                "type": type,
-                "site": site,
-                "serial_number": serial_number,
-                "tag_number": tag_number,
-                "model_number": model_number,
-                "last_login_name": last_login_name,
-                "os_type": os_type,
-                "active": active
-            }
-            configurations = get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_identifier, configuration_data)
-            if configurations:
-                if len(configurations) > 1:
-                    record_result(log, ResultLevel.WARNING, f"Multiple configurations found:")
-                    config_ids = []
-                    for configuration in configurations:
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {configuration.get('id', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {configuration.get('type', {}).get('name', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {configuration.get('site', {}).get('name', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {configuration.get('serialNumber', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {configuration.get('tagNumber', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {configuration.get('modelNumber', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {configuration.get('lastLoginName', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {configuration.get('osType', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {configuration.get('status', {}).get('name', '')}")
-                        config_ids.append(configuration.get('id'))
-                    data_to_log["configuration_ids"] = config_ids
-                    return
-                elif len(configurations) == 1:
-                    config = configurations[0]
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration found:")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration: {config.get('name', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {config.get('id', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {config.get('type', {}).get('name', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {config.get('site', {}).get('name', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {config.get('serialNumber', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {config.get('tagNumber', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {config.get('modelNumber', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {config.get('lastLoginName', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {config.get('osType', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {config.get('status', {}).get('name', '')}")
-                    data_to_log["configuration_id"] = config.get('id')
+            if user_identifier:
+                handle_user_configurations(log, http_client, cwpsa_base_url, user_identifier, company_identifier, company_id, data_to_log)
             else:
-                record_result(log, ResultLevel.INFO, f"No configurations found with details: {configuration_data}")
+                handle_criteria_configurations(log, http_client, cwpsa_base_url, company_identifier, contact_id, configuration_name, type, site, serial_number, tag_number, model_number, last_login_name, os_type, active, data_to_log)
 
-        if operation == "Get PDC and ADS":
-            pdc = get_configuration_data(log, http_client, cwpsa_base_url, company_id, "PDC")
-            if pdc != None:
-                data_to_log["pdc_name"] = pdc.get("name", "")
-                data_to_log["pdc_id"] = pdc.get("id", "")
-                data_to_log["pdc_endpoint_id"] = pdc.get("endpoint_id", "")
-                record_result(log, ResultLevel.SUCCESS, f"PDC Name: {pdc.get('name', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"PDC ID: {pdc.get('id', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"PDC Endpoint ID: {pdc.get('endpoint_id', '')}")
-            else:
-                record_result(log, ResultLevel.INFO, "No configuration with PDC=True found")
-
-            ads = get_configuration_data(log, http_client, cwpsa_base_url, company_id, "ADS")
-            if ads != None:
-                data_to_log["ads_name"] = ads.get("name", "")
-                data_to_log["ads_id"] = ads.get("id", "")
-                data_to_log["ads_endpoint_id"] = ads.get("endpoint_id", "")
-                record_result(log, ResultLevel.SUCCESS, f"ADS Name: {ads.get('name', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"ADS ID: {ads.get('id', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"ADS Endpoint ID: {ads.get('endpoint_id', '')}")
-            else:
-                record_result(log, ResultLevel.INFO, "No configuration with ADS=True found")
-
-        elif operation == "Get Configurations of User":
-            if not user_identifier or not company_id:
-                record_result(log, ResultLevel.WARNING, "Missing User Identifier or CompanyID for configuration lookup")
-                return
-            
-            contact = get_contact(log, http_client, cwpsa_base_url, user_identifier, company_identifier)
-            if not contact:
-                record_result(log, ResultLevel.WARNING, f"No contact found with user identifier [{user_identifier}] in company [{company_identifier}]")
-                return
-            
-            contact_id = contact.get("id")
-            log.info(f"Found contact ID [{contact_id}] for user identifier [{user_identifier}]")
-            
-            device_line, device_note = get_user_configuration_items(log, http_client, cwpsa_base_url, company_id, contact_id)
-            if device_line:
-                data_to_log["Device"] = device_line
-                record_result(log, ResultLevel.SUCCESS, "Configuration found assigned to user:")
-                for line in device_note.split("\n"):
-                    record_result(log, ResultLevel.SUCCESS, line)
-            else:
-                record_result(log, ResultLevel.SUCCESS, f"No configuration items found for contact ID [{contact_id}]")
-
-        elif operation == "Get Submission":
-            submission_data = get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier)
-            if submission_data:
-                data_to_log["Submission_ID"] = submission_data.get("id")
-                for question, question_info in submission_data["questions"].items():
-                    data_to_log[question] = question_info["answer"]
-                record_result(log, ResultLevel.SUCCESS, f"Retrieved submission data for ticket [{ticket_number}] with {len(submission_data['questions'])} identifiers")
-            else:
-                record_result(log, ResultLevel.WARNING, f"No submission configuration found for ticket [{ticket_number}] or no identifiers provided")
-
-        elif operation == "Update Submission":
-            if not question:
-                record_result(log, ResultLevel.WARNING, "Question input is required for Update Submission operation")
-                return
-            if not answer:
-                record_result(log, ResultLevel.WARNING, "Answer input is required for Update Submission operation")
-                return
-            
-            submission_data = get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier)
-            config_id = submission_data.get("id")
-            if not config_id:
-                record_result(log, ResultLevel.WARNING, f"No configuration found with name [{ticket_number}] and type 'Automation - Submission' to update")
-                return
-
-            question_id = None
-            for question_text, question_info in submission_data["questions"].items():
-                if question_text == question:
-                    question_id = question_info.get("questionId")
-                    break
-
-            if not question_id:
-                record_result(log, ResultLevel.WARNING, f"Question '{question}' not found in configuration [{ticket_number}]")
-                return
-
-            success = update_configuration_question(log, http_client, cwpsa_base_url, config_id, question_id, answer)
-            if success:
-                updated_submission_data = get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier)
-                if updated_submission_data:
-                    data_to_log["Submission_ID"] = updated_submission_data.get("id")
-                    for question_text, question_info in updated_submission_data["questions"].items():
-                        data_to_log[question_text] = question_info["answer"]
-                record_result(log, ResultLevel.SUCCESS, f"Updated question [{question}] with value [{answer}] for configuration [{ticket_number}]")
-            else:
-                record_result(log, ResultLevel.WARNING, f"Failed to update question [{question}] with value [{answer}] for configuration [{ticket_number}]")
+        elif operation == "Get PDC and ADS":
+            handle_pdc_ads_configurations(log, http_client, cwpsa_base_url, company_id, data_to_log)
 
         else:
             record_result(log, ResultLevel.WARNING, f"Unknown operation [{operation}]")
