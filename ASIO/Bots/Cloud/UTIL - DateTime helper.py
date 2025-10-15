@@ -61,15 +61,13 @@ def convert_to_epoch_and_formats(log, raw_date, country, city, add_minutes):
         friendly = dt_friendly.strftime("%d/%m/%Y %I:%M %p")
         cwpsa_friendly = dt_friendly.astimezone(ZoneInfo("UTC")).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        dt_offset_local = dt_local + timedelta(minutes=add_minutes)
-        dt_offset_utc = dt_offset_local.astimezone(ZoneInfo("UTC"))
-        friendly_offset = dt_offset_local.strftime("%d/%m/%Y %I:%M %p")
-        cwpsa_offset = dt_offset_local.astimezone(ZoneInfo("UTC")).strftime("%Y-%m-%dT%H:%M:%SZ")
-
         dt_now_local = datetime.now(tzinfo)
         dt_now_utc = dt_now_local.astimezone(ZoneInfo("UTC"))
         friendly_now = dt_now_local.strftime("%d/%m/%Y %I:%M %p")
         cwpsa_now = dt_now_local.astimezone(ZoneInfo("UTC")).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        # Calculate epochs
+        now_epoch = int(dt_now_utc.timestamp() * 1000)
 
         return {
             "original_local": dt_local.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -77,14 +75,11 @@ def convert_to_epoch_and_formats(log, raw_date, country, city, add_minutes):
             "original_friendly_time": friendly,
             "original_cwpsa_friendly": cwpsa_friendly,
             "original_epoch": original_epoch,
-            "offset_local": dt_offset_local.strftime("%Y-%m-%dT%H:%M:%S"),
-            "offset_utc": dt_offset_utc.strftime("%Y-%m-%dT%H:%M:%S"),
-            "offset_friendly_time": friendly_offset,
-            "offset_cwpsa_friendly": cwpsa_offset,
             "now_local": dt_now_local.strftime("%Y-%m-%dT%H:%M:%S"),
             "now_utc": dt_now_utc.strftime("%Y-%m-%dT%H:%M:%S"),
             "now_friendly_time": friendly_now,
             "now_cwpsa_friendly": cwpsa_now,
+            "now_epoch": now_epoch,
             "datetime_format": "yyyy-MM-dd'T'HH:mm:ss",
             "datetime_tz": tz
         }
@@ -175,38 +170,26 @@ def main():
         data_to_log.update(datetime_data)
 
         if operation == "Check if input date is today or in the past":
-            if check_input_date_in_past(log, datetime_data["original_local"], country, city):
-                data_to_log["datetime_in_past"] = "Yes"
-                data_to_log["datetime_today"] = "No"
-                now_offset_utc = datetime.now(tz) + timedelta(minutes=add_minutes)
-                epoch = int(now_offset_utc.astimezone(ZoneInfo("UTC")).timestamp() * 1000)
-                data_to_log["epoch"] = epoch
-                if (add_minutes > 0):
-                    record_result(log, ResultLevel.SUCCESS, f"Input datetime is in the past. Added {add_minutes} minutes to the input time.")
-                else:
-                    record_result(log, ResultLevel.SUCCESS, f"Input datetime is in the past. No minutes added to the input time.")
-                log.info(data_to_log)
-                return
-            if check_input_date_is_today(log, datetime_data["original_local"], country, city):
+            tz = ZoneInfo(f"{country}/{city}" if city else country)
+            dt_now_with_offset = datetime.now(tz) + timedelta(minutes=add_minutes)
+            dt_now_with_offset_utc = dt_now_with_offset.astimezone(ZoneInfo("UTC"))
+            epoch = int(dt_now_with_offset_utc.timestamp() * 1000)
+            
+            if check_input_date_in_past(log, datetime_data["original_local"], country, city) or check_input_date_is_today(log, datetime_data["original_local"], country, city):
                 data_to_log["datetime_today"] = "Yes"
-                data_to_log["datetime_in_past"] = "No"
-                epoch = int(datetime.strptime(datetime_data["original_utc"], "%Y-%m-%dT%H:%M:%S").timestamp() * 1000)
                 data_to_log["epoch"] = epoch
                 if (add_minutes > 0):
-                    record_result(log, ResultLevel.SUCCESS, f"Input datetime is today. Added {add_minutes} minutes to the input time.")
+                    record_result(log, ResultLevel.SUCCESS, f"Input datetime is today or in the past. Added {add_minutes} minutes to the current time.")
                 else:
-                    record_result(log, ResultLevel.SUCCESS, f"Input datetime is today. No minutes added to the input time.")
+                    record_result(log, ResultLevel.SUCCESS, f"Input datetime is today or in the past. No minutes added to the current time.")
                 log.info(data_to_log)
             else:
                 data_to_log["datetime_today"] = "No"
-                data_to_log["datetime_in_past"] = "No"
-                now_offset_utc = datetime.now(tz) + timedelta(minutes=add_minutes)
-                epoch = int(datetime.strptime(datetime_data["original_utc"], "%Y-%m-%dT%H:%M:%S").timestamp() * 1000)
                 data_to_log["epoch"] = epoch
                 if (add_minutes > 0):
-                    record_result(log, ResultLevel.INFO, f"Input date is not today. Added {add_minutes} minutes to the input time.")
+                    record_result(log, ResultLevel.INFO, f"Input date is not today. Added {add_minutes} minutes to the current time.")
                 else:
-                    record_result(log, ResultLevel.INFO, f"Input date is not today. No minutes added to the input time.")
+                    record_result(log, ResultLevel.INFO, f"Input date is not today. No minutes added to the current time.")
                 log.info(data_to_log)
 
         elif operation == "Convert datetime to epoch and formats":

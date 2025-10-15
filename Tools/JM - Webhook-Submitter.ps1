@@ -14,7 +14,7 @@ $webhookUrl = "https://1ce978e3-0165-4625-bc15-bdcdfaeb9c7e.webhook.ae.azure-aut
 $webhookUrl = "https://1ce978e3-0165-4625-bc15-bdcdfaeb9c7e.webhook.ae.azure-automation.net/webhooks?token=sQW%2fjdKaRYKge1K4LgYMGQnysAu9AHnwOozpjdJkYSY%3d"
 
 
-$WebhookData = Get-Content -Path "C:\Workspace\ics_workspace\MIT-ASIO\DEV\Tools\JM - TestPayload.json" -Raw
+$WebhookData = Get-Content -Path "D:\Workspace\ics-workspace\ICS-Shared\Tools\JM - TestPayload.json" -Raw
 
 $response = Invoke-RestMethod -Uri $webhookUrl -Method Post -Body $WebhookData -ContentType "application/json"
 
