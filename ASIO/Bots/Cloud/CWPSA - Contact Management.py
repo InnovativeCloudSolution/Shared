@@ -523,7 +523,7 @@ def main():
                 else:
                     vip = "Yes"
                 record_result(log, ResultLevel.SUCCESS,f"Contact ID: [{contact.get('id')}], First Name: [{contact.get('firstName')}], Last Name: [{contact.get('lastName')}], Email: [{email}],Direct Phone: [{direct_phone}], Mobile Phone: [{mobile_phone}], Types: [{types}], VIP: [{vip}]")
-                data_to_log["contact_id"] = contact[0].get("id")
+                data_to_log["contact_id"] = contact.get("id")
             else:
                 record_result(log, ResultLevel.WARNING, f"No contact found with contact details: {contact_details} in company: {company_identifier}")
 

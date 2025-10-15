@@ -403,7 +403,7 @@ def main():
                         record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {configuration.get('osType', '')}")
                         record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {configuration.get('status', {}).get('name', '')}")
                         config_ids.append(configuration.get('id'))
-                    data_to_log["configuration_ids"] = config_ids
+                    data_to_log["configuration_id"] = config_ids
                     return
                 elif len(configurations) == 1:
                     config = configurations[0]
