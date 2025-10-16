@@ -399,55 +399,8 @@ def main():
             return
 
         if operation == "Get Configurations":
-<<<<<<< HEAD
-            configuration_data = {
-                "contact_id": contact_id,
-                "configuration_name": configuration_name,
-                "type": type,
-                "site": site,
-                "serial_number": serial_number,
-                "tag_number": tag_number,
-                "model_number": model_number,
-                "last_login_name": last_login_name,
-                "os_type": os_type,
-                "active": active
-            }
-            configurations = get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_identifier, configuration_data)
-            if configurations:
-                if len(configurations) > 1:
-                    record_result(log, ResultLevel.WARNING, f"Multiple configurations found:")
-                    config_ids = []
-                    for configuration in configurations:
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {configuration.get('id', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {configuration.get('type', {}).get('name', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {configuration.get('site', {}).get('name', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {configuration.get('serialNumber', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {configuration.get('tagNumber', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {configuration.get('modelNumber', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {configuration.get('lastLoginName', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {configuration.get('osType', '')}")
-                        record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {configuration.get('status', {}).get('name', '')}")
-                        config_ids.append(configuration.get('id'))
-                    data_to_log["configuration_id"] = config_ids
-                    return
-                elif len(configurations) == 1:
-                    config = configurations[0]
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration found:")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration: {config.get('name', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {config.get('id', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {config.get('type', {}).get('name', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {config.get('site', {}).get('name', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {config.get('serialNumber', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {config.get('tagNumber', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {config.get('modelNumber', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {config.get('lastLoginName', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {config.get('osType', '')}")
-                    record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {config.get('status', {}).get('name', '')}")
-                    data_to_log["configuration_id"] = config.get('id')
-=======
             if user_identifier:
                 handle_user_configurations(log, http_client, cwpsa_base_url, user_identifier, company_identifier, company_id, data_to_log)
->>>>>>> 3a16fd6636f42d7ca51f03e5c4a139d588dc1a1f
             else:
                 handle_criteria_configurations(log, http_client, cwpsa_base_url, company_identifier, contact_id, configuration_name, type, site, serial_number, tag_number, model_number, last_login_name, os_type, active, data_to_log)
 
