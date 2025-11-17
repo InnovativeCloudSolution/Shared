@@ -1,5 +1,8 @@
 ﻿import sys
 import re
+import random
+import time
+import requests
 import subprocess
 import os
 from cw_rpa import Logger, Input, HttpClient, ResultLevel
@@ -10,6 +13,8 @@ log = Logger()
 http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
+
+cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
 
 data_to_log = {}
 bot_name = "MIT-AD User(s) Management"
@@ -22,6 +27,81 @@ def record_result(log, level, message):
     elif level == ResultLevel.SUCCESS:
         if "status_result" not in data_to_log or data_to_log["status_result"] != "Fail":
             data_to_log["status_result"] = "Success"
+
+def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, integration_name=None, headers=None, params=None):
+    base_delay = 5
+    log.info(f"Executing API call: {method.upper()} {endpoint}")
+    for attempt in range(retries):
+        try:
+            if integration_name:
+                response = (
+                    getattr(http_client.third_party_integration(integration_name), method)(url=endpoint, json=data)
+                    if data else getattr(http_client.third_party_integration(integration_name), method)(url=endpoint)
+                )
+            else:
+                request_args = {"url": endpoint}
+                if params:
+                    request_args["params"] = params
+                if headers:
+                    request_args["headers"] = headers
+                if data:
+                    if (headers and headers.get("Content-Type") == "application/x-www-form-urlencoded"):
+                        request_args["data"] = data
+                    else:
+                        request_args["json"] = data
+                response = getattr(requests, method)(**request_args)
+
+            if 200 <= response.status_code < 300:
+                return response
+            elif response.status_code in [429, 503]:
+                retry_after = response.headers.get("Retry-After")
+                wait_time = int(retry_after) if retry_after else base_delay * (2 ** attempt) + random.uniform(0, 3)
+                log.warning(f"Rate limit exceeded. Retrying in {wait_time:.2f} seconds")
+                time.sleep(wait_time)
+            elif 400 <= response.status_code < 500:
+                if response.status_code == 404:
+                    log.warning(f"Skipping non-existent resource [{endpoint}]")
+                    return None
+                log.error(f"Client error Status: {response.status_code}, Response: {response.text}")
+                return response
+            elif 500 <= response.status_code < 600:
+                log.warning(f"Server error Status: {response.status_code}, attempt {attempt + 1} of {retries}")
+                time.sleep(base_delay * (2 ** attempt) + random.uniform(0, 3))
+            else:
+                log.error(f"Unexpected response Status: {response.status_code}, Response: {response.text}")
+                return response
+        
+        except Exception as e:
+            log.exception(e, f"Exception during API call to {endpoint}")
+            return None
+    return None
+
+def post_ticket_note(log, http_client, cwpsa_base_url, ticket_number, note_type, note):
+    log.info(f"Posting {note_type} note to ticket [{ticket_number}]")
+    note_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}/notes"
+    payload = {
+        "text": note,
+        "detailDescriptionFlag": False,
+        "internalAnalysisFlag": False,
+        "resolutionFlag": False,
+        "issueFlag": False,
+        "internalFlag": False,
+        "externalFlag": False,
+        "contact": {
+            "id": 15655
+        }
+    }
+    if note_type == "discussion":
+        payload["detailDescriptionFlag"] = True
+    elif note_type == "internal":
+        payload["internalAnalysisFlag"] = True
+    note_response = execute_api_call(log, http_client, "post", note_endpoint, integration_name="cw_psa", data=payload)
+    if note_response and note_response.status_code == 200:
+        log.info(f"{note_type} note posted successfully to ticket [{ticket_number}]")
+        return True
+    else:
+        log.error(f"Failed to post {note_type} note to ticket [{ticket_number}] Status: {note_response.status_code}, Body: {note_response.text}")
+    return False
 
 def execute_powershell(log, command, shell="pwsh", debug_mode=False, timeout=None, ignore_stderr_warnings=False, log_command=True, log_output=True):
     try:
@@ -472,6 +552,7 @@ def hide_user_from_gal(log, user_sam):
 def main():
     try:
         try:
+            cwpsa_ticket = input.get_value("TicketNumber_1763362009760")
             operation = input.get_value("Operation_1756856396879")
             user = input.get_value("User_1756858724784")
             username = input.get_value("Username_1743998828806")
@@ -506,10 +587,12 @@ def main():
             profile_path = input.get_value("ProfilePath_1744056569625")
             home_drive = input.get_value("HomeDriveLetter_1744056566969")
             home_directory = input.get_value("HomeDirectory_1744056574419")
+            post_discussion_note = input.get_value("PostDiscussionNote_1763360733719")
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch input values")
             return
 
+        cwpsa_ticket = cwpsa_ticket.strip() if cwpsa_ticket else ""
         operation = operation.strip() if operation else ""
         username = username.strip() if username else ""
         user = user.strip() if user else ""
@@ -547,6 +630,10 @@ def main():
         home_directory = home_directory.strip() if home_directory else ""
 
         log.info(f"Requested operation = [{operation}]")
+
+        if not cwpsa_ticket:
+            record_result(log, ResultLevel.WARNING, "Ticket number is required but missing")
+            return
 
         if not operation:
             record_result(log, ResultLevel.WARNING, "Operation is required.")
@@ -597,95 +684,98 @@ def main():
             }
             missing = [k for k, v in required.items() if not v]
             if missing:
-                log.error(f"Missing required inputs: {', '.join(missing)}")
+                record_result(log, ResultLevel.WARNING, f"Missing required inputs: {', '.join(missing)}")
                 return
             success, output = create_user(log, user_details)
             if success:
-                log.info(f"AD user [{user_details.get('UserLogonName')}] created successfully")
                 record_result(log, ResultLevel.SUCCESS, f"AD user [{user_details.get('UserLogonName')}] created successfully")
+                post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AD user [{user_details.get('UserLogonName')}] created successfully") if post_discussion_note == "Yes" else None
             else:
-                log.error(f"Encountered issues while creating AD user [{user_details.get('UserLogonName')}]")
+                record_result(log, ResultLevel.WARNING, f"Encountered issues while creating AD user [{user_details.get('UserLogonName')}]")
 
         elif operation == "Disable user":
             if not user:
-                log.error("User identifier is required")
+                record_result(log, ResultLevel.WARNING, "User identifier is required")
                 return
             user_primary_smtp_address, user_sam = get_ad_user_data(log, user)
             if not user_primary_smtp_address:
-                log.error(f"Unable to resolve user SMTP address for [{user}]")
+                record_result(log, ResultLevel.WARNING, f"Unable to resolve user SMTP address for [{user}]")
                 return
             if not user_sam:
-                log.error(f"No SAM account name found for [{user}] (cloud-only user)")
+                record_result(log, ResultLevel.WARNING, f"No SAM account name found for [{user}] (cloud-only user)")
                 return
             success, output = disable_user(log, user_sam)
             if success:
                 record_result(log, ResultLevel.SUCCESS, f"AD user [{user_sam}] disabled successfully")
+                post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AD user [{user_sam}] disabled successfully") if post_discussion_note == "Yes" else None
             else:
-                log.error(f"Failed to disable AD user [{user_sam}]")
+                record_result(log, ResultLevel.WARNING, f"Failed to disable AD user [{user_sam}]")
 
         elif operation == "Hide user from GAL":
             if not user:
-                log.error("User identifier is required")
+                record_result(log, ResultLevel.WARNING, "User identifier is required")
                 return
             user_primary_smtp_address, user_sam = get_ad_user_data(log, user)
             if not user_primary_smtp_address:
-                log.error(f"Unable to resolve user SMTP address for [{user}]")
+                record_result(log, ResultLevel.WARNING, f"Unable to resolve user SMTP address for [{user}]")
                 return
             if not user_sam:
-                log.error(f"No SAM account name found for [{user}]")
+                record_result(log, ResultLevel.WARNING, f"No SAM account name found for [{user}]")
                 return
             success, output = hide_user_from_gal(log, user_sam)
             if success:
                 record_result(log, ResultLevel.SUCCESS, f"AD user [{user_sam}] hidden from GAL successfully")
+                post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AD user [{user_sam}] hidden from GAL successfully") if post_discussion_note == "Yes" else None
             else:
-                log.error(f"Failed to hide AD user [{user_sam}] from GAL")
+                record_result(log, ResultLevel.WARNING, f"Failed to hide AD user [{user_sam}] from GAL")
 
         elif operation == "Move user to another OU":
             if not user:
-                log.error("User identifier is required")
+                record_result(log, ResultLevel.WARNING, "User identifier is required")
                 return
             if not organizational_unit:
-                log.error("OrganizationalUnit is required")
+                record_result(log, ResultLevel.WARNING, "OrganizationalUnit is required")
                 return
             user_primary_smtp_address, user_sam = get_ad_user_data(log, user)
             if not user_primary_smtp_address:
-                log.error(f"Unable to resolve user SMTP address for [{user}]")
+                record_result(log, ResultLevel.WARNING, f"Unable to resolve user SMTP address for [{user}]")
                 return
             if not user_sam:
-                log.error(f"No SAM account name found for [{user}] (cloud-only user)")
+                record_result(log, ResultLevel.WARNING, f"No SAM account name found for [{user}] (cloud-only user)")
                 return
             success, output = move_user_ou(log, user_sam, organizational_unit)
             if success:
                 record_result(log, ResultLevel.SUCCESS, f"User [{user_sam}] successfully moved to [{organizational_unit}]")
+                post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"User [{user_sam}] successfully moved to [{organizational_unit}]") if post_discussion_note == "Yes" else None
             else:
-                log.error(f"Failed to move user [{user_sam}] to [{organizational_unit}]")
+                record_result(log, ResultLevel.WARNING, f"Failed to move user [{user_sam}] to [{organizational_unit}]")
 
         elif operation == "Reset user password":
             if not user:
-                log.error("User identifier is required")
+                record_result(log, ResultLevel.WARNING, "User identifier is required")
                 return
             if not password:
-                log.error("Password is required")
+                record_result(log, ResultLevel.WARNING, "Password is required")
                 return
             user_primary_smtp_address, user_sam = get_ad_user_data(log, user)
             if not user_primary_smtp_address:
-                log.error(f"Unable to resolve user SMTP address for [{user}]")
+                record_result(log, ResultLevel.WARNING, f"Unable to resolve user SMTP address for [{user}]")
                 return
             if not user_sam:
-                log.error(f"No SAM account name found for [{user}] (cloud-only user)")
+                record_result(log, ResultLevel.WARNING, f"No SAM account name found for [{user}] (cloud-only user)")
                 return
             success, output = reset_user_password(log, user_sam, password)
             if success:
                 record_result(log, ResultLevel.SUCCESS, f"Password reset successfully for user [{user_sam}]")
+                post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"Password reset successfully for user [{user_sam}]") if post_discussion_note == "Yes" else None
             else:
-                log.error(f"Failed to reset password for user [{user_sam}]")
+                record_result(log, ResultLevel.WARNING, f"Failed to reset password for user [{user_sam}]")
 
         else:
             record_result(log, ResultLevel.WARNING, f"Unsupported Operation [{operation}]")
 
     except Exception as e:
-        log.error(f"Unhandled error in main: {str(e)}")
-        record_result(log, ResultLevel.WARNING, "Unhandled exception occurred during execution")
+        record_result(log, ResultLevel.WARNING, f"Unhandled error in main: {str(e)}")
     finally:
         log.result_data(data_to_log)
 

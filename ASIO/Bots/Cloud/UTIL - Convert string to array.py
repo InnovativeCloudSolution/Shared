@@ -89,13 +89,14 @@ def main():
         structured_list = convert_string_to_list(
             log, raw_string, delimiter1, delimiter2, delimiter3, delimiter4
         )
+        log.info(f"Structured list = [{structured_list}]")
         data_to_log["parsed_string"] = structured_list
 
         log_lines = [f"Processed {len(structured_list)} entries from Parsed input"]
         for row in structured_list:
             line = []
             for i in range(1, 6):
-                value = row.get(f"String{i}", "").strip()
+                value = row.get(f"string_{i}", "").strip()
                 if value:
                     line.append(f"{i} [{value}]")
             log_lines.append("- " + ", ".join(line))

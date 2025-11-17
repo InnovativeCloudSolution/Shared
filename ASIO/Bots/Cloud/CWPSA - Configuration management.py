@@ -306,34 +306,17 @@ def handle_criteria_configurations(log, http_client, cwpsa_base_url, company_ide
     configurations = get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_identifier, configuration_data)
     if configurations:
         if len(configurations) > 1:
-            record_result(log, ResultLevel.WARNING, f"Multiple configurations found:")
+            record_result(log, ResultLevel.WARNING, "Multiple configurations found:")
             config_ids = []
             for configuration in configurations:
                 record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {configuration.get('id', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {configuration.get('type', {}).get('name', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {configuration.get('site', {}).get('name', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {configuration.get('serialNumber', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {configuration.get('tagNumber', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {configuration.get('modelNumber', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {configuration.get('lastLoginName', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {configuration.get('osType', '')}")
-                record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {configuration.get('status', {}).get('name', '')}")
                 config_ids.append(configuration.get('id'))
             data_to_log["configuration_ids"] = config_ids
             return
         elif len(configurations) == 1:
             config = configurations[0]
-            record_result(log, ResultLevel.SUCCESS, f"Configuration found:")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration: {config.get('name', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration ID: {config.get('id', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration Type: {config.get('type', {}).get('name', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration Site: {config.get('site', {}).get('name', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration Serial Number: {config.get('serialNumber', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration Tag Number: {config.get('tagNumber', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration Model Number: {config.get('modelNumber', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration Last Login Name: {config.get('lastLoginName', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration OS Type: {config.get('osType', '')}")
-            record_result(log, ResultLevel.SUCCESS, f"Configuration Active: {config.get('status', {}).get('name', '')}")
+            record_result(log, ResultLevel.SUCCESS, f"Configuration found with ID: {config.get('id', '')}")
+
             data_to_log["configuration_id"] = config.get('id')
     else:
         record_result(log, ResultLevel.INFO, f"No configurations found with details: {configuration_data}")
