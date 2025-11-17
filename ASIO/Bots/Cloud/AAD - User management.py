@@ -81,6 +81,33 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
             return None
     return None
 
+def post_ticket_note(log, http_client, cwpsa_base_url, ticket_number, note_type, note):
+    log.info(f"Posting {note_type} note to ticket [{ticket_number}]")
+    note_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}/notes"
+    payload = {
+        "text": note,
+        "detailDescriptionFlag": False,
+        "internalAnalysisFlag": False,
+        "resolutionFlag": False,
+        "issueFlag": False,
+        "internalFlag": False,
+        "externalFlag": False,
+        "contact": {
+            "id": 15655
+        }
+    }
+    if note_type == "discussion":
+        payload["detailDescriptionFlag"] = True
+    elif note_type == "internal":
+        payload["internalAnalysisFlag"] = True
+    note_response = execute_api_call(log, http_client, "post", note_endpoint, integration_name="cw_psa", data=payload)
+    if note_response and note_response.status_code == 200:
+        log.info(f"{note_type} note posted successfully to ticket [{ticket_number}]")
+        return True
+    else:
+        log.error(f"Failed to post {note_type} note to ticket [{ticket_number}] Status: {note_response.status_code}, Body: {note_response.text}")
+    return False
+
 def get_secret_value(log, http_client, vault_name, secret_name):
     log.info(f"Fetching secret [{secret_name}] from Key Vault [{vault_name}]")
     secret_url = (f"https://{vault_name}.vault.azure.net/secrets/{secret_name}?api-version=7.3")
@@ -660,6 +687,7 @@ def main():
                 "user_employee_id": input.get_value("EmployeeID_1755230963053"),
                 "user_employee_type": input.get_value("EmployeeType_1755230965799"),
                 "user_employee_hiredate": input.get_value("EmployeeHireDate_1755230971132"),
+                "post_discussion_note": input.get_value("PostDiscussionNote_1763353203051"),
                 "auth_code": input.get_value("AuthenticationCode_1755230968264"),
                 "graph_token": input.get_value("GraphToken_1755230974175")
             }
@@ -737,10 +765,13 @@ def main():
                 if user_details.get("organisation_manager"):
                     updated = update_aad_user_manager(log, http_client, msgraph_base_url, created_aad_user, user_details.get("organisation_manager"), graph_access_token)
                     if updated:
+                        post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AAD user [{user_identifier}] created and manager updated successfully.") if user_details.get("post_discussion_note") == "Yes" else None
                         record_result(log, ResultLevel.SUCCESS, f"AAD user [{user_identifier}] created and manager updated successfully.")
                     else:
+                        post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AAD user [{user_identifier}] created but failed to update manager.") if user_details.get("post_discussion_note") == "Yes" else None
                         record_result(log, ResultLevel.SUCCESS, f"AAD user [{user_identifier}] created but failed to update manager.")
                 else:
+                    post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AAD user [{user_identifier}] created successfully.") if user_details.get("post_discussion_note") == "Yes" else None
                     record_result(log, ResultLevel.SUCCESS, f"AAD user [{user_identifier}] created successfully.")
                 data_to_log['operation'] = operation
                 data_to_log['user_id'] = created_aad_user
@@ -760,10 +791,13 @@ def main():
                     if manager_upn:
                         manager_updated = update_aad_user_manager(log, http_client, msgraph_base_url, user_id, manager_upn, graph_access_token)
                         if manager_updated:
+                            post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AAD user [{user_identifier}] updated and manager set successfully.") if user_details.get("post_discussion_note") == "Yes" else None
                             record_result(log, ResultLevel.SUCCESS, f"AAD user [{user_identifier}] updated and manager set successfully")
                         else:
+                            post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AAD user [{user_identifier}] updated but failed to set manager.") if user_details.get("post_discussion_note") == "Yes" else None
                             record_result(log, ResultLevel.SUCCESS, f"AAD user [{user_identifier}] updated but failed to set manager")
                     else:
+                        post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AAD user [{user_identifier}] updated successfully.") if user_details.get("post_discussion_note") == "Yes" else None
                         record_result(log, ResultLevel.SUCCESS, f"AAD user [{user_identifier}] updated successfully")
                 else:
                     record_result(log, ResultLevel.WARNING, f"Failed to update AAD user [{user_identifier}]")
@@ -776,6 +810,7 @@ def main():
             else:
                 disabled = disable_aad_user(log, http_client, msgraph_base_url, user_id, graph_access_token)
                 if disabled:
+                    post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"AAD user [{user_identifier}] disabled successfully.") if user_details.get("post_discussion_note") == "Yes" else None
                     record_result(log, ResultLevel.SUCCESS, f"AAD user [{user_identifier}] disabled successfully")
                 else:
                     record_result(log, ResultLevel.WARNING, f"Failed to disable AAD user [{user_identifier}]")
@@ -787,6 +822,7 @@ def main():
             else:
                 revoked = revoke_aad_user_sessions(log, http_client, msgraph_base_url, user_id, graph_access_token)
                 if revoked:
+                    post_ticket_note(log, http_client, cwpsa_base_url, cwpsa_ticket, "discussion", f"Sessions revoked for AAD user [{user_identifier}].") if user_details.get("post_discussion_note") == "Yes" else None
                     record_result(log, ResultLevel.SUCCESS, f"Sessions revoked for AAD user [{user_identifier}]")
                 else:
                     record_result(log, ResultLevel.WARNING, f"Failed to revoke sessions for AAD user [{user_identifier}]")
@@ -809,6 +845,7 @@ def main():
                 reset = reset_aad_user_password(log, http_client, msgraph_base_url, user_id, new_password, force_reset, graph_access_token)
 
                 if reset:
+                    post_discussion_note(log, http_client, cwpsa_base_url, cwpsa_ticket, f"Password reset for AAD user [{user_identifier}] successfully.") if user_details.get("post_discussion_note") == "Yes" else None
                     record_result(log, ResultLevel.SUCCESS, f"Password reset for AAD user [{user_identifier}]")
                 else:
                     record_result(log, ResultLevel.WARNING, f"Failed to reset password for AAD user [{user_identifier}]")
@@ -821,6 +858,7 @@ def main():
             else:
                 success_msgs, failure_msgs = revoke_mfa_aad_methods(log, http_client, msgraph_base_url, user_id, graph_access_token)
                 for msg in success_msgs:
+                    post_discussion_note(log, http_client, cwpsa_base_url, cwpsa_ticket, f"MFA methods revoked for AAD user [{user_identifier}] successfully.") if user_details.get("post_discussion_note") == "Yes" else None
                     record_result(log, ResultLevel.SUCCESS, msg)
                 for msg in failure_msgs:
                     record_result(log, ResultLevel.WARNING, msg)
@@ -831,6 +869,7 @@ def main():
             else:
                 response, invited_payload, invited_aad_user, invited_aad_user_upn = invite_aad_guest_user(log, http_client, msgraph_base_url, user_details, graph_access_token)
                 if response:
+                    post_discussion_note(log, http_client, cwpsa_base_url, cwpsa_ticket, f"Guest user [{user_email}] invited successfully.") if user_details.get("post_discussion_note") == "Yes" else None
                     record_result(log, ResultLevel.SUCCESS, f"Guest user [{user_email}] invited successfully")
                 else:
                     record_result(log, ResultLevel.WARNING, f"Failed to invite guest user [{user_email}]")
