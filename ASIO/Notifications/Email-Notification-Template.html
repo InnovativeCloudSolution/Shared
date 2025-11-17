@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{EMAIL_TITLE}</title>
+</head>
+<body>
+
+<!-- SECTION: PREVIEW TEXT (hidden, shows in email preview) -->
+<div style="display: none; max-height: 0; overflow: hidden">
+  {PREVIEW_TEXT}
+</div>
+
+<center>
+  <table cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 960px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 0 10px #000000; box-sizing: border-box; padding: 32px">
+    <tbody>
+
+      <!-- SECTION: BANNER IMAGE -->
+      <tr>
+        <td style="text-align: center; padding-bottom: 20px">
+          <img src="https://mitazu1pubfilestore.blob.core.windows.net/connectwiseemailimages/MIT-BaseBanner.png" alt="Mangano IT" style="width: 100%; height: auto; border-radius: 12px; display: block">
+        </td>
+      </tr>
+
+      <!-- SECTION: MAIN HEADING -->
+      <tr>
+        <td style="text-align: center; padding: 20px 0; font-size: 28px; font-weight: 700; color: #212529"><font face="Verdana">
+          {MAIN_HEADING}
+        </font></td>
+      </tr>
+
+      <!-- SECTION: SUBHEADING -->
+      <tr>
+        <td style="text-align: center; padding: 0 20px 20px; font-size: 16px; font-weight: 600; color: #343a40"><font face="Verdana">
+          {SUBHEADING}
+        </font></td>
+      </tr>
+
+      <!-- SECTION: MAIN CONTENT -->
+      <tr>
+        <td style="padding: 0 20px 20px; font-size: 16px; line-height: 1.5; color: #343a40"><font face="Verdana">
+          
+          <!-- SUBSECTION: Intro Paragraph -->
+          {INTRO_PARAGRAPH}
+
+          <!-- SUBSECTION: Info Box (Green border) -->
+          </font><div style="background-color: #f8f9fa; border-left: 4px solid #9ccc50; padding: 15px; margin: 20px 0; text-align: left">
+            <p style="color: #333333; font-size: 16px; margin: 0 0 10px; font-weight: bold"><font face="Verdana">{INFO_BOX_TITLE}:</font></p>
+            {INFO_BOX_CONTENT}
+          </div>
+
+          <!-- SUBSECTION: General Paragraph -->
+          <p style="color: #333333; font-size: 16px; margin-bottom: 15px"><font face="Verdana">{GENERAL_PARAGRAPH}</font></p>
+
+          <!-- SUBSECTION: Warning Box (Yellow/Orange) -->
+          <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0">
+            <p style="color: #856404; font-size: 16px; margin: 0 0 10px; font-weight: bold"><font face="Verdana">{WARNING_BOX_TITLE}:</font></p>
+            <p style="color: #856404; font-size: 16px; margin: 0"><font face="Verdana">{WARNING_BOX_CONTENT}</font></p>
+          </div>
+
+          <!-- SUBSECTION: Success Box (Green) -->
+          <div style="background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; padding: 15px; margin: 20px 0">
+            <p style="color: #155724; font-size: 16px; margin: 0 0 10px; font-weight: bold"><font face="Verdana">{SUCCESS_BOX_TITLE}:</font></p>
+            <p style="color: #155724; font-size: 16px; margin: 0"><font face="Verdana">{SUCCESS_BOX_CONTENT}</font></p>
+          </div>
+
+          <!-- SUBSECTION: Another Paragraph -->
+          <p style="color: #333333; font-size: 16px; margin-bottom: 15px"><font face="Verdana">{ADDITIONAL_PARAGRAPH}</font></p>
+
+          <!-- SUBSECTION: Info Box (Blue) -->
+          <div style="background-color: #d1ecf1; border: 1px solid #bee5eb; border-radius: 8px; padding: 15px; margin: 20px 0">
+            <p style="color: #0c5460; font-size: 16px; margin: 0 0 10px; font-weight: bold"><font face="Verdana">{BLUE_BOX_TITLE}:</font></p>
+            <p style="color: #0c5460; font-size: 16px; margin: 0"><font face="Verdana">{BLUE_BOX_CONTENT}</font></p>
+          </div><font face="Verdana">
+
+          <!-- SUBSECTION: Closing Paragraph -->
+          {CLOSING_PARAGRAPH}
+
+        </font></td>
+      </tr>
+
+      <!-- SECTION: CONTACT INFORMATION -->
+      <tr>
+        <td style="padding: 20px; font-size: 16px; line-height: 1.5; color: #343a40">
+          <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
+            <tbody><tr>
+              <td style="width: 30%; font-weight: 600; font-size: 16px; color: #212529"><font face="Verdana">Any questions</font></td>
+              <td style="width: 70%; font-size: 16px"><font face="Verdana">
+                Service Portal:
+                <a target="_blank" href="https://portal.manganoit.com.au" style="color: #0066cc; text-decoration: none">https://portal.manganoit.com.au</a><br>
+                Email:
+                <a target="_blank" href="mailto:support@manganoit.com.au" style="color: #0066cc; text-decoration: none">support@manganoit.com.au</a><br>
+                Phone:
+                <a target="_blank" href="tel:+61731519000" style="color: #0066cc; text-decoration: none">(07) 3151 9000</a>
+              </font></td>
+            </tr>
+          </tbody></table>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</center>
+
+</body>
+</html>
