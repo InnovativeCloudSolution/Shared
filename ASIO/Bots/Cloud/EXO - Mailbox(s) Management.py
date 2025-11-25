@@ -943,27 +943,34 @@ def configure_email_forwarding(log, azure_domain, forwarding_email, recipient_em
         return False, output
     return True, output
 
-def update_mailbox_regional_configuration(log, azure_domain, user_email, time_zone, language, date_format, time_format, exo_access_token):
+def update_mailbox_regional_configuration(log, azure_domain, user_email, exo_access_token, time_zone=None, language=None, date_format=None, time_format=None):
     log.info(f"Updating regional configuration for user [{user_email}]")
     
-    def format_date_format(date_format_input):
-        if not date_format_input:
-            return "dd/MM/yyyy"
-        if date_format_input in ["dd-mm-yyyy", "dd/mm/yyyy"]:
-            return "dd/MM/yyyy"
-        return date_format_input
+    params = []
+    param_log = []
     
-    def format_time_format(time_format_input):
-        if not time_format_input:
-            return "HH:mm"
-        if time_format_input.isdigit() and len(time_format_input) == 4:
-            hours = time_format_input[:2]
-            minutes = time_format_input[2:]
-            return f"{hours}:{minutes}"
-        return time_format_input if time_format_input else "HH:mm"
+    if language:
+        params.append(f"-Language '{language}'")
+        param_log.append(f"Language: {language}")
     
-    formatted_date = format_date_format(date_format)
-    formatted_time = format_time_format(time_format)
+    if time_zone:
+        params.append(f"-TimeZone '{time_zone}'")
+        param_log.append(f"TimeZone: {time_zone}")
+    
+    if date_format:
+        params.append(f"-DateFormat '{date_format}'")
+        param_log.append(f"DateFormat: {date_format}")
+    
+    if time_format:
+        params.append(f"-TimeFormat '{time_format}'")
+        param_log.append(f"TimeFormat: {time_format}")
+    
+    if not params:
+        log.error("No parameters provided to update")
+        return False, "No parameters provided to update"
+    
+    params_string = " ".join(params)
+    param_log_string = ", ".join(param_log)
     
     ps_command = f"""
     $ErrorActionPreference = 'Stop'
@@ -971,8 +978,8 @@ def update_mailbox_regional_configuration(log, azure_domain, user_email, time_zo
     Connect-ExchangeOnline -AccessToken '{exo_access_token}' -Organization '{azure_domain}' -ShowBanner:$false
 
     try {{
-        Set-MailboxRegionalConfiguration -Identity '{user_email}' -Language '{language}' -TimeZone '{time_zone}' -DateFormat '{formatted_date}' -TimeFormat '{formatted_time}' -ErrorAction Stop
-        Write-Output "SUCCESS: Regional configuration updated for [{user_email}] - Language: {language}, TimeZone: {time_zone}, DateFormat: {formatted_date}, TimeFormat: {formatted_time}"
+        Set-MailboxRegionalConfiguration -Identity '{user_email}' {params_string} -ErrorAction Stop
+        Write-Output "SUCCESS: Regional configuration updated for [{user_email}] - {param_log_string}"
     }} catch {{
         Write-Output "ERROR: Failed to update regional configuration for [{user_email}] - $_"
     }}
