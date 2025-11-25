@@ -47,13 +47,13 @@
 #                                       #
 #########################################
 
-$GraphclientId = "e05b08c8-78aa-4bc2-9d3c-f99bca9bf5f6"
-$GraphclientSecret = "6a._9At5Yh3~-Bg1-j1iaHqKRR_6TsiEOm"
-$SPclientId = "5e3bb8a5-5c48-4715-8e0f-0333df9651bc"
-$SPclientSecret = "pN18Q~eatzFLx1R_AL1zelEfxL5rbHa_E1EVqb8n"
+$GraphclientId = ""
+$GraphclientSecret = ""
+$SPclientId = ""
+$SPclientSecret = ""
 $SPScope = "https://qrlcomau.sharepoint.com/.default"
-$ExoclientId = "df81cdc6-ef98-420d-84fd-51bfe0e7992c"
-$ExoclientSecret = "vy48Q~XSn4YdN-.eTVxLVLC55LNC~8CVHq8kYb63"
+$ExoclientId = ""
+$ExoclientSecret = ""
 $ExoScope = "https://outlook.office365.com/.default"
 $tenantId = "qrlcomau.onmicrosoft.com"
 $graphBase = "https://graph.microsoft.com/v1.0"
