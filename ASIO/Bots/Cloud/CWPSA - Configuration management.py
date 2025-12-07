@@ -1,5 +1,4 @@
-﻿from sqlite3 import SQLITE_LIMIT_VARIABLE_NUMBER
-import sys
+﻿import sys
 import random
 import os
 import time
