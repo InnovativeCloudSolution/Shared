@@ -14,11 +14,11 @@ $webhookUrl = "https://1ce978e3-0165-4625-bc15-bdcdfaeb9c7e.webhook.ae.azure-aut
 $webhookUrl = "https://1ce978e3-0165-4625-bc15-bdcdfaeb9c7e.webhook.ae.azure-automation.net/webhooks?token=sQW%2fjdKaRYKge1K4LgYMGQnysAu9AHnwOozpjdJkYSY%3d"
 #CW-RPA Bot Testing
 $webhookUrl = "https://au.webhook.myconnectwise.net/HbnQoSkfbblEL22NCL0OC5tioAKc210Qn8RDVW5754bdTNi8sO0t1c0h42g0oMybohfnBQ=="
+$secretToken = "S-KG_X0Yb79EfGvbUr0OD85koAHN1wsQzcUSUzd_ttaBHt7tT5gWuRObOXwpd_QhXp7_4g=="
 
+$WebhookData = Get-Content -Path "C:\Workspace\ics_workspace\ICS-Shared\Tools\JM - TestPayload.json" -Raw
 
-$WebhookData = Get-Content -Path "D:\Workspace\ics-workspace\ICS-Shared\Tools\JM - TestPayload.json" -Raw
-
-$response = Invoke-RestMethod -Uri $webhookUrl -Method Post -Body $WebhookData -ContentType "application/json"
+$response = Invoke-RestMethod -Uri $webhookUrl -Method Post -Body $WebhookData -ContentType "application/json" -Headers @{ "x-cw-secret-token" = $secretToken }
 
 if ($response) {
     Write-Output "Webhook triggered successfully. Response received:"

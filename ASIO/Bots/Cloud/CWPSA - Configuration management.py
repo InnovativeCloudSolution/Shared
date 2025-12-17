@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import random
 import os
 import time
@@ -13,11 +13,12 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
-vault_name = "mit-azu1-prod1-akv1"
+cwpsa_base_url = "https://aus.myconnectwise.net/v4_6_release/apis/3.0"
+msgraph_base_url = "https://graph.microsoft.com/v1.0"
+msgraph_base_url_beta = "https://graph.microsoft.com/beta"
 
 data_to_log = {}
-bot_name = "MIT-CWPSA - Configuration management"
+bot_name = "CWPSA - Configuration management"
 log.info("Static variables set")
 
 def record_result(log, level, message):
@@ -80,59 +81,40 @@ def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number
     log.info(f"Retrieving company details for ticket [{ticket_number}]")
     ticket_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
     ticket_response = execute_api_call(log, http_client, "get", ticket_endpoint, integration_name="cw_psa")
-
-    if ticket_response and ticket_response.status_code == 200:
+    if ticket_response:
         ticket_data = ticket_response.json()
         company = ticket_data.get("company", {})
-
         company_id = company["id"]
         company_identifier = company["identifier"]
         company_name = company["name"]
-
         log.info(f"Company ID: [{company_id}], Identifier: [{company_identifier}], Name: [{company_name}]")
-
         company_endpoint = f"{cwpsa_base_url}/company/companies/{company_id}"
         company_response = execute_api_call(log, http_client, "get", company_endpoint, integration_name="cw_psa")
-
-        company_type = ""
-        if company_response and company_response.status_code == 200:
+        company_types = []
+        if company_response:
             company_data = company_response.json()
-            company_type = company_data.get("type", {}).get("name", "")
-            log.info(f"Company type for ID [{company_id}]: [{company_type}]")
+            types = company_data.get("types", [])
+            company_types = [t.get("name", "") for t in types if "name" in t]
+            log.info(f"Company types for ID [{company_id}]: {company_types}")
         else:
-            log.warning(f"Unable to retrieve company type for ID [{company_id}]")
-
-        return company_identifier, company_name, company_id, company_type
-
-    elif ticket_response:
-        log.error(
-            f"Failed to retrieve ticket [{ticket_number}] "
-            f"Status: {ticket_response.status_code}, Body: {ticket_response.text}"
-        )
-    return "", "", 0, ""
+            log.warning(f"Unable to retrieve company types for ID [{company_id}]")
+        return company_identifier, company_name, company_id, company_types
+    return "", "", 0, []
 
 def get_ticket_data(log, http_client, cwpsa_base_url, ticket_number):
     try:
         log.info(f"Retrieving full ticket details for ticket number [{ticket_number}]")
         endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
         response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
-        if not response:
-            log.error(
-                f"Failed to retrieve ticket [{ticket_number}] - Status: {response.status_code if response else 'N/A'}"
-            )
-            return "", "", "", ""
-
-        ticket = response.json()
-        ticket_summary = ticket.get("summary", "")
-        ticket_type = ticket.get("type", {}).get("name", "")
-        priority_name = ticket.get("priority", {}).get("name", "")
-        due_date = ticket.get("requiredDate", "")
-
-        log.info(
-            f"Ticket [{ticket_number}] Summary = [{ticket_summary}], Type = [{ticket_type}], Priority = [{priority_name}], Due = [{due_date}]"
-        )
-        return ticket_summary, ticket_type, priority_name, due_date
-
+        if response:
+            ticket = response.json()
+            ticket_summary = ticket.get("summary", "")
+            ticket_type = ticket.get("type", {}).get("name", "")
+            priority_name = ticket.get("priority", {}).get("name", "")
+            due_date = ticket.get("requiredDate", "")
+            log.info(f"Ticket [{ticket_number}] Summary = [{ticket_summary}], Type = [{ticket_type}], Priority = [{priority_name}], Due = [{due_date}]")
+            return ticket_summary, ticket_type, priority_name, due_date
+        return "", "", "", ""
     except Exception as e:
         log.exception(e, f"Exception occurred while retrieving ticket details for [{ticket_number}]")
         return "", "", "", ""
@@ -156,7 +138,7 @@ def get_contact(log, http_client, cwpsa_base_url, user_identifier, company_ident
         log.warning(f"No contact found with user identifier: {user_identifier} in company: {company_identifier}")
         return None
 
-def build_query_string(configuration_data, company_identifier):
+def handle_query_string(configuration_data, company_identifier):
     """Builds URL-encoded conditions and childConditions query parameters."""
     conditions_matrix = [
         {"id": "condition_id", "condition": "id", "operator": "=", "type": "condition"},
@@ -195,7 +177,7 @@ def build_query_string(configuration_data, company_identifier):
 
 def get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_identifier, configuration_data):
     log.info(f"Searching for configurations by provided details: {configuration_data} in company: {company_identifier}")
-    query_string = build_query_string(configuration_data, company_identifier)
+    query_string = handle_query_string(configuration_data, company_identifier)
     log.info(f"Query string: {query_string}")
     endpoint = f"{cwpsa_base_url}/company/configurations?{query_string}"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
@@ -208,37 +190,6 @@ def get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_ide
     else:
         log.warning(f"No configurations found with details: {configuration_data} in company: {company_identifier}")
         return None
-
-def get_configuration_data(log, http_client, cwpsa_base_url, company_id, flag_caption):
-    conditions = f"company/id={company_id}"
-    custom_conditions = f'caption="{flag_caption}" AND value=true'
-    query_string = f"conditions={urllib.parse.quote(conditions)}&customFieldConditions={urllib.parse.quote(custom_conditions)}"
-    url = f"{cwpsa_base_url}/company/configurations?{query_string}"
-    response = execute_api_call(log, http_client, "get", url, integration_name="cw_psa")
-    if response:
-        try:
-            configs = response.json()
-        except Exception:
-            log.warning(f"Failed to decode configuration response JSON, or no configurations found for flag caption: [{flag_caption}]")
-            return None
-        for config in configs:
-            custom_fields = config.get("customFields", [])
-            has_flag = any(
-                f.get("caption") == flag_caption and f.get("value") is True
-                for f in custom_fields
-            )
-            if has_flag:
-                endpoint_id = next(
-                    (f.get("value") for f in custom_fields if f.get("caption") == "Endpoint ID"),
-                    ""
-                )
-                return {
-                    "name": config.get("name", ""),
-                    "id": config.get("id"),
-                    "endpoint_id": endpoint_id
-                }
-    log.warning(f"No configuration found for flag caption: [{flag_caption}]")
-    return None
 
 def get_user_configuration_items(log, http_client, cwpsa_base_url, company_id, contact_id):
     log.info(f"Fetching configurations for company ID [{company_id}] and contact ID [{contact_id}]")
@@ -270,6 +221,98 @@ def get_user_configuration_items(log, http_client, cwpsa_base_url, company_id, c
         return ", ".join(formatted_line), "\n".join(formatted_note)
     log.warning(f"No configuration items found for contact ID [{contact_id}] in company [{company_id}]")
     return "", ""
+
+def get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier):
+    log.info(f"Searching for configuration with name [{ticket_number}] and type 'Automation - Submission' in company [{company_identifier}]")
+    
+    conditions = f'name="{ticket_number}" AND type/name="Automation - Submission" AND company/identifier="{company_identifier}"'
+    query_string = f"conditions={urllib.parse.quote(conditions)}"
+    url = f"{cwpsa_base_url}/company/configurations?{query_string}"
+    
+    response = execute_api_call(log, http_client, "get", url, integration_name="cw_psa")
+    if not response:
+        return {}
+    
+    configs = response.json()
+    if not configs:
+        log.warning(f"No configuration found with name [{ticket_number}] and type 'Automation - Submission'")
+        return {}
+    
+    config = configs[0]
+    config_id = config.get("id")
+    log.info(f"Found configuration: {config.get('name', '')} (ID: {config_id})")
+    
+    questions = config.get("questions", [])
+    if not questions:
+        log.info("No questions found in configuration")
+        return {"id": config_id, "questions": {}}
+    
+    submission_data = {}
+    for question in questions:
+        question_text = question.get("question", "")
+        answer_value = question.get("answer")
+        question_id = question.get("questionId")
+        
+        if answer_value is not None and str(answer_value).strip():
+            submission_data[question_text] = {"answer": answer_value, "questionId": question_id}
+            log.info(f"Question: [{question_text}] = Answer: [{answer_value}] (ID: {question_id})")
+    
+    return {"id": config_id, "questions": submission_data}
+
+def get_configuration_by_id(log, http_client, cwpsa_base_url, config_id):
+    log.info(f"Retrieving configuration with ID [{config_id}]")
+    
+    url = f"{cwpsa_base_url}/company/configurations/{config_id}"
+    response = execute_api_call(log, http_client, "get", url, integration_name="cw_psa")
+    
+    if not response:
+        log.warning(f"No configuration found with ID [{config_id}]")
+        return {}
+    
+    config = response.json()
+    config_id = config.get("id")
+    config_name = config.get("name", "")
+    log.info(f"Found configuration: {config_name} (ID: {config_id})")
+    
+    questions = config.get("questions", [])
+    if not questions:
+        log.info("No questions found in configuration")
+        return {"id": config_id, "name": config_name, "questions": {}}
+    
+    questions_data = {}
+    for question in questions:
+        question_text = question.get("question", "")
+        answer_value = question.get("answer")
+        question_id = question.get("questionId")
+        
+        questions_data[question_text] = {"answer": answer_value if answer_value else "", "questionId": question_id}
+        log.info(f"Question: [{question_text}] = Answer: [{answer_value}] (Question ID: {question_id})")
+    
+    return {"id": config_id, "name": config_name, "questions": questions_data}
+
+def update_configuration_question(log, http_client, cwpsa_base_url, config_id, question_id, answer):
+    log.info(f"Updating configuration [{config_id}] question ID [{question_id}] with answer [{answer}]")
+    
+    update_data = [
+        {
+            "op": "replace",
+            "path": "/questions",
+            "value": [
+                {
+                    "questionId": question_id,
+                    "answer": answer
+                }
+            ]
+        }
+    ]
+    
+    update_url = f"{cwpsa_base_url}/company/configurations/{config_id}"
+    update_response = execute_api_call(log, http_client, "patch", update_url, data=update_data, integration_name="cw_psa")
+    
+    if update_response and update_response.status_code == 200:
+        log.info(f"Successfully updated configuration [{config_id}] question [{question_id}] with new answer")
+        return True
+    return False
 
 def handle_user_configurations(log, http_client, cwpsa_base_url, user_identifier, company_identifier, company_id, data_to_log):
     contact = get_contact(log, http_client, cwpsa_base_url, user_identifier, company_identifier)
@@ -320,28 +363,46 @@ def handle_criteria_configurations(log, http_client, cwpsa_base_url, company_ide
     else:
         record_result(log, ResultLevel.INFO, f"No configurations found with details: {configuration_data}")
 
-def handle_pdc_ads_configurations(log, http_client, cwpsa_base_url, company_id, data_to_log):
-    pdc = get_configuration_data(log, http_client, cwpsa_base_url, company_id, "PDC")
-    if pdc != None:
-        data_to_log["pdc_name"] = pdc.get("name", "")
-        data_to_log["pdc_id"] = pdc.get("id", "")
-        data_to_log["pdc_endpoint_id"] = pdc.get("endpoint_id", "")
-        record_result(log, ResultLevel.SUCCESS, f"PDC Name: {pdc.get('name', '')}")
-        record_result(log, ResultLevel.SUCCESS, f"PDC ID: {pdc.get('id', '')}")
-        record_result(log, ResultLevel.SUCCESS, f"PDC Endpoint ID: {pdc.get('endpoint_id', '')}")
-    else:
-        record_result(log, ResultLevel.INFO, "No configuration with PDC=True found")
+def handle_update_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier, question_name, answer, data_to_log):
+    if not question_name:
+        record_result(log, ResultLevel.WARNING, "Question name is required for Update Question operation")
+        return
+    if not answer:
+        record_result(log, ResultLevel.WARNING, "Answer value is required for Update Question operation")
+        return
+    
+    # Retrieve configuration using ticket number
+    config_data = get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier)
+    config_id = config_data.get("id")
+    if not config_id:
+        record_result(log, ResultLevel.WARNING, f"No configuration found for ticket [{ticket_number}]")
+        return
 
-    ads = get_configuration_data(log, http_client, cwpsa_base_url, company_id, "ADS")
-    if ads != None:
-        data_to_log["ads_name"] = ads.get("name", "")
-        data_to_log["ads_id"] = ads.get("id", "")
-        data_to_log["ads_endpoint_id"] = ads.get("endpoint_id", "")
-        record_result(log, ResultLevel.SUCCESS, f"ADS Name: {ads.get('name', '')}")
-        record_result(log, ResultLevel.SUCCESS, f"ADS ID: {ads.get('id', '')}")
-        record_result(log, ResultLevel.SUCCESS, f"ADS Endpoint ID: {ads.get('endpoint_id', '')}")
+    # Find the question ID by question name
+    question_id = None
+    for question_text, question_info in config_data["questions"].items():
+        if question_text == question_name:
+            question_id = question_info.get("questionId")
+            log.info(f"Found question [{question_text}] with ID [{question_id}]")
+            break
+
+    if not question_id:
+        available_questions = ', '.join(config_data['questions'].keys()) if config_data.get('questions') else 'None'
+        record_result(log, ResultLevel.WARNING, f"Question name '{question_name}' not found in configuration [{ticket_number}]. Available questions: {available_questions}")
+        return
+
+    # Update the question with new answer
+    success = update_configuration_question(log, http_client, cwpsa_base_url, config_id, question_id, answer)
+    if success:
+        # Retrieve updated configuration data
+        updated_config_data = get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier)
+        if updated_config_data:
+            data_to_log["configuration_id"] = updated_config_data.get("id")
+            for question_text, question_info in updated_config_data["questions"].items():
+                data_to_log[question_text] = question_info["answer"]
+        record_result(log, ResultLevel.SUCCESS, f"Successfully updated question [{question_name}] with answer [{answer}] in configuration [{ticket_number}]")
     else:
-        record_result(log, ResultLevel.INFO, "No configuration with ADS=True found")
+        record_result(log, ResultLevel.WARNING, f"Failed to update question [{question_name}] in configuration [{ticket_number}]")
 
 def main():
     try:
@@ -359,6 +420,8 @@ def main():
             tag_number = input.get_value("TagNumber_1759383129787")
             model_number = input.get_value("ModelNumber_1759383146134")
             site = input.get_value("Site_1759383091327")
+            question_name = input.get_value("QuestionName_1759383260000")
+            answer = input.get_value("Answer_1759383270000")
 
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch input values")
@@ -367,6 +430,8 @@ def main():
         ticket_number = ticket_number.strip() if ticket_number else ""
         operation = operation.strip() if operation else ""
         user_identifier = user_identifier.strip() if user_identifier else ""
+        question_name = question_name.strip() if question_name else ""
+        answer = answer.strip() if answer else ""
 
         if not ticket_number:
             record_result(log, ResultLevel.WARNING, "Ticket number input is required")
@@ -375,9 +440,10 @@ def main():
             record_result(log, ResultLevel.WARNING, "Operation input is required")
             return
         
-        company_identifier, company_name, company_id, company_type = get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number)
-        if not company_id:
-            record_result(log, ResultLevel.WARNING, f"Unable to retrieve company details from ticket [{ticket_number}]")
+        log.info(f"Retrieving company data for ticket [{ticket_number}]")
+        company_identifier, company_name, company_id, company_types = get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number)
+        if not company_identifier:
+            record_result(log, ResultLevel.WARNING, f"Failed to retrieve company identifier from ticket [{ticket_number}]")
             return
 
         if operation == "Get Configurations":
@@ -386,8 +452,8 @@ def main():
             else:
                 handle_criteria_configurations(log, http_client, cwpsa_base_url, company_identifier, contact_id, configuration_name, type, site, serial_number, tag_number, model_number, last_login_name, os_type, active, data_to_log)
 
-        elif operation == "Get PDC and ADS":
-            handle_pdc_ads_configurations(log, http_client, cwpsa_base_url, company_id, data_to_log)
+        elif operation == "Update Question":
+            handle_update_question(log, http_client, cwpsa_base_url, ticket_number, company_identifier, question_name, answer, data_to_log)
 
         else:
             record_result(log, ResultLevel.WARNING, f"Unknown operation [{operation}]")
