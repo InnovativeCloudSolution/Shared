@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import random
 import os
 import time
@@ -15,10 +15,10 @@ log.info("Imports completed successfully")
 cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
 msgraph_base_url = "https://graph.microsoft.com/v1.0"
 msgraph_base_url_beta = "https://graph.microsoft.com/beta"
-vault_name = "mit-azu1-prod1-akv1"
+vault_name = "PLACEHOLDER-akv1"
 
 data_to_log = {}
-bot_name = "MIT-AZ - Generate MIT Authentication Code"
+bot_name = "AZ - Generate Custom Authentication Code"
 log.info("Static variables set")
 
 def record_result(log, level, message):
@@ -98,7 +98,13 @@ def get_secret_value(log, http_client, vault_name, secret_name):
 
 def main():
     try:
-        secret_name = "MIT-AuthenticationCode"
+        try:
+            company_prefix = input.get_value("CompanyPrefix_xxxxxxxxxxxxx")
+        except Exception:
+            company_prefix = "PLACEHOLDER"
+        
+        company_prefix = company_prefix.strip() if company_prefix else "PLACEHOLDER"
+        secret_name = f"{company_prefix}-AuthenticationCode"
         log.info(f"Retrieving secret [{secret_name}] from Azure Key Vault")
         
         auth_code = get_secret_value(log, http_client, vault_name, secret_name)
@@ -107,9 +113,9 @@ def main():
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve authentication code from Key Vault")
             return
 
-        log.info(f"Successfully retrieved MIT Authentication Code")
-        data_to_log["mit_auth_code"] = auth_code
-        record_result(log, ResultLevel.SUCCESS, "Successfully retrieved MIT Authentication Code")
+        log.info(f"Successfully retrieved authentication code for [{company_prefix}]")
+        data_to_log["custom_auth_code"] = auth_code
+        record_result(log, ResultLevel.SUCCESS, f"Successfully retrieved authentication code for [{company_prefix}]")
         
     except Exception as e:
         log.error(f"Unhandled error in main: {str(e)}")

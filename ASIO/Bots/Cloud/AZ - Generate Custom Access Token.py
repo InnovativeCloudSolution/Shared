@@ -1,4 +1,4 @@
-﻿import random
+import random
 import os
 import sys
 import time
@@ -13,9 +13,9 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-vault_name = "mit-azu1-prod1-akv1"
+vault_name = "PLACEHOLDER-akv1"
 data_to_log = {}
-bot_name = "MIT-AZ - Generate Access Token"
+bot_name = "AZ - Generate Custom Access Token"
 log.info("Static variables set")
 
 def record_result(log, level, message):
@@ -127,15 +127,15 @@ def get_access_token(log, http_client, tenant_id, client_id, client_secret, scop
     log.error(f"[{log_prefix}] Failed to retrieve access token Status code: {response.status_code if response else 'N/A'}")
     return ""
 
-def get_graph_token_MIT(log, http_client, vault_name):
-    log.info("Fetching MS Graph token for MIT domain")
+def get_graph_token_custom(log, http_client, vault_name, company_prefix="PLACEHOLDER"):
+    log.info(f"Fetching MS Graph token for custom domain with prefix [{company_prefix}]")
     
-    client_id = get_secret_value(log, http_client, vault_name, "MIT-PartnerApp-ClientID")
-    client_secret = get_secret_value(log, http_client, vault_name, "MIT-PartnerApp-ClientSecret")
-    azure_domain = get_secret_value(log, http_client, vault_name, "MIT-PrimaryDomain")
+    client_id = get_secret_value(log, http_client, vault_name, f"{company_prefix}-PartnerApp-ClientID")
+    client_secret = get_secret_value(log, http_client, vault_name, f"{company_prefix}-PartnerApp-ClientSecret")
+    azure_domain = get_secret_value(log, http_client, vault_name, f"{company_prefix}-PrimaryDomain")
     
     if not all([client_id, client_secret, azure_domain]):
-        log.error("Failed to retrieve required secrets for MIT domain")
+        log.error(f"Failed to retrieve required secrets for {company_prefix} domain")
         return "", ""
     
     tenant_id = get_tenant_id_from_domain(log, http_client, azure_domain)
@@ -145,23 +145,29 @@ def get_graph_token_MIT(log, http_client, vault_name):
     
     token = get_access_token(log, http_client, tenant_id, client_id, client_secret, scope="https://graph.microsoft.com/.default")
     if not isinstance(token, str) or "." not in token:
-        log.error("MS Graph access token is malformed for MIT domain")
+        log.error(f"MS Graph access token is malformed for {company_prefix} domain")
         return "", ""
     
-    log.info("Successfully obtained MS Graph token for MIT domain")
+    log.info(f"Successfully obtained MS Graph token for {company_prefix} domain")
     return tenant_id, token
 
 def main():
     try:
-        log.info("Starting MIT Graph token generation")
+        try:
+            company_prefix = input.get_value("CompanyPrefix_xxxxxxxxxxxxx")
+        except Exception:
+            company_prefix = "PLACEHOLDER"
         
-        mit_tenant_id, mit_graph_token = get_graph_token_MIT(log, http_client, vault_name)
-        if not mit_graph_token:
-            record_result(log, ResultLevel.WARNING, "Failed to obtain MIT MS Graph access token")
+        company_prefix = company_prefix.strip() if company_prefix else "PLACEHOLDER"
+        log.info(f"Starting custom Graph token generation for prefix [{company_prefix}]")
+        
+        custom_tenant_id, custom_graph_token = get_graph_token_custom(log, http_client, vault_name, company_prefix)
+        if not custom_graph_token:
+            record_result(log, ResultLevel.WARNING, f"Failed to obtain MS Graph access token for [{company_prefix}]")
             return
 
-        data_to_log["mit_graph_token"] = mit_graph_token
-        record_result(log, ResultLevel.SUCCESS, "MIT Graph access token retrieved successfully")
+        data_to_log["custom_graph_token"] = custom_graph_token
+        record_result(log, ResultLevel.SUCCESS, f"Graph access token for [{company_prefix}] retrieved successfully")
 
     except Exception as e:
         log.error(f"Unhandled error in main: {str(e)}")

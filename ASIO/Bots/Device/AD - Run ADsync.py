@@ -12,7 +12,7 @@ input = Input()
 log.info("Imports completed successfully")
 
 data_to_log = {}
-bot_name = "MIT-AD - Run ADsync"
+bot_name = "AD - Run ADsync"
 
 def record_result(log, level, message):
     log.result_message(level, f"[{bot_name}]: {message}")

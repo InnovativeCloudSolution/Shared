@@ -17,7 +17,7 @@ log.info("Imports completed successfully")
 cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
 
 data_to_log = {}
-bot_name = "MIT-AD User(s) Management"
+bot_name = "AD User(s) Management"
 log.info("Static variables set")
 
 def record_result(log, level, message):

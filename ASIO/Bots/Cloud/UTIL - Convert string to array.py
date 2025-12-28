@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sys
 from cw_rpa import Logger, Input, HttpClient, ResultLevel
 
@@ -9,10 +9,10 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-vault_name = "mit-azu1-prod1-akv1"
+vault_name = "PLACEHOLDER-akv1"
 
 data_to_log = {}
-bot_name = "MIT-UTIL - Convert string to array"
+bot_name = "UTIL - Convert string to array"
 log.info("Static variables set")
 
 def record_result(log, level, message):

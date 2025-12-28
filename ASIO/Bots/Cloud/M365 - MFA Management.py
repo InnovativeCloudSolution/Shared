@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import random
 import re
 import os
@@ -17,10 +17,10 @@ log.info("Imports completed successfully")
 cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
 msgraph_base_url = "https://graph.microsoft.com/v1.0"
 msgraph_base_url_beta = "https://graph.microsoft.com/beta"
-vault_name = "mit-azu1-prod1-akv1"
+vault_name = "PLACEHOLDER-akv1"
 
 data_to_log = {}
-bot_name = "MIT-M365 - MFA Management"
+bot_name = "M365 - MFA Management"
 log.info("Static variables set")
 
 def record_result(log, level, message):

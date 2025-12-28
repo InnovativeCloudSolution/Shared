@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import random
 import os
 import base64
@@ -18,11 +18,11 @@ log.info("Imports completed successfully")
 cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
 msgraph_base_url = "https://graph.microsoft.com/v1.0"
 msgraph_base_url_beta = "https://graph.microsoft.com/beta"
-vault_name = "mit-azu1-prod1-akv1"
-sender_email = "support@manganoit.com.au"
+vault_name = "PLACEHOLDER-akv1"
+sender_email = "support@PLACEHOLDER.com.au"
 
 data_to_log = {}
-bot_name = "MIT-REPORT - M365 User License Report"
+bot_name = "REPORT - M365 User License Report"
 log.info("Static variables set")
 
 def record_result(log, level, message):

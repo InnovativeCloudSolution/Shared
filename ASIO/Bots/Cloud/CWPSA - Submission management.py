@@ -14,10 +14,10 @@ input = Input()
 log.info("Imports completed successfully")
 
 cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
-vault_name = "mit-azu1-prod1-akv1"
+vault_name = "PLACEHOLDER-akv1"
 
 data_to_log = {}
-bot_name = "MIT-CWPSA - Submission management"
+bot_name = "CWPSA - Submission management"
 log.info("Static variables set")
 
 def record_result(log, level, message):

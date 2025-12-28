@@ -4,7 +4,6 @@ import os
 import time
 import urllib.parse
 import requests
-import re
 from datetime import datetime, timedelta, timezone
 from cw_rpa import Logger, Input, HttpClient, ResultLevel
 
@@ -18,8 +17,6 @@ log.info("Imports completed successfully")
 cwpsa_base_url = "https://aus.myconnectwise.net/v4_6_release/apis/3.0"
 msgraph_base_url = "https://graph.microsoft.com/v1.0"
 msgraph_base_url_beta = "https://graph.microsoft.com/beta"
-vault_name = "dbit-azu1-prod1-akv1"
-sender_email = "help@dropbear-it.com.au"
 
 data_to_log = {}
 bot_name = "UTIL - Send ticket update notifications"
@@ -81,27 +78,16 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
             return None
     return None
 
-def get_secret_value(log, http_client, vault_name, secret_name):
-    log.info(f"Fetching secret [{secret_name}] from Key Vault [{vault_name}]")
-    secret_url = f"https://{vault_name}.vault.azure.net/secrets/{secret_name}?api-version=7.3"
-    response = execute_api_call(log, http_client, "get", secret_url, integration_name="custom_wf_oauth2_client_creds")
-    if response:
-        secret_value = response.json().get("value", "")
-        if secret_value:
-            log.info(f"Successfully retrieved secret [{secret_name}]")
-            return secret_value
-    return ""
-
 def get_tenant_id_from_domain(log, http_client, azure_domain):
     try:
         config_url = f"https://login.windows.net/{azure_domain}/.well-known/openid-configuration"
-        log.info(f"Fetching OpenID configuration from [{config_url}]")
+        log.info(f"Fetching OpenID configuration")
         response = execute_api_call(log, http_client, "get", config_url)
         if response:
             token_endpoint = response.json().get("token_endpoint", "")
             tenant_id = token_endpoint.split("/")[3] if token_endpoint else ""
             if tenant_id:
-                log.info(f"Successfully extracted tenant ID [{tenant_id}]")
+                log.info(f"Successfully extracted tenant ID")
                 return tenant_id
         return ""
     except Exception as e:
@@ -112,9 +98,9 @@ def get_access_token(log, http_client, tenant_id, client_id, client_secret, scop
     log.info(f"[{log_prefix}] Requesting access token for scope [{scope}]")
     token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
     payload = urllib.parse.urlencode({
-            "grant_type": "client_credentials",
-            "client_id": client_id,
-            "client_secret": client_secret,
+        "grant_type": "client_credentials",
+        "client_id": client_id,
+        "client_secret": client_secret,
         "scope": scope
     })
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -123,7 +109,6 @@ def get_access_token(log, http_client, tenant_id, client_id, client_secret, scop
         token_data = response.json()
         access_token = str(token_data.get("access_token", "")).strip()
         log.info(f"[{log_prefix}] Access token length: {len(access_token)}")
-        log.info(f"[{log_prefix}] Access token preview: {access_token[:30]}...")
         if not isinstance(access_token, str) or "." not in access_token:
             log.error(f"[{log_prefix}] Access token is invalid or malformed")
             return ""
@@ -131,23 +116,17 @@ def get_access_token(log, http_client, tenant_id, client_id, client_secret, scop
         return access_token
     return ""
 
-def get_graph_token_email(log, http_client, vault_name, email_domain_secret="EmailDomain"):
-    log.info("Fetching MS Graph token for email sending")
-    client_id = get_secret_value(log, http_client, vault_name, "PartnerApp-ClientID")
-    client_secret = get_secret_value(log, http_client, vault_name, "PartnerApp-ClientSecret")
-    azure_domain = get_secret_value(log, http_client, vault_name, email_domain_secret)
-    if not all([client_id, client_secret, azure_domain]):
-        log.error("Failed to retrieve required secrets for email Graph token")
-        return "", ""
+def get_graph_token_hardcoded(log, http_client, client_id, client_secret, azure_domain):
+    log.info("Fetching MS Graph token using hardcoded credentials")
     tenant_id = get_tenant_id_from_domain(log, http_client, azure_domain)
     if not tenant_id:
-        log.error(f"Failed to resolve tenant ID for domain [{azure_domain}]")
+        log.error(f"Failed to resolve tenant ID")
         return "", ""
     token = get_access_token(log, http_client, tenant_id, client_id, client_secret, scope="https://graph.microsoft.com/.default", log_prefix="EmailGraph")
     if not isinstance(token, str) or "." not in token:
         log.error("Email Graph access token is malformed")
         return "", ""
-    log.info("Successfully obtained MS Graph token for email sending")
+    log.info("Successfully obtained MS Graph token")
     return tenant_id, token
 
 def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number):
@@ -196,51 +175,49 @@ def get_ticket_details(log, http_client, cwpsa_base_url, ticket_number):
         return "", "", "", "", ""
 
 def generate_html_base(content_html):
-    return f"""
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    return f"""<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ticket Update - DropBear IT</title>
-        </head>
+    </head>
     <body style="margin:0; padding:20px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); font-family:'Inter','Segoe UI','Roboto','Helvetica Neue',sans-serif; color:#2d3436; width:100% !important; text-align:center; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
-        <center>
+    <center>
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:680px; margin:0 auto; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); box-sizing:border-box; padding:0;">
-            <tbody>
-                <tr>
+        <tbody>
+            <tr>
             <td align="center" style="padding:0; position:relative;">
                 <a href="https://dropbear-it.com.au/" target="_blank" style="display:block; position:relative;">
                 <img src="https://cloud.katana.nexigen.digital/katana/fTgTpj2FrgOsSo5U8d3s8sSDb8ASdePnZUc8i4ak.webp" alt="DropBear IT" width="680" style="display:block; width:100%; max-width:680px; height:auto; border:0; outline:none; text-decoration:none; border-radius:16px 16px 0 0;">
-                    </a>
-                </td>
-                </tr>
+                </a>
+            </td>
+            </tr>
             {content_html}
             <tr>
             <td style="background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding:30px 35px; text-align:center; color:#ffffff; font-size:14px;">
                 <div style="margin-bottom:20px;">
                 <p style="margin:0 0 12px; font-size:15px; font-weight:600; color:#ffffff;">Get in Touch</p>
-                <p style="margin:0 0 8px;"><span style="color:#b8bfce;">?? Website:</span> <a href="https://dropbear-it.com.au/" target="_blank" style="color:#667eea; text-decoration:none; font-weight:500; margin-left:5px;">dropbear-it.com.au</a></p>
-                <p style="margin:0 0 8px;"><span style="color:#b8bfce;">?? Email:</span> <a href="mailto:help@dropbear-it.com.au" style="color:#667eea; text-decoration:none; font-weight:500; margin-left:5px;">help@dropbear-it.com.au</a></p>
-                <p style="margin:0;"><span style="color:#b8bfce;">?? Phone:</span> <a href="tel:+611800573165" style="color:#667eea; text-decoration:none; font-weight:500; margin-left:5px;">1800 573 165</a></p>
+              <p style="margin:0 0 8px;"><span style="color:#b8bfce;">Website:</span> <a href="https://dropbear-it.com.au/" target="_blank" style="color:#667eea; text-decoration:none; font-weight:500; margin-left:5px;">dropbear-it.com.au</a></p>
+              <p style="margin:0 0 8px;"><span style="color:#b8bfce;">Email:</span> <a href="mailto:help@dropbear-it.com.au" style="color:#667eea; text-decoration:none; font-weight:500; margin-left:5px;">help@dropbear-it.com.au</a></p>
+              <p style="margin:0;"><span style="color:#b8bfce;">Phone:</span> <a href="tel:+611800573165" style="color:#667eea; text-decoration:none; font-weight:500; margin-left:5px;">1800 573 165</a></p>
                 </div>
                 <div style="border-top:1px solid rgba(255,255,255,0.2); margin:20px 0; padding-top:20px;">
                 <p style="margin:0; color:#b8bfce; font-size:13px;">&copy; 2025 DropBear IT. All rights reserved.</p>
                 </div>
-                    </td>
-                </tr>
-            </tbody>
-            </table>
-        </center>
-        </body>
-    </html>
-    """
+            </td>
+            </tr>
+        </tbody>
+        </table>
+    </center>
+    </body>
+    </html>"""
 
 def generate_notification_new(contact_first_name, ticket_number, ticket_summary):
     content = f"""
     <tr>
     <td style="padding:40px 35px; text-align:left; background-color:#ffffff;">
-        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}! ??</h1>
+        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}!</h1>
         <div style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding:20px; border-radius:12px; margin-bottom:25px;">
         <h2 style="color:#ffffff; font-size:20px; font-weight:600; margin:0 0 8px;">Your Ticket Has Been Created</h2>
         <p style="color:#f0f0f0; font-size:16px; margin:0; font-weight:500;">Ticket #{ticket_number}</p>
@@ -259,19 +236,18 @@ def generate_notification_new(contact_first_name, ticket_number, ticket_summary)
         <p style="color:#856404; font-size:14px; margin:0; line-height:1.5;">If the situation becomes urgent or business critical, give us a call immediately. We're here to help.</p>
         </div>
         <div style="text-align:center; margin:30px 0;">
-        <a href="tel:+611800573165" style="display:inline-block; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; padding:14px 32px; border-radius:8px; text-decoration:none; font-size:16px; font-weight:600; box-shadow:0 4px 15px rgba(102,126,234,0.4);">?? Call Us: 1800 573 165</a>
+        <a href="tel:+611800573165" style="display:inline-block; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; padding:14px 32px; border-radius:8px; text-decoration:none; font-size:16px; font-weight:600; box-shadow:0 4px 15px rgba(102,126,234,0.4);">Call Us: 1800 573 165</a>
         </div>
         <p style="color:#2d3436; font-size:16px; line-height:1.6; margin:30px 0 10px;">Cheers,<br><strong style="color:#667eea;">DropBear IT Team</strong></p>
     </td>
-    </tr>
-    """
+    </tr>"""
     return generate_html_base(content)
 
 def generate_notification_reviewed(contact_first_name, ticket_number, ticket_summary):
     content = f"""
     <tr>
     <td style="padding:40px 35px; text-align:left; background-color:#ffffff;">
-        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}! ??</h1>
+        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}!</h1>
         <div style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding:20px; border-radius:12px; margin-bottom:25px;">
         <h2 style="color:#ffffff; font-size:20px; font-weight:600; margin:0 0 8px;">Your Ticket Has Been Reviewed</h2>
         <p style="color:#f0f0f0; font-size:16px; margin:0; font-weight:500;">Ticket #{ticket_number}</p>
@@ -286,19 +262,18 @@ def generate_notification_reviewed(contact_first_name, ticket_number, ticket_sum
         <p style="color:#856404; font-size:14px; margin:0; line-height:1.5;">If the situation has escalated or you believe the priority needs reconsidering, give us a call. We're here to help.</p>
         </div>
         <div style="text-align:center; margin:30px 0;">
-        <a href="tel:+611800573165" style="display:inline-block; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; padding:14px 32px; border-radius:8px; text-decoration:none; font-size:16px; font-weight:600; box-shadow:0 4px 15px rgba(102,126,234,0.4);">?? Call Us: 1800 573 165</a>
+        <a href="tel:+611800573165" style="display:inline-block; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; padding:14px 32px; border-radius:8px; text-decoration:none; font-size:16px; font-weight:600; box-shadow:0 4px 15px rgba(102,126,234,0.4);">Call Us: 1800 573 165</a>
         </div>
         <p style="color:#2d3436; font-size:16px; line-height:1.6; margin:30px 0 10px;">Cheers,<br><strong style="color:#667eea;">DropBear IT Team</strong></p>
     </td>
-    </tr>
-    """
+    </tr>"""
     return generate_html_base(content)
 
 def generate_notification_working(contact_first_name, ticket_number, ticket_summary, member_first_name, member_last_name):
     content = f"""
     <tr>
     <td style="padding:40px 35px; text-align:left; background-color:#ffffff;">
-        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}! ??</h1>
+        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}!</h1>
         <div style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding:20px; border-radius:12px; margin-bottom:25px;">
         <h2 style="color:#ffffff; font-size:20px; font-weight:600; margin:0 0 8px;">Your Ticket is Being Worked On</h2>
         <p style="color:#f0f0f0; font-size:16px; margin:0; font-weight:500;">Ticket #{ticket_number}</p>
@@ -313,19 +288,18 @@ def generate_notification_working(contact_first_name, ticket_number, ticket_summ
         <p style="color:#856404; font-size:14px; margin:0; line-height:1.5;">If the situation has become more urgent or you need to provide additional details, give us a call. We're here to help!</p>
         </div>
         <div style="text-align:center; margin:30px 0;">
-        <a href="tel:+611800573165" style="display:inline-block; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; padding:14px 32px; border-radius:8px; text-decoration:none; font-size:16px; font-weight:600; box-shadow:0 4px 15px rgba(102,126,234,0.4);">?? Call Us: 1800 573 165</a>
+        <a href="tel:+611800573165" style="display:inline-block; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; padding:14px 32px; border-radius:8px; text-decoration:none; font-size:16px; font-weight:600; box-shadow:0 4px 15px rgba(102,126,234,0.4);">Call Us: 1800 573 165</a>
         </div>
         <p style="color:#2d3436; font-size:16px; line-height:1.6; margin:30px 0 10px;">Cheers,<br><strong style="color:#667eea;">DropBear IT Team</strong></p>
     </td>
-    </tr>
-    """
+    </tr>"""
     return generate_html_base(content)
 
 def generate_notification_waiting(contact_first_name, ticket_number, ticket_summary):
     content = f"""
     <tr>
     <td style="padding:40px 35px; text-align:left; background-color:#ffffff;">
-        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}! ??</h1>
+        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}!</h1>
         <div style="background:linear-gradient(135deg, #ffc107 0%, #ff9800 100%); padding:20px; border-radius:12px; margin-bottom:25px;">
         <h2 style="color:#ffffff; font-size:20px; font-weight:600; margin:0 0 8px;">We're Waiting to Hear From You</h2>
         <p style="color:#f0f0f0; font-size:16px; margin:0; font-weight:500;">Ticket #{ticket_number}</p>
@@ -344,22 +318,21 @@ def generate_notification_waiting(contact_first_name, ticket_number, ticket_summ
         <p style="color:#856404; font-size:14px; margin:0; line-height:1.5;">If the problem persists, please reply to this email or give us a call and we'll continue investigating for you.</p>
         </div>
         <div style="text-align:center; margin:30px 0;">
-        <a href="tel:+611800573165" style="display:inline-block; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; padding:14px 32px; border-radius:8px; text-decoration:none; font-size:16px; font-weight:600; box-shadow:0 4px 15px rgba(102,126,234,0.4);">?? Call Us: 1800 573 165</a>
+        <a href="tel:+611800573165" style="display:inline-block; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#ffffff; padding:14px 32px; border-radius:8px; text-decoration:none; font-size:16px; font-weight:600; box-shadow:0 4px 15px rgba(102,126,234,0.4);">Call Us: 1800 573 165</a>
         </div>
         <div style="background-color:#f8d7da; border-left:4px solid #dc3545; padding:18px; border-radius:8px; margin:25px 0;">
         <p style="color:#721c24; font-size:14px; margin:0; line-height:1.5;"><strong>Important:</strong> If we don't hear from you within 48 hours, we'll close this ticket and send you a completion email. You can always respond to reopen it if needed.</p>
         </div>
         <p style="color:#2d3436; font-size:16px; line-height:1.6; margin:30px 0 10px;">Cheers,<br><strong style="color:#667eea;">DropBear IT Team</strong></p>
     </td>
-    </tr>
-    """
+    </tr>"""
     return generate_html_base(content)
 
 def generate_notification_closed(contact_first_name, ticket_number, ticket_summary):
     content = f"""
     <tr>
     <td style="padding:40px 35px; text-align:left; background-color:#ffffff;">
-        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}! ??</h1>
+        <h1 style="color:#1a1a2e; font-size:28px; font-weight:700; margin:0 0 20px; line-height:1.3;">G'day {contact_first_name}!</h1>
         <div style="background:linear-gradient(135deg, #28a745 0%, #20c997 100%); padding:20px; border-radius:12px; margin-bottom:25px;">
         <h2 style="color:#ffffff; font-size:20px; font-weight:600; margin:0 0 8px;">Your Ticket Has Been Completed</h2>
         <p style="color:#f0f0f0; font-size:16px; margin:0; font-weight:500;">Ticket #{ticket_number}</p>
@@ -373,28 +346,28 @@ def generate_notification_closed(contact_first_name, ticket_number, ticket_summa
         <h3 style="color:#155724; font-size:18px; margin:0 0 15px; font-weight:600;">How Did We Do?</h3>
         <p style="color:#155724; font-size:14px; margin:0 0 20px; line-height:1.5;">We'd love to hear about your experience. Your feedback helps us improve!</p>
         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin:0 auto; border-collapse:collapse;">
-        <tbody>
+            <tbody>
             <tr>
                 <td style="padding:10px 15px; text-align:center;">
-                <a href="https://feedback.smileback.io/r/7/Sr2ajccj_vCkD-4T3KHVUQ/{ticket_number}/1/" target="_blank">
-                    <img alt="Positive" height="55" src="https://feedback.smileback.io/v/7/Sr2ajccj_vCkD-4T3KHVUQ/{ticket_number}/1/" style="margin:0 auto; display:block;" width="55" />
+                <a href="https://feedback.smileback.io/r/7/XXXXXXXXXXXXXXXXXX/{ticket_number}/1/" target="_blank">
+                    <img alt="Positive" height="55" src="https://feedback.smileback.io/v/7/XXXXXXXXXXXXXXXXXX/{ticket_number}/1/" style="margin:0 auto; display:block;" width="55" />
                 </a>
                 <p style="margin:8px 0 0; color:#155724; font-size:13px; font-weight:500;">Positive</p>
-            </td>
+                </td>
                 <td style="padding:10px 15px; text-align:center;">
-                <a href="https://feedback.smileback.io/r/7/Sr2ajccj_vCkD-4T3KHVUQ/{ticket_number}/0/" target="_blank">
-                    <img alt="Neutral" height="55" src="https://feedback.smileback.io/v/7/Sr2ajccj_vCkD-4T3KHVUQ/{ticket_number}/0/" style="margin:0 auto; display:block;" width="55" />
+                <a href="https://feedback.smileback.io/r/7/XXXXXXXXXXXXXXXXXX/{ticket_number}/0/" target="_blank">
+                    <img alt="Neutral" height="55" src="https://feedback.smileback.io/v/7/XXXXXXXXXXXXXXXXXX/{ticket_number}/0/" style="margin:0 auto; display:block;" width="55" />
                 </a>
                 <p style="margin:8px 0 0; color:#155724; font-size:13px; font-weight:500;">Neutral</p>
-            </td>
+                </td>
                 <td style="padding:10px 15px; text-align:center;">
-                <a href="https://feedback.smileback.io/r/7/Sr2ajccj_vCkD-4T3KHVUQ/{ticket_number}/-1/" target="_blank">
-                    <img alt="Negative" height="55" src="https://feedback.smileback.io/v/7/Sr2ajccj_vCkD-4T3KHVUQ/{ticket_number}/-1/" style="margin:0 auto; display:block;" width="55" />
+                <a href="https://feedback.smileback.io/r/7/XXXXXXXXXXXXXXXXXX/{ticket_number}/-1/" target="_blank">
+                    <img alt="Negative" height="55" src="https://feedback.smileback.io/v/7/XXXXXXXXXXXXXXXXXX/{ticket_number}/-1/" style="margin:0 auto; display:block;" width="55" />
                 </a>
                 <p style="margin:8px 0 0; color:#155724; font-size:13px; font-weight:500;">Negative</p>
-            </td>
+                </td>
             </tr>
-        </tbody>
+            </tbody>
         </table>
         <p style="color:#155724; font-size:13px; margin:15px 0 0; line-height:1.4;">Be honest - whether positive or negative, we appreciate your feedback.</p>
         </div>
@@ -403,8 +376,7 @@ def generate_notification_closed(contact_first_name, ticket_number, ticket_summa
         </div>
         <p style="color:#2d3436; font-size:16px; line-height:1.6; margin:30px 0 10px;">Cheers,<br><strong style="color:#667eea;">DropBear IT Team</strong></p>
     </td>
-    </tr>
-    """
+    </tr>"""
     return generate_html_base(content)
 
 def send_email(log, http_client, msgraph_base_url, access_token, sender_email, recipient_emails, subject, html_body):
@@ -443,25 +415,54 @@ def send_email(log, http_client, msgraph_base_url, access_token, sender_email, r
 def main():
     try:
         try:
-            ticket_number = input.get_value("TicketNumber_xxxxxxxxxxxxx")
-            operation = input.get_value("Operation_xxxxxxxxxxxxx")
-            email_graph_token = input.get_value("EmailGraphToken_xxxxxxxxxxxxx")
+            ticket_number = input.get_value("TicketNumber_1765997285389")
+            operation = input.get_value("Operation_1765997287626")
+            recipient_emails = input.get_value("Recipients_1766001364451")
+            sender_email = input.get_value("Sender_1765997472944")
+            client_id = input.get_value("ClientID_1766001431860")
+            client_secret = input.get_value("ClientSecret_1766001433585")
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch input values")
             return
 
         ticket_number = ticket_number.strip() if ticket_number else ""
         operation = operation.strip() if operation else ""
-        email_graph_token = email_graph_token.strip() if email_graph_token else ""
+        recipient_emails = recipient_emails.strip() if recipient_emails else ""
+        sender_email = sender_email.strip() if sender_email else ""
+        client_id = client_id.strip() if client_id else ""
+        client_secret = client_secret.strip() if client_secret else ""
 
         log.info(f"Ticket Number = [{ticket_number}]")
         log.info(f"Requested operation = [{operation}]")
+        log.info(f"Recipients = [{recipient_emails}]")
+        log.info(f"Sender Email = [{sender_email}]")
+
+        azure_domain = sender_email.split("@")[1] if "@" in sender_email else ""
+        if azure_domain:
+            log.info(f"Extracted Azure domain from sender email: [{azure_domain}]")
+        else:
+            log.warning("Unable to extract Azure domain from sender email")
 
         if not ticket_number:
             record_result(log, ResultLevel.WARNING, "Ticket number is required but missing")
             return
         if not operation:
             record_result(log, ResultLevel.WARNING, "Operation value is missing or invalid")
+            return
+        if not recipient_emails:
+            record_result(log, ResultLevel.WARNING, "Recipient email address is required but missing")
+            return
+        if not sender_email:
+            record_result(log, ResultLevel.WARNING, "Sender email address is required but missing")
+            return
+        if not client_id:
+            record_result(log, ResultLevel.WARNING, "Client ID is required but missing")
+            return
+        if not client_secret:
+            record_result(log, ResultLevel.WARNING, "Client Secret is required but missing")
+            return
+        if not azure_domain:
+            record_result(log, ResultLevel.WARNING, "Unable to extract Azure domain from sender email - ensure sender email is valid")
             return
 
         log.info(f"Retrieving company data for ticket [{ticket_number}]")
@@ -471,21 +472,16 @@ def main():
             return
         data_to_log["Company"] = company_identifier
 
-        if email_graph_token:
-            log.info("Using provided email MS Graph token")
-            email_graph_access_token = email_graph_token
-            email_graph_tenant_id = ""
-        else:
-            email_graph_tenant_id, email_graph_access_token = get_graph_token_email(log, http_client, vault_name)
-            if not email_graph_access_token:
-                record_result(log, ResultLevel.WARNING, "Failed to obtain email MS Graph access token")
-                return
+        log.info("Acquiring MS Graph token")
+        email_graph_tenant_id, email_graph_access_token = get_graph_token_hardcoded(log, http_client, client_id, client_secret, azure_domain)
+        if not email_graph_access_token:
+            record_result(log, ResultLevel.WARNING, "Failed to obtain email MS Graph access token")
+            return
 
         log.info(f"Retrieving ticket details for ticket [{ticket_number}]")
         contact_first_name, contact_email, ticket_summary, member_first_name, member_last_name = get_ticket_details(log, http_client, cwpsa_base_url, ticket_number)
-        if not contact_email:
-            record_result(log, ResultLevel.WARNING, f"Failed to retrieve contact email for ticket [{ticket_number}]")
-            return
+        if not contact_first_name:
+            contact_first_name = "there"
         if not ticket_summary:
             ticket_summary = f"Support Request #{ticket_number}"
 
@@ -508,15 +504,10 @@ def main():
             record_result(log, ResultLevel.WARNING, f"Unknown operation [{operation}]")
             return
 
-        subject_masked = re.sub(r"('|\")(eyJ[a-zA-Z0-9_-]{5,}?\.[a-zA-Z0-9_-]{5,}?\.([a-zA-Z0-9_-]{5,})?)\1", r"\1***TOKEN-MASKED***\1", subject)
-        subject_masked = re.sub(r"('|\")([a-zA-Z0-9]{8,}-(clientid|clientsecret|password))\1", r"\1***SECRET-MASKED***\1", subject_masked, flags=re.IGNORECASE)
-        html_body_masked = re.sub(r"('|\")(eyJ[a-zA-Z0-9_-]{5,}?\.[a-zA-Z0-9_-]{5,}?\.([a-zA-Z0-9_-]{5,})?)\1", r"\1***TOKEN-MASKED***\1", html_body)
-        html_body_masked = re.sub(r"('|\")([a-zA-Z0-9]{8,}-(clientid|clientsecret|password))\1", r"\1***SECRET-MASKED***\1", html_body_masked, flags=re.IGNORECASE)
-
-        if send_email(log, http_client, msgraph_base_url, email_graph_access_token, sender_email, contact_email, subject_masked, html_body_masked):
-            record_result(log, ResultLevel.SUCCESS, f"Successfully sent {operation} notification to [{contact_email}]")
+        if send_email(log, http_client, msgraph_base_url, email_graph_access_token, sender_email, recipient_emails, subject, html_body):
+            record_result(log, ResultLevel.SUCCESS, f"Successfully sent {operation} notification to [{recipient_emails}]")
         else:
-            record_result(log, ResultLevel.WARNING, f"Failed to send {operation} notification to [{contact_email}]")
+            record_result(log, ResultLevel.WARNING, f"Failed to send {operation} notification to [{recipient_emails}]")
 
     except Exception as e:
         log.error(f"Unhandled error in main: {str(e)}")

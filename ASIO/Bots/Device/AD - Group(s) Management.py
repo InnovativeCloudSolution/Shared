@@ -12,7 +12,7 @@ input = Input()
 log.info("Imports completed successfully")
 
 data_to_log = {}
-bot_name = "MIT-AD - User group(s) management"
+bot_name = "AD - User group(s) management"
 log.info("Static variables set")
 
 def record_result(log, level, message):
