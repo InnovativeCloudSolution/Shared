@@ -14,7 +14,8 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://aus.myconnectwise.net/v4_6_release/apis/3.0"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
 msgraph_base_url_base = "https://graph.microsoft.com"
 msgraph_base_url_path = "/v1.0"
 msgraph_base_url_beta_base = "https://graph.microsoft.com"
