@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import os
 import time
@@ -13,9 +13,12 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
-msgraph_base_url = "https://graph.microsoft.com/v1.0"
-msgraph_base_url_beta = "https://graph.microsoft.com/beta"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+msgraph_base_url_base = "https://graph.microsoft.com"
+msgraph_base_url_path = "/v1.0"
+msgraph_base_url_beta_base = "https://graph.microsoft.com"
+msgraph_base_url_beta_path = "/beta"
 vault_name = "PLACEHOLDER-akv1"
 
 data_to_log = {}
@@ -79,9 +82,9 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
             return None
     return None
 
-def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number):
+def get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number):
     log.info(f"Retrieving company details for ticket [{ticket_number}]")
-    ticket_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
+    ticket_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
     ticket_response = execute_api_call(log, http_client, "get", ticket_endpoint, integration_name="cw_psa")
     if ticket_response and ticket_response.status_code == 200:
         ticket_data = ticket_response.json()
@@ -90,7 +93,7 @@ def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number
         company_identifier = company["identifier"]
         company_name = company["name"]
         log.info(f"Company ID: [{company_id}], Identifier: [{company_identifier}], Name: [{company_name}]")
-        company_endpoint = f"{cwpsa_base_url}/company/companies/{company_id}"
+        company_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/companies/{company_id}"
         company_response = execute_api_call(log, http_client, "get", company_endpoint, integration_name="cw_psa")
         company_types = []
         if company_response and company_response.status_code == 200:
@@ -114,7 +117,7 @@ def get_site_id(log, http_client, cwpsa_base_url, company_id, site_name):
     
     conditions = f"name='{site_name.strip()}'"
     encoded_conditions = urllib.parse.quote(conditions)
-    endpoint = f"{cwpsa_base_url}/company/companies/{company_id}/sites?conditions={encoded_conditions}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/companies/{company_id}/sites?conditions={encoded_conditions}"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     
     if response and response.status_code == 200:
@@ -131,7 +134,7 @@ def get_site_id(log, http_client, cwpsa_base_url, company_id, site_name):
             return None
     
     log.warning(f"Direct site search failed. Trying to fetch all sites for company {company_id}")
-    fallback_endpoint = f"{cwpsa_base_url}/company/companies/{company_id}/sites"
+    fallback_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/companies/{company_id}/sites"
     fallback_response = execute_api_call(log, http_client, "get", fallback_endpoint, integration_name="cw_psa")
     
     if fallback_response and fallback_response.status_code == 200:
@@ -169,7 +172,7 @@ def get_site_id(log, http_client, cwpsa_base_url, company_id, site_name):
 
 def get_communication_type_id(log, http_client, cwpsa_base_url, type_name):
     log.info(f"Getting communication type ID for: {type_name}")
-    endpoint = f"{cwpsa_base_url}/company/communicationTypes"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/communicationTypes"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     
     if response and response.status_code == 200:
@@ -191,7 +194,7 @@ def get_communication_type_id(log, http_client, cwpsa_base_url, type_name):
 
 def get_contact_type_id(log, http_client, cwpsa_base_url, type_name):
     log.info(f"Getting contact type ID for: {type_name}")
-    endpoint = f"{cwpsa_base_url}/company/contacts/types"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/contacts/types"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     
     if response and response.status_code == 200:
@@ -215,7 +218,7 @@ def get_contact(log, http_client, cwpsa_base_url, email_address, company_identif
     log.info(f"Searching for contact by email: {email_address} in company: {company_identifier}")
     conditions = f"childConditions=communicationItems/value='{email_address}' AND communicationItems/communicationType = 'Email'&conditions=company/identifier='{company_identifier}'"
     encoded_conditions = urllib.parse.quote(conditions)
-    endpoint = f"{cwpsa_base_url}/company/contacts?{encoded_conditions}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/contacts?{encoded_conditions}"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if not response:
         return None
@@ -273,7 +276,7 @@ def get_contact_by_contact_details(log, http_client, cwpsa_base_url, contact_det
     log.info(f"Conditions: {conditions}")
     encoded_conditions = urllib.parse.quote(conditions)
     log.info(f"Encoded conditions: {encoded_conditions}")
-    endpoint = f"{cwpsa_base_url}/company/contacts?{encoded_conditions}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/contacts?{encoded_conditions}"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if not response:
         return None
@@ -287,7 +290,7 @@ def get_contact_by_contact_details(log, http_client, cwpsa_base_url, contact_det
 
 def create_contact(log, http_client, cwpsa_base_url, first_name, last_name, email, direct_phone, mobile_phone, types, vip, company_id, site_id):
     log.info(f"Creating contact for company ID: {company_id}")
-    endpoint = f"{cwpsa_base_url}/company/contacts"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/contacts"
     data = {
         "firstName": first_name,
         "lastName": last_name,
@@ -335,7 +338,7 @@ def create_contact(log, http_client, cwpsa_base_url, first_name, last_name, emai
 
 def update_contact(log, http_client, cwpsa_base_url, first_name, last_name, email, direct_phone, mobile_phone, types, vip, contact_id):
     log.info(f"Updating contact ID: {contact_id}")
-    endpoint = f"{cwpsa_base_url}/company/contacts/{contact_id}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/contacts/{contact_id}"
     data = {}
 
     if first_name:
@@ -379,7 +382,7 @@ def update_contact(log, http_client, cwpsa_base_url, first_name, last_name, emai
  
 def disable_contact(log, http_client, cwpsa_base_url, contact_id):
     log.info(f"Disabling contact ID: {contact_id}")
-    endpoint = f"{cwpsa_base_url}/company/contacts/{contact_id}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/contacts/{contact_id}"
     get_response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     
     if not get_response or get_response.status_code != 200:
@@ -482,7 +485,7 @@ def main():
             return
 
         log.info(f"Retrieving company data for ticket [{ticket_number}]")
-        company_identifier, company_name, company_id, company_types = get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number)
+        company_identifier, company_name, company_id, company_types = get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number)
         if not company_identifier:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve company identifier from ticket [{ticket_number}]")
             return

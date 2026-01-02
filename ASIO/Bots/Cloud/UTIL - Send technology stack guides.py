@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import os
 import time
@@ -14,9 +14,12 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
-msgraph_base_url = "https://graph.microsoft.com/v1.0"
-msgraph_base_url_beta = "https://graph.microsoft.com/beta"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+msgraph_base_url_base = "https://graph.microsoft.com"
+msgraph_base_url_path = "/v1.0"
+msgraph_base_url_beta_base = "https://graph.microsoft.com"
+msgraph_base_url_beta_path = "/beta"
 vault_name = "PLACEHOLDER-akv1"
 sender_email = "support@PLACEHOLDER.com.au"
 
@@ -460,7 +463,7 @@ def send_email(log, http_client, msgraph_base_url, access_token, sender_email, r
     try:
         log.info(f"Preparing to send email from [{sender_email}] to [{recipient_emails}] with subject [{subject}]")
 
-        endpoint = f"{msgraph_base_url}/users/{sender_email}/sendMail"
+        endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/users/{sender_email}/sendMail"
         headers = {
             "Authorization": f"Bearer {access_token}",
             "Content-Type": "application/json"

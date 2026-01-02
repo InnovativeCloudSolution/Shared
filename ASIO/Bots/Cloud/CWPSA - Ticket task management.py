@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import os
 import time
@@ -12,9 +12,12 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
-msgraph_base_url = "https://graph.microsoft.com/v1.0"
-msgraph_base_url_beta = "https://graph.microsoft.com/beta"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+msgraph_base_url_base = "https://graph.microsoft.com"
+msgraph_base_url_path = "/v1.0"
+msgraph_base_url_beta_base = "https://graph.microsoft.com"
+msgraph_base_url_beta_path = "/beta"
 vault_name = "PLACEHOLDER-akv1"
 
 data_to_log = {}
@@ -78,7 +81,7 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
     return None
 
 def add_task_to_ticket(log, http_client, cwpsa_base_url, ticket_number, notes, resolution=None, closed_flag=False):
-    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}/tasks"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}/tasks"
 
     body = {
         "notes": notes,

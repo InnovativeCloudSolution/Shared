@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import re
 import os
@@ -14,9 +14,12 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
-msgraph_base_url = "https://graph.microsoft.com/v1.0"
-msgraph_base_url_beta = "https://graph.microsoft.com/beta"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+msgraph_base_url_base = "https://graph.microsoft.com"
+msgraph_base_url_path = "/v1.0"
+msgraph_base_url_beta_base = "https://graph.microsoft.com"
+msgraph_base_url_beta_path = "/beta"
 vault_name = "PLACEHOLDER-akv1"
 
 data_to_log = {}
@@ -155,9 +158,9 @@ def get_graph_token(log, http_client, vault_name, company_identifier):
         return "", ""
     return tenant_id, token
 
-def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number):
+def get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number):
     log.info(f"Retrieving company details for ticket [{ticket_number}]")
-    ticket_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
+    ticket_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
     ticket_response = execute_api_call(log, http_client, "get", ticket_endpoint, integration_name="cw_psa")
     if ticket_response:
         ticket_data = ticket_response.json()
@@ -166,7 +169,7 @@ def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number
         company_identifier = company["identifier"]
         company_name = company["name"]
         log.info(f"Company ID: [{company_id}], Identifier: [{company_identifier}], Name: [{company_name}]")
-        company_endpoint = f"{cwpsa_base_url}/company/companies/{company_id}"
+        company_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/companies/{company_id}"
         company_response = execute_api_call(log, http_client, "get", company_endpoint, integration_name="cw_psa")
         company_types = []
         if company_response:
@@ -196,7 +199,7 @@ def get_policy_id(log, http_client, msgraph_base_url, policy_name_or_id, token):
     if re.fullmatch(r"[0-9a-fA-F\-]{36}", policy_name_or_id):
         log.info(f"Input [{policy_name_or_id}] looks like a Policy ID, fetching full policy")
         headers = {"Authorization": f"Bearer {token}"}
-        endpoint = f"{msgraph_base_url}/identity/conditionalAccess/policies/{policy_name_or_id}"
+        endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/identity/conditionalAccess/policies/{policy_name_or_id}"
         response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
         if response:
             return policy_name_or_id, response.json()
@@ -205,7 +208,7 @@ def get_policy_id(log, http_client, msgraph_base_url, policy_name_or_id, token):
 
     log.info(f"Searching for Conditional Access policy by name [{policy_name_or_id}]")
     headers = {"Authorization": f"Bearer {token}"}
-    endpoint = f"{msgraph_base_url}/identity/conditionalAccess/policies?$filter=displayName eq '{policy_name_or_id}'&$select=id,displayName"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/identity/conditionalAccess/policies?$filter=displayName eq '{policy_name_or_id}'&$select=id,displayName"
     response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
     if response:
         policies = response.json().get("value", [])
@@ -226,7 +229,7 @@ def get_location_id(log, http_client, msgraph_base_url, location_name_or_id, tok
     if re.fullmatch(r"[0-9a-fA-F\-]{36}", location_name_or_id):
         log.info(f"Input [{location_name_or_id}] looks like a Location ID, fetching full object")
         headers = {"Authorization": f"Bearer {token}"}
-        endpoint = f"{msgraph_base_url}/identity/conditionalAccess/namedLocations/{location_name_or_id}"
+        endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/identity/conditionalAccess/namedLocations/{location_name_or_id}"
         response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
         if response:
             return location_name_or_id, response.json()
@@ -235,7 +238,7 @@ def get_location_id(log, http_client, msgraph_base_url, location_name_or_id, tok
 
     log.info(f"Searching for named location by name [{location_name_or_id}]")
     headers = {"Authorization": f"Bearer {token}"}
-    endpoint = f"{msgraph_base_url}/identity/conditionalAccess/namedLocations?$filter=displayName eq '{location_name_or_id}'&$select=id,displayName"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/identity/conditionalAccess/namedLocations?$filter=displayName eq '{location_name_or_id}'&$select=id,displayName"
     response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
     if response:
         locations = response.json().get("value", [])
@@ -260,7 +263,7 @@ def get_group(log, http_client, msgraph_base_url, group_identifier, token):
         f"startswith(mail,'{group_identifier}')"
     ]
     filter_query = " or ".join(filters)
-    endpoint = f"{msgraph_base_url}/groups?$filter={urllib.parse.quote(filter_query)}"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/groups?$filter={urllib.parse.quote(filter_query)}"
     response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
     if response:
         groups = response.json().get("value", [])
@@ -280,7 +283,7 @@ def get_ca_policies(log, http_client, msgraph_base_url, group_identifier, token)
     try:
         log.info(f"Searching Conditional Access policies excluding group [{group_identifier}]")
         headers = {"Authorization": f"Bearer {token}"}
-        endpoint = f"{msgraph_base_url}/identity/conditionalAccess/policies?$select=id,displayName,conditions"
+        endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/identity/conditionalAccess/policies?$select=id,displayName,conditions"
         response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
         if not response:
             
@@ -316,7 +319,7 @@ def get_named_location(log, http_client, msgraph_base_url, location_identifier, 
     try:
         log.info(f"Searching Conditional Access Named Location [{location_identifier}]")
         headers = {"Authorization": f"Bearer {token}"}
-        endpoint = f"{msgraph_base_url}/identity/conditionalAccess/namedLocations"
+        endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/identity/conditionalAccess/namedLocations"
         response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
         if not response:
             
@@ -389,7 +392,7 @@ def update_ca_policy(log, http_client, msgraph_base_url, policy_id, patch_data, 
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json"
         }
-        patch_endpoint = f"{msgraph_base_url}/identity/conditionalAccess/policies/{policy_id}"
+        patch_endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/identity/conditionalAccess/policies/{policy_id}"
         patch_response = execute_api_call(log, http_client, "patch", patch_endpoint, data=patch_data, headers=headers)
         if patch_response and patch_response.status_code in [200, 204]:
             log.info(f"Successfully updated CA policy [{policy_id}]")
@@ -437,7 +440,7 @@ def main():
             record_result(log, ResultLevel.WARNING, f"Unsupported operation [{operation}]")
             return
 
-        company_identifier, company_name, company_id, company_type = get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number)
+        company_identifier, company_name, company_id, company_type = get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number)
         if not company_identifier:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve company identifier from ticket [{ticket_number}]")
             return

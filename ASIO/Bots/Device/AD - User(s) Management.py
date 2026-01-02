@@ -14,7 +14,8 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
 
 data_to_log = {}
 bot_name = "AD User(s) Management"
@@ -78,7 +79,7 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
 
 def post_ticket_note(log, http_client, cwpsa_base_url, ticket_number, note_type, note):
     log.info(f"Posting {note_type} note to ticket [{ticket_number}]")
-    note_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}/notes"
+    note_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}/notes"
     payload = {
         "text": note,
         "detailDescriptionFlag": False,
@@ -205,7 +206,8 @@ def create_user(log, user_details):
 
     function Write-Log {{
         param ([string]$Message)
-        Write-Output "`n$($Message)"
+        Write-Output 
+$($Message)"
     }}
 
     function Test-Placeholder {{

@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import traceback
 import random
 import re
@@ -16,9 +16,12 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
-msgraph_base_url = "https://graph.microsoft.com/v1.0"
-msgraph_base_url_beta = "https://graph.microsoft.com/beta"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+msgraph_base_url_base = "https://graph.microsoft.com"
+msgraph_base_url_path = "/v1.0"
+msgraph_base_url_beta_base = "https://graph.microsoft.com"
+msgraph_base_url_beta_path = "/beta"
 vault_name = "PLACEHOLDER-akv1"
 sender_email = "support@PLACEHOLDER.com.au"
 
@@ -139,9 +142,9 @@ def get_access_token(log, http_client, tenant_id, client_id, client_secret, scop
     log.error(f"Failed to retrieve access token Status code: {response.status_code if response else 'N/A'}")
     return ""
 
-def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number):
+def get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number):
     log.info(f"Retrieving company details for ticket [{ticket_number}]")
-    ticket_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
+    ticket_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
     ticket_response = execute_api_call(log, http_client, "get", ticket_endpoint, integration_name="cw_psa")
     if ticket_response and ticket_response.status_code == 200:
         ticket_data = ticket_response.json()
@@ -150,7 +153,7 @@ def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number
         company_identifier = company["identifier"]
         company_name = company["name"]
         log.info(f"Company ID: [{company_id}], Identifier: [{company_identifier}], Name: [{company_name}]")
-        company_endpoint = f"{cwpsa_base_url}/company/companies/{company_id}"
+        company_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/companies/{company_id}"
         company_response = execute_api_call(log, http_client, "get", company_endpoint, integration_name="cw_psa")
         company_types = []
         if company_response and company_response.status_code == 200:
@@ -839,7 +842,7 @@ def send_email(log, http_client, msgraph_base_url, access_token, sender_email, r
         masked_html_body = re.sub(r"('|\")(eyJ[a-zA-Z0-9_-]{5,}?\.[a-zA-Z0-9_-]{5,}?\.([a-zA-Z0-9_-]{5,})?)", r"\1***TOKEN-MASKED***\1", html_body)
         masked_html_body = re.sub(r"('|\")([a-zA-Z0-9]{8,}-(clientid|clientsecret|password))\1", r"\1***SECRET-MASKED***\1", masked_html_body, flags=re.IGNORECASE)
 
-        endpoint = f"{msgraph_base_url}/users/{sender_email}/sendMail"
+        endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/users/{sender_email}/sendMail"
         headers = {
             "Authorization": f"Bearer {access_token}",
             "Content-Type": "application/json"
@@ -920,7 +923,7 @@ def main():
             return
 
         log.info(f"Retrieving company data for ticket [{ticket_number}]")
-        company_identifier, company_name, company_id, company_types = get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number)
+        company_identifier, company_name, company_id, company_types = get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number)
         if not company_identifier:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve company identifier from ticket [{ticket_number}]")
             return

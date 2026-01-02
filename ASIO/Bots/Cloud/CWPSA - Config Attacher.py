@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import os
 import time
@@ -66,7 +66,7 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
 
 def get_ticket_configurations(log, http_client, cwpsa_base_url, ticket_id):
     log.info(f"Retrieving configurations attached to ticket [{ticket_id}]")
-    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_id}/configurations"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_id}/configurations"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if response:
         try:
@@ -83,7 +83,7 @@ def attach_configuration_to_ticket(log, http_client, cwpsa_base_url, ticket_id, 
     log.info(f"Attaching configuration [{config_id}] to ticket [{ticket_id}]")
     
     data = {"id": config_id}
-    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_id}/configurations"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_id}/configurations"
     response = execute_api_call(log, http_client, "post", endpoint, data=data, integration_name="cw_psa")
     
     if response and response.status_code in [200, 201]:

@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import os
 import re
 from cw_rpa import Logger, Input, HttpClient, ResultLevel
@@ -42,7 +42,7 @@ def execute_api_call(log, http_client, method, endpoint, integration_name="cw_ps
 
 def get_ticket_notes(log, http_client, cwpsa_base_url, ticket_number):
     log.info(f"Retrieving notes for ticket [{ticket_number}]")
-    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}/notes"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}/notes"
     response = execute_api_call(log, http_client, "get", endpoint)
     if response:
         try:

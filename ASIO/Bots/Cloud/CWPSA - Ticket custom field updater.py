@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import os
 import time
@@ -78,7 +78,7 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
 
 def get_ticket_custom_fields(log, http_client, cwpsa_base_url, ticket_number):
     log.info(f"Retrieving custom fields for ticket [{ticket_number}]")
-    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if response:
         ticket_data = response.json()
@@ -100,7 +100,7 @@ def find_custom_field_by_name(log, custom_fields, field_name):
 
 def update_ticket_custom_field(log, http_client, cwpsa_base_url, ticket_number, field_id, new_value):
     log.info(f"Updating custom field ID [{field_id}] on ticket [{ticket_number}] to [{new_value}]")
-    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
     patch_data = [
         {
             "op": "replace",

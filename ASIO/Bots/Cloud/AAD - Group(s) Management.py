@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import re
 import os
@@ -14,9 +14,12 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
-msgraph_base_url = "https://graph.microsoft.com/v1.0"
-msgraph_base_url_beta = "https://graph.microsoft.com/beta"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+msgraph_base_url_base = "https://graph.microsoft.com"
+msgraph_base_url_path = "/v1.0"
+msgraph_base_url_beta_base = "https://graph.microsoft.com"
+msgraph_base_url_beta_path = "/beta"
 vault_name = "PLACEHOLDER-akv1"
 sender_email = "support@PLACEHOLDER.com.au"
 
@@ -162,9 +165,9 @@ def get_graph_token(log, http_client, vault_name, company_identifier):
 
     return tenant_id, token
 
-def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number):
+def get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number):
     log.info(f"Retrieving company details for ticket [{ticket_number}]")
-    ticket_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
+    ticket_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
     ticket_response = execute_api_call(log, http_client, "get", ticket_endpoint, integration_name="cw_psa")
 
     if ticket_response and ticket_response.status_code == 200:
@@ -177,7 +180,7 @@ def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number
 
         log.info(f"Company ID: [{company_id}], Identifier: [{company_identifier}], Name: [{company_name}]")
 
-        company_endpoint = f"{cwpsa_base_url}/company/companies/{company_id}"
+        company_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/companies/{company_id}"
         company_response = execute_api_call(log, http_client, "get", company_endpoint, integration_name="cw_psa")
 
         company_types = []
@@ -214,7 +217,7 @@ def validate_mit_authentication(log, http_client, vault_name, auth_code):
 
     return True
 
-def get_aad_user_data(log, http_client, msgraph_base_url, user_identifier, token):
+def get_aad_user_data(log, http_client, msgraph_base_url_base, msgraph_base_url_path, user_identifier, token):
     log.info(f"Resolving user ID and email for [{user_identifier}]")
     headers = {"Authorization": f"Bearer {token}"}
 
@@ -222,7 +225,7 @@ def get_aad_user_data(log, http_client, msgraph_base_url, user_identifier, token
         r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
         user_identifier,
     ):
-        endpoint = f"{msgraph_base_url}/users/{user_identifier}"
+        endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/users/{user_identifier}"
         response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
         if response:
             user = response.json()
@@ -241,7 +244,7 @@ def get_aad_user_data(log, http_client, msgraph_base_url, user_identifier, token
         f"startswith(mail,'{user_identifier}')",
     ]
     filter_query = " or ".join(filters)
-    endpoint = f"{msgraph_base_url}/users?$filter={urllib.parse.quote(filter_query)}"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/users?$filter={urllib.parse.quote(filter_query)}"
     response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
     if response:
         users = response.json().get("value", [])
@@ -272,7 +275,7 @@ def get_aad_groups(log, http_client, msgraph_base_url, group_identifier, token):
         f"mail eq '{group_identifier}'"
     ]
     filter_query = " or ".join(filters)
-    endpoint = f"{msgraph_base_url}/groups?$filter={urllib.parse.quote(filter_query)}"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/groups?$filter={urllib.parse.quote(filter_query)}"
 
     response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
 
@@ -294,7 +297,7 @@ def get_aad_groups(log, http_client, msgraph_base_url, group_identifier, token):
 def get_user_aad_groups(log, http_client, msgraph_base_url, user_id, token):
     log.info(f"Fetching groups for user [{user_id}]")
 
-    endpoint = f"{msgraph_base_url}/users/{user_id}/transitiveMemberOf"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/users/{user_id}/transitiveMemberOf"
     headers = {"Authorization": f"Bearer {token}"}
     all_groups = []
     dynamic_groups = []
@@ -339,7 +342,7 @@ def add_user_to_aad_groups(log, http_client, msgraph_base_url, group_id, user_id
         return False
 
     ref_type = "owners" if access == "Owner" else "members"
-    endpoint = f"{msgraph_base_url}/groups/{group_id}/{ref_type}/$ref"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/groups/{group_id}/{ref_type}/$ref"
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
@@ -361,7 +364,7 @@ def remove_user_from_aad_groups(log, http_client, msgraph_base_url, group_id, us
         return False
 
     ref_type = "owners" if access == "Owner" else "members"
-    endpoint = f"{msgraph_base_url}/groups/{group_id}/{ref_type}/{user_id}/$ref"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/groups/{group_id}/{ref_type}/{user_id}/$ref"
     headers = {
         "Authorization": f"Bearer {token}"
     }
@@ -391,7 +394,7 @@ def remove_user_from_all_aad_groups(log, http_client, msgraph_base_url, user_id,
         for access in ["Member", "Owner"]:
             ref_type = "members" if access == "Member" else "owners"
             log.info(f"Attempting to remove user [{user_identifier}] from group [{group_name}] - [{group_id}] as {access} using Graph API")
-            endpoint = f"{msgraph_base_url}/groups/{group_id}/{ref_type}/{user_id}/$ref"
+            endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/groups/{group_id}/{ref_type}/{user_id}/$ref"
             headers = {"Authorization": f"Bearer {token}"}
             response = execute_api_call(log, http_client, "delete", endpoint, headers=headers)
 
@@ -412,7 +415,7 @@ def remove_user_from_all_aad_groups(log, http_client, msgraph_base_url, user_id,
 
 def check_group_on_premises_sync(log, http_client, msgraph_base_url, group_id, token):
     log.info(f"Checking group on-premises sync for group [{group_id}]")
-    endpoint = f"{msgraph_base_url}/groups/{group_id}"
+    endpoint = f"{msgraph_base_url_base}{msgraph_base_url_path}/groups/{group_id}"
     headers = {"Authorization": f"Bearer {token}"}
     response = execute_api_call(log, http_client, "get", endpoint, headers=headers)
 
@@ -473,7 +476,7 @@ def main():
             record_result(log, ResultLevel.WARNING, f"Invalid operation [{operation}] specified")
             return
 
-        company_identifier, company_name, company_id, company_type = get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number)
+        company_identifier, company_name, company_id, company_type = get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number)
         if not company_identifier:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve company identifier from ticket [{ticket_number}]")
             return
@@ -497,7 +500,7 @@ def main():
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve Azure domain for [{company_identifier}]")
             return
 
-        aad_user_result = get_aad_user_data(log, http_client, msgraph_base_url, user_identifier, graph_access_token)
+        aad_user_result = get_aad_user_data(log, http_client, msgraph_base_url_base, msgraph_base_url_path, user_identifier, graph_access_token)
         if isinstance(aad_user_result, list):
             details = "\n".join([f"- {u.get('displayName')} | {u.get('userPrincipalName')} | {u.get('id')}" for u in aad_user_result])
             record_result(log, ResultLevel.WARNING, f"Multiple users found for [{user_identifier}]\n{details}")

@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import os
 import time
@@ -81,7 +81,7 @@ def find_configuration_by_name(log, http_client, cwpsa_base_url, config_name, co
     
     conditions = f'name="{config_name}" AND type/name="{config_type}" AND company/id={company_id}'
     encoded_conditions = urllib.parse.quote(conditions)
-    endpoint = f"{cwpsa_base_url}/company/configurations?conditions={encoded_conditions}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations?conditions={encoded_conditions}"
     
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if response:
@@ -111,7 +111,7 @@ def create_configuration(log, http_client, cwpsa_base_url, config_name, company_
         config_data["questions"] = questions
         log.info(f"Including {len(questions)} questions in initial POST")
     
-    endpoint = f"{cwpsa_base_url}/company/configurations"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations"
     response = execute_api_call(log, http_client, "post", endpoint, data=config_data, integration_name="cw_psa")
     
     if response and response.status_code == 201:
@@ -138,7 +138,7 @@ def update_configuration_questions(log, http_client, cwpsa_base_url, config_id, 
         }
     ]
     
-    endpoint = f"{cwpsa_base_url}/company/configurations/{config_id}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations/{config_id}"
     response = execute_api_call(log, http_client, "patch", endpoint, data=update_data, integration_name="cw_psa")
     
     if response and response.status_code == 200:

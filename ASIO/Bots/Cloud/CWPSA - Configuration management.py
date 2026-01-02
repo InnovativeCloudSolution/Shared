@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import random
 import os
 import time
@@ -14,8 +14,10 @@ input = Input()
 log.info("Imports completed successfully")
 
 cwpsa_base_url = "https://aus.myconnectwise.net/v4_6_release/apis/3.0"
-msgraph_base_url = "https://graph.microsoft.com/v1.0"
-msgraph_base_url_beta = "https://graph.microsoft.com/beta"
+msgraph_base_url_base = "https://graph.microsoft.com"
+msgraph_base_url_path = "/v1.0"
+msgraph_base_url_beta_base = "https://graph.microsoft.com"
+msgraph_base_url_beta_path = "/beta"
 
 data_to_log = {}
 bot_name = "CWPSA - Configuration management"
@@ -77,9 +79,9 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
             return None
     return None
 
-def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number):
+def get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number):
     log.info(f"Retrieving company details for ticket [{ticket_number}]")
-    ticket_endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
+    ticket_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
     ticket_response = execute_api_call(log, http_client, "get", ticket_endpoint, integration_name="cw_psa")
     if ticket_response:
         ticket_data = ticket_response.json()
@@ -88,7 +90,7 @@ def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number
         company_identifier = company["identifier"]
         company_name = company["name"]
         log.info(f"Company ID: [{company_id}], Identifier: [{company_identifier}], Name: [{company_name}]")
-        company_endpoint = f"{cwpsa_base_url}/company/companies/{company_id}"
+        company_endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/companies/{company_id}"
         company_response = execute_api_call(log, http_client, "get", company_endpoint, integration_name="cw_psa")
         company_types = []
         if company_response:
@@ -101,10 +103,10 @@ def get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number
         return company_identifier, company_name, company_id, company_types
     return "", "", 0, []
 
-def get_ticket_data(log, http_client, cwpsa_base_url, ticket_number):
+def get_ticket_data(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number):
     try:
         log.info(f"Retrieving full ticket details for ticket number [{ticket_number}]")
-        endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
+        endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
         response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
         if response:
             ticket = response.json()
@@ -125,7 +127,7 @@ def get_contact(log, http_client, cwpsa_base_url, user_identifier, company_ident
     child_conditions = f'communicationItems/value="{user_identifier}"'
     encoded_conditions = urllib.parse.quote(conditions)
     encoded_child_conditions = urllib.parse.quote(child_conditions)
-    endpoint = f"{cwpsa_base_url}/company/contacts?conditions={encoded_conditions}&childConditions={encoded_child_conditions}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/contacts?conditions={encoded_conditions}&childConditions={encoded_child_conditions}"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if not response:
         return None
@@ -179,7 +181,7 @@ def get_configurations_by_criteria(log, http_client, cwpsa_base_url, company_ide
     log.info(f"Searching for configurations by provided details: {configuration_data} in company: {company_identifier}")
     query_string = handle_query_string(configuration_data, company_identifier)
     log.info(f"Query string: {query_string}")
-    endpoint = f"{cwpsa_base_url}/company/configurations?{query_string}"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations?{query_string}"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if not response:
         return None
@@ -195,7 +197,7 @@ def get_user_configuration_items(log, http_client, cwpsa_base_url, company_id, c
     log.info(f"Fetching configurations for company ID [{company_id}] and contact ID [{contact_id}]")
     conditions = f"company/id={company_id} and contact/id={contact_id}"
     query_string = f"conditions={urllib.parse.quote(conditions)}"
-    url = f"{cwpsa_base_url}/company/configurations?{query_string}"
+    url = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations?{query_string}"
 
     response = execute_api_call(log, http_client, "get", url, integration_name="cw_psa")
     if response:
@@ -227,7 +229,7 @@ def get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, 
     
     conditions = f'name="{ticket_number}" AND type/name="Automation - Submission" AND company/identifier="{company_identifier}"'
     query_string = f"conditions={urllib.parse.quote(conditions)}"
-    url = f"{cwpsa_base_url}/company/configurations?{query_string}"
+    url = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations?{query_string}"
     
     response = execute_api_call(log, http_client, "get", url, integration_name="cw_psa")
     if not response:
@@ -262,7 +264,7 @@ def get_configuration_question(log, http_client, cwpsa_base_url, ticket_number, 
 def get_configuration_by_id(log, http_client, cwpsa_base_url, config_id):
     log.info(f"Retrieving configuration with ID [{config_id}]")
     
-    url = f"{cwpsa_base_url}/company/configurations/{config_id}"
+    url = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations/{config_id}"
     response = execute_api_call(log, http_client, "get", url, integration_name="cw_psa")
     
     if not response:
@@ -306,7 +308,7 @@ def update_configuration_question(log, http_client, cwpsa_base_url, config_id, q
         }
     ]
     
-    update_url = f"{cwpsa_base_url}/company/configurations/{config_id}"
+    update_url = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations/{config_id}"
     update_response = execute_api_call(log, http_client, "patch", update_url, data=update_data, integration_name="cw_psa")
     
     if update_response and update_response.status_code == 200:
@@ -441,7 +443,7 @@ def main():
             return
         
         log.info(f"Retrieving company data for ticket [{ticket_number}]")
-        company_identifier, company_name, company_id, company_types = get_company_data_from_ticket(log, http_client, cwpsa_base_url, ticket_number)
+        company_identifier, company_name, company_id, company_types = get_company_data_from_ticket(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number)
         if not company_identifier:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve company identifier from ticket [{ticket_number}]")
             return

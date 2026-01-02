@@ -1,4 +1,4 @@
-import random
+﻿import random
 import time
 import urllib.parse
 import requests
@@ -9,7 +9,8 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://au.myconnectwise.net/v4_6_release/apis/3.0"
+cwpsa_base_url = "https://aus.myconnectwise.net"
+cwpsa_base_url_path = "/v4_6_release/apis/3.0"
 
 data_to_log = {}
 bot_name = "CWPSA - Member management"
@@ -77,7 +78,7 @@ def get_members(log, http_client, cwpsa_base_url, status_filter):
     if status_filter:
         conditions.append(f"inactiveFlag={status_filter}")
     query_string = f"conditions={urllib.parse.quote(' AND '.join(conditions))}" if conditions else ""
-    endpoint = f"{cwpsa_base_url}/system/members"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/system/members"
     if query_string:
         endpoint = f"{endpoint}?{query_string}"
     
@@ -92,7 +93,7 @@ def get_members(log, http_client, cwpsa_base_url, status_filter):
 
 def get_member_skills(log, http_client, cwpsa_base_url, member_id):
     log.info(f"Retrieving skills for member ID [{member_id}]")
-    endpoint = f"{cwpsa_base_url}/system/members/{member_id}/skills"
+    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/system/members/{member_id}/skills"
     
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if response and response.status_code == 200:
