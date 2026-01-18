@@ -219,15 +219,15 @@ def get_priority_level(priority_name):
         return int(match.group(1))
     return 999
 
-def update_ticket_priority(log, http_client, cwpsa_base_url, ticket_id, priority_name):
+def update_ticket_priority(log, http_client, cwpsa_base_url, ticket_id, priority_id):
     """Update ticket priority using PATCH."""
-    log.info(f"Updating ticket [{ticket_id}] priority to [{priority_name}]")
+    log.info(f"Updating ticket [{ticket_id}] priority to ID [{priority_id}]")
     
     patch_data = [
         {
             "op": "replace",
-            "path": "/priority/name",
-            "value": priority_name
+            "path": "/priority/id",
+            "value": priority_id
         }
     ]
     
@@ -235,10 +235,10 @@ def update_ticket_priority(log, http_client, cwpsa_base_url, ticket_id, priority
     response = execute_api_call(log, http_client, "patch", endpoint, data=patch_data, integration_name="cw_psa")
     
     if response and response.status_code == 200:
-        log.info(f"Successfully updated ticket [{ticket_id}] priority to [{priority_name}]")
+        log.info(f"Successfully updated ticket [{ticket_id}] priority to ID [{priority_id}]")
         return True
     else:
-        log.error(f"Failed to update ticket [{ticket_id}] priority to [{priority_name}]")
+        log.error(f"Failed to update ticket [{ticket_id}] priority to ID [{priority_id}]")
         return False
 
 def get_ticket_configurations(log, http_client, cwpsa_base_url, ticket_id):
@@ -381,28 +381,36 @@ def main():
     try:
         # Get input
         try:
-            ticket_number = input.get_value("TicketNumber_1765764568771")
+            ticket_number = input.get_value("cwTicketId")
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch ticket number input")
             return
 
-        ticket_number = ticket_number.strip() if ticket_number else ""
-
-        if not ticket_number:
+        if not ticket_number or ticket_number == "None":
             record_result(log, ResultLevel.WARNING, "Ticket number input is required")
             return
         
         log.info(f"Processing ticket [{ticket_number}] for CVE/KB handling")
         
         # Step 1: Get ticket data
-        child_ticket_data = get_ticket_data(log, http_client, cwpsa_base_url, ticket_number)
+        child_ticket_data = get_ticket_data(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number)
         if not child_ticket_data:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve ticket data for [{ticket_number}]")
             return
         
+        # Guard: Check if ticket has already been processed (is a child ticket)
+        parent_ticket_id_check = child_ticket_data.get("parentTicketId")
+        if parent_ticket_id_check:
+            log.info(f"Ticket [{ticket_number}] is already a child ticket (parent: {parent_ticket_id_check}), skipping processing to prevent loop")
+            record_result(log, ResultLevel.INFO, "Ticket already processed - is a child ticket")
+            data_to_log["already_processed"] = True
+            data_to_log["reason"] = "Already a child ticket"
+            return
+        
         company_id = child_ticket_data.get("company", {}).get("id")
         company_name = child_ticket_data.get("company", {}).get("name")
-        child_priority = child_ticket_data.get("priority", {}).get("name", "")
+        child_priority_name = child_ticket_data.get("priority", {}).get("name", "")
+        child_priority_id = child_ticket_data.get("priority", {}).get("id")
         
         if not company_id:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve company ID from ticket [{ticket_number}]")
@@ -452,7 +460,8 @@ def main():
             
             parent_ticket_id = parent_ticket.get("id")
             parent_status = parent_ticket.get("status", {}).get("name", "")
-            parent_priority = parent_ticket.get("priority", {}).get("name", "")
+            parent_priority_name = parent_ticket.get("priority", {}).get("name", "")
+            parent_priority_id = parent_ticket.get("priority", {}).get("id")
             
             data_to_log["parent_ticket_id"] = parent_ticket_id
             data_to_log["parent_status"] = parent_status
@@ -478,25 +487,25 @@ def main():
                     data_to_log["parent_reopened"] = False
             
             # Step 7: Compare priorities and set to higher priority
-            child_priority_level = get_priority_level(child_priority)
-            parent_priority_level = get_priority_level(parent_priority)
+            child_priority_level = get_priority_level(child_priority_name)
+            parent_priority_level = get_priority_level(parent_priority_name)
             
-            log.info(f"Child priority: [{child_priority}] (level {child_priority_level})")
-            log.info(f"Parent priority: [{parent_priority}] (level {parent_priority_level})")
+            log.info(f"Child priority: [{child_priority_name}] (level {child_priority_level})")
+            log.info(f"Parent priority: [{parent_priority_name}] (level {parent_priority_level})")
             
             if child_priority_level < parent_priority_level:
-                log.info(f"Child has higher priority, updating parent to [{child_priority}]")
-                priority_success = update_ticket_priority(log, http_client, cwpsa_base_url, parent_ticket_id, child_priority)
+                log.info(f"Child has higher priority, updating parent to [{child_priority_name}] (ID: {child_priority_id})")
+                priority_success = update_ticket_priority(log, http_client, cwpsa_base_url, parent_ticket_id, child_priority_id)
                 if priority_success:
-                    record_result(log, ResultLevel.SUCCESS, f"Updated parent ticket priority to [{child_priority}]")
+                    record_result(log, ResultLevel.SUCCESS, f"Updated parent ticket priority to [{child_priority_name}]")
                     data_to_log["priority_updated"] = True
                 else:
                     data_to_log["priority_updated"] = False
             elif parent_priority_level < child_priority_level:
-                log.info(f"Parent has higher priority, updating child to [{parent_priority}]")
-                priority_success = update_ticket_priority(log, http_client, cwpsa_base_url, ticket_number, parent_priority)
+                log.info(f"Parent has higher priority, updating child to [{parent_priority_name}] (ID: {parent_priority_id})")
+                priority_success = update_ticket_priority(log, http_client, cwpsa_base_url, ticket_number, parent_priority_id)
                 if priority_success:
-                    record_result(log, ResultLevel.SUCCESS, f"Updated child ticket priority to [{parent_priority}]")
+                    record_result(log, ResultLevel.SUCCESS, f"Updated child ticket priority to [{parent_priority_name}]")
                     data_to_log["priority_updated"] = True
                 else:
                     data_to_log["priority_updated"] = False

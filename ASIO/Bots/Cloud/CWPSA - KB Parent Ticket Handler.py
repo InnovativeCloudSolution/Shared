@@ -14,8 +14,7 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://aus.myconnectwise.net"
-cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+cwpsa_base_url = "https://aus.myconnectwise.net/v4_6_release/apis/3.0"
 
 data_to_log = {}
 bot_name = "CWPSA - KB Parent Ticket Handler"
@@ -77,10 +76,10 @@ def execute_api_call(log, http_client, method, endpoint, data=None, retries=5, i
             return None
     return None
 
-def get_ticket_data(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticket_number):
+def get_ticket_data(log, http_client, cwpsa_base_url, ticket_number):
     try:
         log.info(f"Retrieving full ticket details for ticket number [{ticket_number}]")
-        endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}"
+        endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}"
         response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
         if response:
             ticket = response.json()
@@ -92,7 +91,7 @@ def get_ticket_data(log, http_client, cwpsa_base_url, cwpsa_base_url_path, ticke
 
 def get_ticket_notes(log, http_client, cwpsa_base_url, ticket_number):
     log.info(f"Retrieving notes for ticket [{ticket_number}]")
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}/notes"
+    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}/notes"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if response:
         try:
@@ -118,7 +117,7 @@ def find_ticket_by_summary(log, http_client, cwpsa_base_url, summary, company_id
     log.info(f"Searching for ticket with summary: [{summary}] in company ID [{company_id}]")
     conditions = f'summary="{summary}" AND company/id={company_id}'
     encoded_conditions = urllib.parse.quote(conditions)
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets?conditions={encoded_conditions}"
+    endpoint = f"{cwpsa_base_url}/service/tickets?conditions={encoded_conditions}"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if response:
         try:
@@ -143,7 +142,7 @@ def create_ticket(log, http_client, cwpsa_base_url, summary, company_id, board_n
         "status": {"name": status_name}
     }
     
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets"
+    endpoint = f"{cwpsa_base_url}/service/tickets"
     response = execute_api_call(log, http_client, "post", endpoint, data=ticket_data, integration_name="cw_psa")
     
     if response and response.status_code == 201:
@@ -162,7 +161,7 @@ def create_ticket(log, http_client, cwpsa_base_url, summary, company_id, board_n
 def child_ticket(log, http_client, cwpsa_base_url, parent_ticket_id, child_ticket_id):
     log.info(f"Attaching child ticket [{child_ticket_id}] to parent ticket [{parent_ticket_id}]")
     
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{parent_ticket_id}/attachChildren"
+    endpoint = f"{cwpsa_base_url}/service/tickets/{parent_ticket_id}/attachChildren"
     data = {"childTicketIds": [child_ticket_id]}
     
     response = execute_api_call(log, http_client, "post", endpoint, data=data, integration_name="cw_psa")
@@ -185,7 +184,7 @@ def update_ticket_status(log, http_client, cwpsa_base_url, ticket_id, status_nam
         }
     ]
     
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_id}"
+    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_id}"
     response = execute_api_call(log, http_client, "patch", endpoint, data=patch_data, integration_name="cw_psa")
     
     if response and response.status_code == 200:
@@ -214,7 +213,7 @@ def update_ticket_priority(log, http_client, cwpsa_base_url, ticket_id, priority
         }
     ]
     
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_id}"
+    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_id}"
     response = execute_api_call(log, http_client, "patch", endpoint, data=patch_data, integration_name="cw_psa")
     
     if response and response.status_code == 200:
@@ -226,7 +225,7 @@ def update_ticket_priority(log, http_client, cwpsa_base_url, ticket_id, priority
 
 def get_ticket_configurations(log, http_client, cwpsa_base_url, ticket_id):
     log.info(f"Retrieving configurations attached to ticket [{ticket_id}]")
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_id}/configurations"
+    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_id}/configurations"
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if response:
         try:
@@ -243,7 +242,7 @@ def attach_configuration_to_ticket(log, http_client, cwpsa_base_url, ticket_id, 
     log.info(f"Attaching configuration [{config_id}] to ticket [{ticket_id}]")
     
     data = {"id": config_id}
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_id}/configurations"
+    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_id}/configurations"
     response = execute_api_call(log, http_client, "post", endpoint, data=data, integration_name="cw_psa")
     
     if response and response.status_code in [200, 201]:
@@ -256,15 +255,21 @@ def attach_configuration_to_ticket(log, http_client, cwpsa_base_url, ticket_id, 
 def main():
     try:
         try:
-            ticket_number = input.get_value("TicketID_1765965474492")
+            ticket_number = input.get_value("TicketID_1767833300027")
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch ticket number input")
             return
 
-        ticket_number = ticket_number.strip() if ticket_number else ""
+        ticket_number = str(ticket_number).strip() if ticket_number else ""
 
         if not ticket_number:
             record_result(log, ResultLevel.WARNING, "Ticket number input is required")
+            return
+        
+        try:
+            ticket_number = int(ticket_number)
+        except ValueError:
+            record_result(log, ResultLevel.WARNING, f"Invalid ticket number: [{ticket_number}]")
             return
         
         log.info(f"Processing ticket [{ticket_number}] for KB parent ticket handling")

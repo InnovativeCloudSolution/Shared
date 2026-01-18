@@ -10,8 +10,7 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://aus.myconnectwise.net"
-cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+cwpsa_base_url = "https://aus.myconnectwise.net/v4_6_release/apis/3.0"
 
 data_to_log = {}
 bot_name = "CWPSA - CVE Extractor"
@@ -43,7 +42,7 @@ def execute_api_call(log, http_client, method, endpoint, integration_name="cw_ps
 
 def get_ticket_notes(log, http_client, cwpsa_base_url, ticket_number):
     log.info(f"Retrieving notes for ticket [{ticket_number}]")
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{ticket_number}/notes"
+    endpoint = f"{cwpsa_base_url}/service/tickets/{ticket_number}/notes"
     response = execute_api_call(log, http_client, "get", endpoint)
     if response:
         try:
@@ -68,15 +67,21 @@ def extract_cve_numbers(log, text):
 def main():
     try:
         try:
-            ticket_number = input.get_value("TicketID_1765965563857")
+            ticket_number = input.get_value("TicketID_1767833338848")
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch ticket number input")
             return
 
-        ticket_number = ticket_number.strip() if ticket_number else ""
+        ticket_number = str(ticket_number).strip() if ticket_number else ""
 
         if not ticket_number:
             record_result(log, ResultLevel.WARNING, "Ticket number input is required")
+            return
+        
+        try:
+            ticket_number = int(ticket_number)
+        except ValueError:
+            record_result(log, ResultLevel.WARNING, f"Invalid ticket number: [{ticket_number}]")
             return
         
         log.info(f"Extracting CVE numbers from ticket [{ticket_number}]")

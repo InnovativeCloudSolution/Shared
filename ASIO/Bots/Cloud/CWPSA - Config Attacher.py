@@ -97,16 +97,16 @@ def attach_configuration_to_ticket(log, http_client, cwpsa_base_url, ticket_id, 
 def main():
     try:
         try:
-            child_ticket_id = input.get_value("ChildTicketID_1765965840181")
-            parent_ticket_id = input.get_value("ParentTicketID_1765965841865")
-            config_id = input.get_value("ConfigID_1765965843374")
+            child_ticket_id = input.get_value("ChildTicketID_1767833432600")
+            parent_ticket_id = input.get_value("ParentTicketID_1767833701115")
+            config_id = input.get_value("ConfigID_1767833703616")
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch required input values")
             return
 
-        child_ticket_id = child_ticket_id.strip() if child_ticket_id else ""
-        parent_ticket_id = parent_ticket_id.strip() if parent_ticket_id else ""
-        config_id = config_id.strip() if config_id else ""
+        child_ticket_id = str(child_ticket_id).strip() if child_ticket_id else ""
+        parent_ticket_id = str(parent_ticket_id).strip() if parent_ticket_id else ""
+        config_id = str(config_id).strip() if config_id else ""
         
         if not child_ticket_id:
             record_result(log, ResultLevel.WARNING, "Child Ticket ID input is required")
@@ -117,14 +117,25 @@ def main():
             return
         
         try:
+            child_ticket_id = int(child_ticket_id)
+        except ValueError:
+            record_result(log, ResultLevel.WARNING, f"Invalid child ticket ID: [{child_ticket_id}]")
+            return
+        
+        try:
             config_id = int(config_id)
-        except:
+        except ValueError:
             record_result(log, ResultLevel.WARNING, f"Invalid configuration ID: [{config_id}]")
             return
         
         ticket_ids = [child_ticket_id]
         if parent_ticket_id:
-            ticket_ids.append(parent_ticket_id)
+            try:
+                parent_ticket_id = int(parent_ticket_id)
+                ticket_ids.append(parent_ticket_id)
+            except ValueError:
+                record_result(log, ResultLevel.WARNING, f"Invalid parent ticket ID: [{parent_ticket_id}]")
+                return
             log.info(f"Processing child ticket [{child_ticket_id}] and parent ticket [{parent_ticket_id}]")
         else:
             log.info(f"Processing child ticket [{child_ticket_id}] only (no parent ticket provided)")
@@ -144,21 +155,14 @@ def main():
         failed_count = 0
         
         for ticket_id in ticket_ids:
-            try:
-                ticket_id_int = int(ticket_id)
-            except:
-                log.warning(f"Skipping invalid ticket ID: [{ticket_id}]")
-                failed_count += 1
-                continue
-            
-            existing_configs = get_ticket_configurations(log, http_client, cwpsa_base_url, ticket_id_int)
+            existing_configs = get_ticket_configurations(log, http_client, cwpsa_base_url, ticket_id)
             existing_config_ids = [c.get("id") for c in existing_configs]
             
             if config_id in existing_config_ids:
                 log.info(f"Configuration [{config_id}] already attached to ticket [{ticket_id}]")
                 already_attached_count += 1
             else:
-                attach_success = attach_configuration_to_ticket(log, http_client, cwpsa_base_url, ticket_id_int, config_id)
+                attach_success = attach_configuration_to_ticket(log, http_client, cwpsa_base_url, ticket_id, config_id)
                 if attach_success:
                     attached_count += 1
                 else:
