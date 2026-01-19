@@ -13,8 +13,7 @@ http_client = HttpClient()
 input = Input()
 log.info("Imports completed successfully")
 
-cwpsa_base_url = "https://aus.myconnectwise.net"
-cwpsa_base_url_path = "/v4_6_release/apis/3.0"
+cwpsa_base_url = "https://aus.myconnectwise.net/v4_6_release/apis/3.0"
 nist_nvd2_base_url = "https://api.vulncheck.com"
 
 data_to_log = {}
@@ -82,7 +81,7 @@ def find_configuration_by_name(log, http_client, cwpsa_base_url, config_name, co
     
     conditions = f'name="{config_name}" AND type/name="{config_type}" AND company/id={company_id}'
     encoded_conditions = urllib.parse.quote(conditions)
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations?conditions={encoded_conditions}"
+    endpoint = f"{cwpsa_base_url}/company/configurations?conditions={encoded_conditions}"
     
     response = execute_api_call(log, http_client, "get", endpoint, integration_name="cw_psa")
     if response:
@@ -112,7 +111,7 @@ def create_configuration(log, http_client, cwpsa_base_url, config_name, company_
         config_data["questions"] = questions
         log.info(f"Including {len(questions)} questions in initial POST")
     
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations"
+    endpoint = f"{cwpsa_base_url}/company/configurations"
     response = execute_api_call(log, http_client, "post", endpoint, data=config_data, integration_name="cw_psa")
     
     if response and response.status_code == 201:
@@ -139,7 +138,7 @@ def update_configuration_questions(log, http_client, cwpsa_base_url, config_id, 
         }
     ]
     
-    endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/company/configurations/{config_id}"
+    endpoint = f"{cwpsa_base_url}/company/configurations/{config_id}"
     response = execute_api_call(log, http_client, "patch", endpoint, data=update_data, integration_name="cw_psa")
     
     if response and response.status_code == 200:
@@ -172,12 +171,12 @@ def main():
     try:
         try:
             cve_number = input.get_value("CVENumber_1765965781687")
-            company_id = input.get_value("CompanyID_1765965784144")
+            company_id = input.get_value("CompanyID_1767833400661")
         except Exception:
             record_result(log, ResultLevel.WARNING, "Failed to fetch required input values")
             return
 
-        cve_number = cve_number.strip() if cve_number else ""
+        cve_number = str(cve_number).strip() if cve_number else ""
         
         if not cve_number:
             record_result(log, ResultLevel.WARNING, "CVE number input is required")
