@@ -72,6 +72,7 @@ function Get-CWMProducts {
                 @{Name='Type';Expression={if ($_.type) { $_.type.name } else { "" }}},
                 @{Name='Manufacturer';Expression={if ($_.manufacturer) { $_.manufacturer.name } else { "" }}},
                 @{Name='ManufacturerPartNumber';Expression={$_.manufacturerPartNumber}},
+                @{Name='Vendor';Expression={if ($_.vendor) { $_.vendor.name } else { "" }}},
                 @{Name='VendorSKU';Expression={$_.vendorSku}},
                 price,
                 cost,

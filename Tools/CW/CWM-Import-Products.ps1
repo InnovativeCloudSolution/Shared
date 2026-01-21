@@ -129,8 +129,8 @@ function Import-Products {
     Write-Log "" -Level "INFO"
     
     foreach ($row in $csvData) {
-        $identifier = $row.Identifier.Trim()
-        $description = $row.Description.Trim()
+        $identifier = $row.identifier.Trim()
+        $description = $row.description.Trim()
         
         if ([string]::IsNullOrWhiteSpace($identifier) -or [string]::IsNullOrWhiteSpace($description)) {
             Write-Log "Skipping row with missing Identifier or Description" -Level "WARNING"
@@ -202,12 +202,12 @@ function Import-Products {
             $productData.vendorSku = $row.VendorSKU.Trim()
         }
         
-        if (-not [string]::IsNullOrWhiteSpace($row.Price)) {
-            $productData.price = [decimal]$row.Price
+        if (-not [string]::IsNullOrWhiteSpace($row.price)) {
+            $productData.price = [decimal]$row.price
         }
         
-        if (-not [string]::IsNullOrWhiteSpace($row.Cost)) {
-            $productData.cost = [decimal]$row.Cost
+        if (-not [string]::IsNullOrWhiteSpace($row.cost)) {
+            $productData.cost = [decimal]$row.cost
         }
         
         if (-not [string]::IsNullOrWhiteSpace($row.CustomerDescription)) {
