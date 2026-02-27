@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import random
 import os
 import time
@@ -188,7 +188,7 @@ def main():
         
         try:
             company_id = int(company_id)
-        except:
+        except (ValueError, TypeError):
             record_result(log, ResultLevel.WARNING, f"Invalid company ID: [{company_id}]")
             return
         

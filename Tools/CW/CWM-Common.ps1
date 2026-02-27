@@ -7,8 +7,8 @@
 $script:CWMUrl = "https://api-aus.myconnectwise.net"
 $script:ApiVersion = "v4_6_release/apis/3.0"
 $script:CompanyId = "dropbearit"
-$script:PublicKey = "xAVcYWO20x5dRyG7"
-$script:PrivateKey = "QUC1zTaMuUXbiJqX"
+$script:PublicKey = "HywZW7GhwyUrVZkm"
+$script:PrivateKey = "t6PwrokGQp14lkEC"
 $script:ClientId = "1748c7f0-976c-4205-afa1-9bc9e1533565"
 
 # ========================================

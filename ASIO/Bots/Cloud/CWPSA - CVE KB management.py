@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import random
 import os
 import time
@@ -177,7 +177,7 @@ def child_ticket(log, http_client, cwpsa_base_url, parent_ticket_id, child_ticke
     log.info(f"Attaching child ticket [{child_ticket_id}] to parent ticket [{parent_ticket_id}]")
     
     endpoint = f"{cwpsa_base_url}{cwpsa_base_url_path}/service/tickets/{parent_ticket_id}/attachChildren"
-    data = {"childTicketIds": [child_ticket_id]}
+    data = {"childTicketIds": [int(child_ticket_id)]}
     
     response = execute_api_call(log, http_client, "post", endpoint, data=data, integration_name="cw_psa")
     
@@ -557,6 +557,11 @@ def main():
             cve_configs_created = 0
             cve_configs_found = 0
             
+            cached_child_configs = get_ticket_configurations(log, http_client, cwpsa_base_url, ticket_number)
+            cached_child_config_ids = set(c.get("id") for c in cached_child_configs)
+            cached_parent_configs = get_ticket_configurations(log, http_client, cwpsa_base_url, parent_ticket_id) if parent_ticket_id else []
+            cached_parent_config_ids = set(c.get("id") for c in cached_parent_configs)
+            
             for cve_number in all_cves:
                 log.info(f"Processing CVE: [{cve_number}]")
                 
@@ -623,31 +628,31 @@ def main():
                                 log.info(f"Extracted advisory: URL [{q6_advisory_url}], Source [{q7_advisory_sources}], Tags [{q8_advisory_tags}]")
                         
                         questions_data = [
-                            {"questionId": 484, "answer": q1_cve_id},
-                            {"questionId": 485, "answer": q2_publish_date},
-                            {"questionId": 486, "answer": q3_last_modified},
-                            {"questionId": 487, "answer": q4_cvss_version},
-                            {"questionId": 488, "answer": q5_cvss_score},
-                            {"questionId": 489, "answer": q6_advisory_url},
-                            {"questionId": 490, "answer": q7_advisory_sources},
-                            {"questionId": 491, "answer": q8_advisory_tags},
-                            {"questionId": 492, "answer": q9_description},
-                            {"questionId": 493, "answer": q10_nvd_status}
+                            {"id": 484, "answer": {"answer": q1_cve_id}},
+                            {"id": 485, "answer": {"answer": q2_publish_date}},
+                            {"id": 486, "answer": {"answer": q3_last_modified}},
+                            {"id": 487, "answer": {"answer": q4_cvss_version}},
+                            {"id": 488, "answer": {"answer": q5_cvss_score}},
+                            {"id": 489, "answer": {"answer": q6_advisory_url}},
+                            {"id": 490, "answer": {"answer": q7_advisory_sources}},
+                            {"id": 491, "answer": {"answer": q8_advisory_tags}},
+                            {"id": 492, "answer": {"answer": q9_description}},
+                            {"id": 493, "answer": {"answer": q10_nvd_status}}
                         ]
                         log.info(f"Mapped all CVE fields to 10 questions")
                     else:
                         log.warning(f"No CVE data retrieved for [{cve_number}] - using default values")
                         questions_data = [
-                            {"questionId": 484, "answer": cve_number},
-                            {"questionId": 485, "answer": ""},
-                            {"questionId": 486, "answer": ""},
-                            {"questionId": 487, "answer": ""},
-                            {"questionId": 488, "answer": ""},
-                            {"questionId": 489, "answer": ""},
-                            {"questionId": 490, "answer": ""},
-                            {"questionId": 491, "answer": ""},
-                            {"questionId": 492, "answer": "No description available"},
-                            {"questionId": 493, "answer": ""}
+                            {"id": 484, "answer": {"answer": cve_number}},
+                            {"id": 485, "answer": {"answer": ""}},
+                            {"id": 486, "answer": {"answer": ""}},
+                            {"id": 487, "answer": {"answer": ""}},
+                            {"id": 488, "answer": {"answer": ""}},
+                            {"id": 489, "answer": {"answer": ""}},
+                            {"id": 490, "answer": {"answer": ""}},
+                            {"id": 491, "answer": {"answer": ""}},
+                            {"id": 492, "answer": {"answer": "No description available"}},
+                            {"id": 493, "answer": {"answer": ""}}
                         ]
                     
                     # Create CVE config with all 10 questions
@@ -667,24 +672,20 @@ def main():
                 cve_config_id = cve_config.get("id")
                 
                 # Attach to child ticket
-                child_configs = get_ticket_configurations(log, http_client, cwpsa_base_url, ticket_number)
-                child_config_ids = [c.get("id") for c in child_configs]
-                
-                if cve_config_id not in child_config_ids:
+                if cve_config_id not in cached_child_config_ids:
                     attach_success = attach_configuration_to_ticket(log, http_client, cwpsa_base_url, ticket_number, cve_config_id)
                     if attach_success:
+                        cached_child_config_ids.add(cve_config_id)
                         log.info(f"Attached CVE config [{cve_config_id}] to child ticket [{ticket_number}]")
                 else:
                     log.info(f"CVE config [{cve_config_id}] already attached to child ticket")
                 
                 # Attach to parent ticket (if KB was found and parent exists)
                 if kb_matches and len(kb_matches) > 0 and parent_ticket_id:
-                    parent_configs = get_ticket_configurations(log, http_client, cwpsa_base_url, parent_ticket_id)
-                    parent_config_ids = [c.get("id") for c in parent_configs]
-                    
-                    if cve_config_id not in parent_config_ids:
+                    if cve_config_id not in cached_parent_config_ids:
                         attach_success = attach_configuration_to_ticket(log, http_client, cwpsa_base_url, parent_ticket_id, cve_config_id)
                         if attach_success:
+                            cached_parent_config_ids.add(cve_config_id)
                             log.info(f"Attached CVE config [{cve_config_id}] to parent ticket [{parent_ticket_id}]")
                     else:
                         log.info(f"CVE config [{cve_config_id}] already attached to parent ticket")
