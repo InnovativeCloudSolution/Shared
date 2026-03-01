@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import random
 import os
 import time
@@ -202,14 +202,14 @@ def get_priority_level(priority_name):
         return int(match.group(1))
     return 999
 
-def update_ticket_priority(log, http_client, cwpsa_base_url, ticket_id, priority_name):
-    log.info(f"Updating ticket [{ticket_id}] priority to [{priority_name}]")
+def update_ticket_priority(log, http_client, cwpsa_base_url, ticket_id, priority_id, priority_name):
+    log.info(f"Updating ticket [{ticket_id}] priority to [{priority_name}] (ID: {priority_id})")
     
     patch_data = [
         {
             "op": "replace",
-            "path": "/priority/name",
-            "value": priority_name
+            "path": "/priority/id",
+            "value": priority_id
         }
     ]
     
@@ -282,6 +282,7 @@ def main():
         company_id = child_ticket_data.get("company", {}).get("id")
         company_name = child_ticket_data.get("company", {}).get("name")
         child_priority = child_ticket_data.get("priority", {}).get("name", "")
+        child_priority_id = child_ticket_data.get("priority", {}).get("id")
         
         if not company_id:
             record_result(log, ResultLevel.WARNING, f"Failed to retrieve company ID from ticket [{ticket_number}]")
@@ -331,6 +332,7 @@ def main():
             parent_ticket_id = parent_ticket.get("id")
             parent_status = parent_ticket.get("status", {}).get("name", "")
             parent_priority = parent_ticket.get("priority", {}).get("name", "")
+            parent_priority_id = parent_ticket.get("priority", {}).get("id")
             
             data_to_log["parent_ticket_id"] = parent_ticket_id
             data_to_log["parent_status"] = parent_status
@@ -361,7 +363,7 @@ def main():
             
             if child_priority_level < parent_priority_level:
                 log.info(f"Child has higher priority, updating parent to [{child_priority}]")
-                priority_success = update_ticket_priority(log, http_client, cwpsa_base_url, parent_ticket_id, child_priority)
+                priority_success = update_ticket_priority(log, http_client, cwpsa_base_url, parent_ticket_id, child_priority_id, child_priority)
                 if priority_success:
                     record_result(log, ResultLevel.SUCCESS, f"Updated parent ticket priority to [{child_priority}]")
                     data_to_log["priority_updated"] = True
@@ -369,7 +371,7 @@ def main():
                     data_to_log["priority_updated"] = False
             elif parent_priority_level < child_priority_level:
                 log.info(f"Parent has higher priority, updating child to [{parent_priority}]")
-                priority_success = update_ticket_priority(log, http_client, cwpsa_base_url, ticket_number, parent_priority)
+                priority_success = update_ticket_priority(log, http_client, cwpsa_base_url, ticket_number, parent_priority_id, parent_priority)
                 if priority_success:
                     record_result(log, ResultLevel.SUCCESS, f"Updated child ticket priority to [{parent_priority}]")
                     data_to_log["priority_updated"] = True
