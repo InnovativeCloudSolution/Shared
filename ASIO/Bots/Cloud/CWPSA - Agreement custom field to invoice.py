@@ -185,85 +185,95 @@ def main():
             record_result(log, ResultLevel.WARNING, f"Invoice [{invoice_id}] not found")
             return
 
-        agreement_ref = invoice.get("agreement")
-        if not agreement_ref or not agreement_ref.get("id"):
-            record_result(log, ResultLevel.WARNING, f"Invoice [{invoice_id}] has no linked agreement")
-            return
-        agreement_id = agreement_ref["id"]
-        log.info(f"Invoice [{invoice_id}] is linked to agreement [{agreement_id}]")
-
-        additions = get_agreement_additions(log, http_client, cwpsa_base_url, cwpsa_base_url_path, agreement_id)
-        if not additions:
-            record_result(log, ResultLevel.WARNING, f"No additions found on agreement [{agreement_id}]")
-            return
-
-        billable_additions = [a for a in additions if a.get("billCustomer") != "DoNotBill" and not a.get("cancelledDate")]
-        billable_additions.sort(key=lambda a: a.get("sequenceNumber", 0))
-        log.info(f"Filtered to [{len(billable_additions)}] billable additions (sorted by sequence ASC)")
-
         invoice_products = get_invoice_products(log, http_client, cwpsa_base_url, cwpsa_base_url_path, invoice_id)
         if not invoice_products:
             record_result(log, ResultLevel.WARNING, f"No products found on invoice [{invoice_id}]")
             return
-        invoice_products.sort(key=lambda p: p.get("sequenceNumber", 0))
 
-        if len(billable_additions) != len(invoice_products):
-            log.warning(f"Count mismatch: [{len(billable_additions)}] billable additions vs [{len(invoice_products)}] invoice products")
+        products_by_agreement = {}
+        for product in invoice_products:
+            agr_id = product.get("agreement", {}).get("id")
+            if not agr_id:
+                log.warning(f"Invoice product [{product.get('id')}] has no agreement reference - skipping")
+                continue
+            if agr_id not in products_by_agreement:
+                products_by_agreement[agr_id] = []
+            products_by_agreement[agr_id].append(product)
+
+        log.info(f"Invoice products grouped into [{len(products_by_agreement)}] agreement(s): {list(products_by_agreement.keys())}")
 
         updated_count = 0
         skipped_count = 0
-        match_count = min(len(billable_additions), len(invoice_products))
+        agreements_processed = []
 
-        for i in range(match_count):
-            addition = billable_additions[i]
-            product = invoice_products[i]
+        for agreement_id, agreement_products in products_by_agreement.items():
+            agreement_products.sort(key=lambda p: p.get("id", 0))
+            log.info(f"Processing agreement [{agreement_id}] with [{len(agreement_products)}] invoice product(s)")
 
-            addition_product_id = addition.get("product", {}).get("id")
-            invoice_catalog_id = product.get("catalogItem", {}).get("id")
-            addition_seq = addition.get("sequenceNumber", "?")
-            product_seq = product.get("sequenceNumber", "?")
-            product_id = product.get("id")
-
-            if addition_product_id != invoice_catalog_id:
-                log.warning(f"Product mismatch at position [{i}]: addition product ID [{addition_product_id}] (seq {addition_seq}) != invoice catalog ID [{invoice_catalog_id}] (seq {product_seq}) - skipping")
-                skipped_count += 1
+            additions = get_agreement_additions(log, http_client, cwpsa_base_url, cwpsa_base_url_path, agreement_id)
+            if not additions:
+                log.warning(f"No additions found on agreement [{agreement_id}] - skipping [{len(agreement_products)}] invoice product(s)")
+                skipped_count += len(agreement_products)
                 continue
 
-            addition_custom_fields = addition.get("customFields", [])
-            product_custom_fields = product.get("customFields", [])
+            billable_additions = [a for a in additions if a.get("billCustomer") != "DoNotBill" and not a.get("cancelledDate")]
+            billable_additions.sort(key=lambda a: a.get("sequenceNumber", 0))
+            log.info(f"Agreement [{agreement_id}]: [{len(billable_additions)}] billable additions, [{len(agreement_products)}] invoice products")
+            agreements_processed.append(agreement_id)
 
-            if not addition_custom_fields:
-                log.info(f"Position [{i}]: No custom fields on addition (seq {addition_seq}) - skipping")
-                continue
+            if len(billable_additions) != len(agreement_products):
+                log.warning(f"Agreement [{agreement_id}]: Count mismatch - [{len(billable_additions)}] additions vs [{len(agreement_products)}] products")
 
-            fields_to_update = []
-            for field_name in field_names_to_copy:
-                source_field = find_custom_field_by_caption(addition_custom_fields, field_name)
-                if not source_field:
-                    log.info(f"Position [{i}]: Custom field [{field_name}] not found on addition (seq {addition_seq})")
-                    continue
+            match_count = min(len(billable_additions), len(agreement_products))
+            for i in range(match_count):
+                addition = billable_additions[i]
+                product = agreement_products[i]
 
-                source_value = source_field.get("value")
-                target_field = find_custom_field_by_caption(product_custom_fields, field_name)
-                if not target_field:
-                    log.warning(f"Position [{i}]: Custom field [{field_name}] not found on invoice product [{product_id}] (seq {product_seq})")
-                    continue
+                addition_product_id = addition.get("product", {}).get("id")
+                invoice_catalog_id = product.get("catalogItem", {}).get("id")
+                addition_seq = addition.get("sequenceNumber", "?")
+                product_seq = product.get("sequenceNumber", "?")
+                product_id = product.get("id")
 
-                target_field_id = target_field.get("id")
-                log.info(f"Position [{i}]: Copying [{field_name}] = [{source_value}] from addition (seq {addition_seq}) to product [{product_id}] (seq {product_seq})")
-                fields_to_update.append({"id": target_field_id, "value": source_value})
-
-            if fields_to_update:
-                if update_product_custom_fields(log, http_client, cwpsa_base_url, cwpsa_base_url_path, product_id, fields_to_update):
-                    updated_count += 1
-                else:
+                if addition_product_id != invoice_catalog_id:
+                    log.warning(f"Agreement [{agreement_id}] position [{i}]: product mismatch - addition product ID [{addition_product_id}] (seq {addition_seq}) != invoice catalog ID [{invoice_catalog_id}] (seq {product_seq}) - skipping")
                     skipped_count += 1
-            else:
-                log.info(f"Position [{i}]: No matching custom fields to update on product [{product_id}]")
+                    continue
+
+                addition_custom_fields = addition.get("customFields", [])
+                product_custom_fields = product.get("customFields", [])
+
+                if not addition_custom_fields:
+                    log.info(f"Agreement [{agreement_id}] position [{i}]: No custom fields on addition (seq {addition_seq}) - skipping")
+                    continue
+
+                fields_to_update = []
+                for field_name in field_names_to_copy:
+                    source_field = find_custom_field_by_caption(addition_custom_fields, field_name)
+                    if not source_field:
+                        log.info(f"Agreement [{agreement_id}] position [{i}]: Custom field [{field_name}] not found on addition (seq {addition_seq})")
+                        continue
+
+                    source_value = source_field.get("value")
+                    target_field = find_custom_field_by_caption(product_custom_fields, field_name)
+                    if not target_field:
+                        log.warning(f"Agreement [{agreement_id}] position [{i}]: Custom field [{field_name}] not found on invoice product [{product_id}] (seq {product_seq})")
+                        continue
+
+                    target_field_id = target_field.get("id")
+                    log.info(f"Agreement [{agreement_id}] position [{i}]: Copying [{field_name}] = [{source_value}] from addition (seq {addition_seq}) to product [{product_id}] (seq {product_seq})")
+                    fields_to_update.append({"id": target_field_id, "value": source_value})
+
+                if fields_to_update:
+                    if update_product_custom_fields(log, http_client, cwpsa_base_url, cwpsa_base_url_path, product_id, fields_to_update):
+                        updated_count += 1
+                    else:
+                        skipped_count += 1
+                else:
+                    log.info(f"Agreement [{agreement_id}] position [{i}]: No matching custom fields to update on product [{product_id}]")
 
         data_to_log["invoice_id"] = int(invoice_id)
-        data_to_log["agreement_id"] = agreement_id
-        data_to_log["total_additions"] = len(billable_additions)
+        data_to_log["agreements_processed"] = agreements_processed
         data_to_log["total_invoice_products"] = len(invoice_products)
         data_to_log["updated"] = updated_count
         data_to_log["skipped"] = skipped_count
